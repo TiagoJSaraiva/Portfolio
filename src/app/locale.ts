@@ -2,7 +2,11 @@ import { createContext, useContext } from 'react'
 import type { MessageKey } from '../data/messages'
 import type { Locale } from '../data/types'
 
-interface LocaleValue { locale: Locale; toggleLocale: () => void; t: (key: MessageKey) => string }
+interface LocaleValue {
+  locale: Locale
+  toggleLocale: () => void
+  t: (key: MessageKey) => string
+}
 export const LocaleContext = createContext<LocaleValue | null>(null)
 
 export function useLocale() {

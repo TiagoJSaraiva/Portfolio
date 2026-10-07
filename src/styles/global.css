@@ -1,0 +1,132 @@
+@import '@fontsource/space-grotesk/latin-500.css';
+@import '@fontsource/space-grotesk/latin-600.css';
+@import '@fontsource/manrope/latin-400.css';
+@import '@fontsource/manrope/latin-500.css';
+@import '@fontsource/manrope/latin-600.css';
+
+:root {
+  font-family: 'Manrope', sans-serif;
+  color: #e9e9ed;
+  background: #101115;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --surface: #191a20;
+  --muted: #9a9aa8;
+  --border: #ffffff12;
+  --heading: 'Space Grotesk', sans-serif;
+  --accent: #b79aff;
+  --accent-rgb: 183, 154, 255;
+  --radius: 20px;
+  color-scheme: dark;
+}
+[data-category='games'] {
+  --accent: #b79aff;
+  --accent-rgb: 183, 154, 255;
+}
+[data-category='web'] {
+  --accent: #7ddcd6;
+  --accent-rgb: 125, 220, 214;
+}
+[data-category='misc'] {
+  --accent: #e8bc7c;
+  --accent-rgb: 232, 188, 124;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  color: inherit;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: anywhere;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--heading);
+  font-weight: 500;
+}
+[data-page-heading]:focus {
+  outline: none;
+}
+button svg,
+a svg {
+  flex-shrink: 0;
+}
+::selection {
+  color: #101115;
+  background: var(--accent);
+}
+.eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.skip-link {
+  position: fixed;
+  left: 20px;
+  top: -100px;
+  padding: 12px 20px;
+  background: #e9e9ed;
+  color: #101115;
+  border-radius: 8px;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 15px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
