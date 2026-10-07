@@ -1,2 +1,12 @@
-Nesse diretório vazio, gostaria que você criasse um porfólio pra mim de programação. Eu coloquei um PDF com wireframe de páginas que devem existir no portólio em wireframes\Paginas.pdf. As páginas são apenas pra demonstração de disposição inicial de elementos e alguns detalhes extra, as paletas de cor, detalhes de animação, animação de transição, e outros detalhes, teremos que tratar agora ou futuramente.
+Nesse diretório com template vazio de projeto react, gostaria que você criasse um porfólio pra mim de programação. Eu coloquei um PDF com wireframe de páginas que devem existir no portólio em wireframes\Paginas.pdf. As páginas são apenas pra demonstração de disposição inicial de elementos e alguns detalhes extra, as paletas de cor, detalhes de animação, animação de transição, e outros detalhes, teremos que tratar agora ou futuramente.
 
+Outros pontos de decisão são quais bibliotecas serão utilizadas para otimizar o desenvolvimento, especialmente a respeito de interações e animações, minimizar erros e facilitar refatoração sem problemas.
+Arquitetura utilizada também deve ser decidida, mas deve ser feita de forma apropriadamente componentizada e modular para facilitar mudanças no código e . Uma coisa que já está certa é que o projeto não possuirá servidor nem banco de dados, então todo o conteúdo será definido por dados (data driven) declarados no código.
+
+No AGENTS.md, você deve constar instruções sobre o projeto e o diretório.
+No README.md, não precisa fazer nada por enquanto.
+O projeto será futuramente hospedado em github pages, mas não iremos configurar isso por enquanto.
+
+O objetivo atual é criar um AGENTS.md estruturado pronto pra guiar o agente em mudanças futuras, implementar as páginas criadas no wireframe, tirar todas as dúvidas restantes de design e detalhes e fazer o porfolio em sí funcionar. Depois, ajustaremos o projeto, README e configuraremos deploy.
+
+Durante a implementação do projeto, eu te permito utilizar o git pra fazer commits sempre que terminar um módulo de implementação. Pode utilizar a branch main para todas as implementações. Apenas não de push.
