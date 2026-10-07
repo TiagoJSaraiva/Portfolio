@@ -1,0 +1,100 @@
+.carousel {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0 15px;
+}
+.viewport {
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+  cursor: grab;
+}
+.viewport:active {
+  cursor: grabbing;
+}
+.track {
+  display: flex;
+}
+.slide {
+  flex: 0 0 180px;
+  padding-right: 12px;
+  min-width: 0;
+}
+.slide a {
+  display: block;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ffffff0b;
+  transition: border-color 0.2s;
+}
+.slide a:hover,
+.slide a:focus-visible {
+  border-color: var(--accent);
+}
+.slide a:focus-visible {
+  outline-offset: -4px;
+}
+.image {
+  height: 104px;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.slide a:hover .image {
+  opacity: 1;
+}
+.slide span {
+  position: absolute;
+  left: 11px;
+  bottom: 9px;
+  font-size: 10px;
+  color: #f0eff5;
+  text-shadow: 0 1px 7px #000;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 26px 0;
+}
+.controls > span {
+  color: #93929f;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.line {
+  width: 30px;
+  height: 1px;
+  background: #ffffff24;
+}
+.controls > div {
+  display: flex;
+  gap: 7px;
+}
+.controls button {
+  background: transparent;
+  border: 1px solid #ffffff16;
+  border-radius: 6px;
+  width: 28px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+}
+.controls button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+@media (max-width: 540px) {
+  .slide {
+    flex-basis: 152px;
+  }
+  .image {
+    height: 90px;
+  }
+  .controls {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

@@ -1,0 +1,129 @@
+.page {
+  min-height: 100svh;
+  background: radial-gradient(ellipse at 25% 0, rgba(var(--accent-rgb), 0.045), transparent 60%);
+}
+.main {
+  max-width: 1536px;
+  margin: auto;
+  padding: 36px 48px 24px;
+}
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+.category {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--accent);
+}
+.index {
+  margin-left: 5px;
+  font-size: 9px;
+  color: #696875;
+}
+.tagline {
+  font-size: 10px;
+  color: #878694;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  grid-template-areas: 'skills rail' 'panel rail';
+  gap: 23px 42px;
+  align-items: start;
+}
+.layout[data-mode='web'] {
+  grid-template-columns: 270px minmax(0, 1fr);
+  grid-template-areas: 'rail skills' 'rail panel';
+}
+.layout[data-mode='misc'] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'rail' 'panel' 'skills';
+  gap: 25px;
+}
+.skills {
+  grid-area: skills;
+  min-width: 0;
+}
+.panel {
+  grid-area: panel;
+  min-width: 0;
+}
+.rail {
+  grid-area: rail;
+  min-width: 0;
+}
+.layout[data-mode='misc'] .panel,
+.layout[data-mode='misc'] .skills {
+  width: min(100%, 1050px);
+  justify-self: center;
+}
+.layout[data-mode='misc'] .panel h1 {
+  font-size: 48px;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: #767583;
+  font-size: 9px;
+}
+@media (min-width: 1600px) {
+  .main {
+    padding-top: 50px;
+  }
+}
+@media (max-width: 1100px) and (min-width: 900px) {
+  .main {
+    padding: 30px;
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 230px;
+    column-gap: 26px;
+  }
+  .layout[data-mode='web'] {
+    grid-template-columns: 230px minmax(0, 1fr);
+  }
+}
+@media (max-width: 899px) {
+  .main {
+    padding: 28px 24px;
+  }
+  .layout,
+  .layout[data-mode='web'],
+  .layout[data-mode='misc'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'rail' 'panel' 'skills';
+    gap: 24px;
+  }
+  .intro {
+    margin-bottom: 28px;
+  }
+  .layout[data-mode='misc'] .panel h1 {
+    font-size: 44px;
+  }
+}
+@media (max-width: 540px) {
+  .main {
+    padding: 26px 20px 20px;
+  }
+  .tagline {
+    display: none;
+  }
+  .intro {
+    margin-bottom: 24px;
+  }
+  .footer {
+    font-size: 8px;
+    gap: 10px;
+  }
+  .layout[data-mode='misc'] .panel h1 {
+    font-size: 36px;
+  }
+}
