@@ -13,8 +13,8 @@ export const profile: Profile = {
   name: 'Tiago Saraiva',
   role: { en: 'Designer & developer.', pt: 'Designer e desenvolvedor.' },
   invitation: {
-    en: 'What kind of world would you like to explore?',
-    pt: 'Que tipo de mundo você quer explorar?',
+    en: 'What kind of projects do you wanna see?',
+    pt: 'Que tipo de projetos você deseja ver?',
   },
   githubUrl,
 }
@@ -38,7 +38,7 @@ export const categories: Category[] = [
   {
     id: 'games',
     label: { en: 'Games', pt: 'Jogos' },
-    tagline: { en: 'Play. Discover. Repeat.', pt: 'Jogue. Descubra. Repita.' },
+    tagline: { en: 'Games and game-related projects.', pt: 'Jogos e projetos relacionados a jogos.' }, // { en: 'Play. Discover. Repeat.', pt: 'Jogue. Descubra. Repita.' }
     headline: {
       en: 'Little worlds.\nBig possibilities.',
       pt: 'Pequenos mundos.\nGrandes possibilidades.',
@@ -58,7 +58,7 @@ export const categories: Category[] = [
   {
     id: 'web',
     label: { en: 'Web', pt: 'Web' },
-    tagline: { en: 'Thoughtful by design.', pt: 'Pensado em cada detalhe.' },
+    tagline: { en: 'Web systems, static websites, and other web projects.', pt: 'Sistemas web, sites estáticos e outros projetos web.' }, //{ en: 'Thoughtful by design.', pt: 'Pensado em cada detalhe.' }
     headline: {
       en: 'Good ideas deserve\ngreat interfaces.',
       pt: 'Boas ideias merecem\nótimas interfaces.',
@@ -78,7 +78,7 @@ export const categories: Category[] = [
   {
     id: 'misc',
     label: { en: 'Misc', pt: 'Misc' },
-    tagline: { en: 'Follow the curiosity.', pt: 'Siga a curiosidade.' },
+    tagline: { en: 'Desktop systems, APIs, scripts, experimental projects, among others.', pt: 'Sistemas para desktop, APIs, scripts, projetos experimentais, entre outros.' }, // { en: 'Follow the curiosity.', pt: 'Siga a curiosidade.' }
     headline: {
       en: 'Some ideas don’t\nfit in a box.',
       pt: 'Algumas ideias não\ncabem numa caixa.',
