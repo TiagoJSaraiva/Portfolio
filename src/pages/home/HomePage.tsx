@@ -40,14 +40,6 @@ export function HomePage() {
           <span className={styles.divider} />
           <p className={styles.invitation}>{profile.invitation[locale]}</p>
         </div>
-        <div className={styles.corner}>
-          <span className={styles.dot} />
-          {t('available')}
-        </div>
-        <div className={styles.instruction}>
-          {t('choose')}
-          <span>↗</span>
-        </div>
       </main>
       <footer className={styles.footer}>
         <span>{t('footer')}</span>
