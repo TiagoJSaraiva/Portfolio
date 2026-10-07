@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { RefObject } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useLocale } from '../../app/locale'
 import { ProjectImage } from '../../components/ProjectImage'
 import type { Project } from '../../data/types'
@@ -18,6 +18,7 @@ export function ProjectCarousel({
   panelRef: RefObject<HTMLDivElement | null>
 }) {
   const { locale, t } = useLocale()
+  const navigate = useNavigate()
   const reducedMotion = useReducedMotion()
   const [paused, setPaused] = useState(false)
   const [interacting, setInteracting] = useState(false)
@@ -46,7 +47,8 @@ export function ProjectCarousel({
   useEffect(() => {
     if (!api) return
     const panel = panelRef.current
-    const sync = () => setInteracting(hovering.current || focused.current)
+    const sync = () =>
+      setInteracting(hovering.current || focused.current || dragStart.current !== undefined)
     const enter = () => {
       hovering.current = true
       sync()
@@ -67,15 +69,34 @@ export function ProjectCarousel({
       focused.current = isControl(event.relatedTarget)
       sync()
     }
+    // Drag can end outside the viewport; retain the pause until the pointer is released.
+    const pointerMove = (event: PointerEvent) => {
+      if (dragStart.current !== undefined && Math.abs(event.clientX - dragStart.current) > 7)
+        dragged.current = true
+    }
+    const pointerUp = () => {
+      dragStart.current = undefined
+      sync()
+    }
+    const pointerCancel = () => {
+      dragged.current = true
+      pointerUp()
+    }
     panel?.addEventListener('mouseenter', enter)
     panel?.addEventListener('mouseleave', leave)
     panel?.addEventListener('focusin', focusIn)
     panel?.addEventListener('focusout', focusOut)
+    window.addEventListener('pointermove', pointerMove)
+    window.addEventListener('pointerup', pointerUp)
+    window.addEventListener('pointercancel', pointerCancel)
     return () => {
       panel?.removeEventListener('mouseenter', enter)
       panel?.removeEventListener('mouseleave', leave)
       panel?.removeEventListener('focusin', focusIn)
       panel?.removeEventListener('focusout', focusOut)
+      window.removeEventListener('pointermove', pointerMove)
+      window.removeEventListener('pointerup', pointerUp)
+      window.removeEventListener('pointercancel', pointerCancel)
     }
   }, [api, panelRef])
 
@@ -122,8 +143,22 @@ export function ProjectCarousel({
                 to={`/${project.category}/${project.id}`}
                 tabIndex={index < projects.length ? 0 : -1}
                 aria-label={project.title[locale]}
+                onKeyDown={(event) => {
+                  // Embla suppresses the next click after dragging, including synthetic keyboard clicks.
+                  if (
+                    event.key === 'Enter' &&
+                    !event.ctrlKey &&
+                    !event.metaKey &&
+                    !event.altKey &&
+                    !event.shiftKey
+                  ) {
+                    event.preventDefault()
+                    dragged.current = false
+                    navigate(`/${project.category}/${project.id}`)
+                  }
+                }}
                 onClick={(event) => {
-                  if (dragged.current) {
+                  if (dragged.current && event.detail > 0) {
                     event.preventDefault()
                     dragged.current = false
                   }
