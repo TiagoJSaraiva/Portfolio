@@ -1,0 +1,2 @@
+Nesse diretório vazio, gostaria que você criasse um porfólio pra mim de programação. Eu coloquei um PDF com wireframe de páginas que devem existir no portólio em wireframes\Paginas.pdf. As páginas são apenas pra demonstração de disposição inicial de elementos e alguns detalhes extra, as paletas de cor, detalhes de animação, animação de transição, e outros detalhes, teremos que tratar agora ou futuramente.
+
