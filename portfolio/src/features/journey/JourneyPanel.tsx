@@ -50,7 +50,7 @@ export function JourneyPanel({
             {selected.description[locale].map((_, index) => (
               <p key={index}>
                 <LocalizedText
-                  paragraph
+                  variant="body"
                   value={{
                     en: selected.description.en[index] ?? '',
                     pt: selected.description.pt[index] ?? '',
@@ -61,7 +61,7 @@ export function JourneyPanel({
           </div>
           {selected.demo && (
             <p className={styles.note}>
-              <LocalizedText value={messages.demoNote} paragraph />
+              <LocalizedText value={messages.demoNote} variant="body" />
             </p>
           )}
           {(selected.githubUrl || selected.projectUrl) && (
@@ -107,7 +107,7 @@ export function JourneyPanel({
               {category.description[locale].map((_, index) => (
                 <p key={index}>
                   <LocalizedText
-                    paragraph
+                    variant="body"
                     value={{
                       en: category.description.en[index] ?? '',
                       pt: category.description.pt[index] ?? '',
@@ -117,7 +117,7 @@ export function JourneyPanel({
               ))}
             </div>
             <div className={styles.bottom}>
-              <LocalizedText value={category.tagline} />
+              <LocalizedText value={category.tagline} variant="body" />
               <ArrowDownRight size={24} strokeWidth={1} />
             </div>
           </motion.article>

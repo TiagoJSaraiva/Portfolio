@@ -58,7 +58,7 @@ export function ProjectRail({
                 <ArrowUpRight size={16} className={styles.arrow} />
               </div>
               <p className={styles.summary}>
-                <LocalizedText value={project.summary} paragraph />
+                <LocalizedText value={project.summary} variant="body" />
               </p>
             </Link>
           </motion.li>
@@ -66,7 +66,7 @@ export function ProjectRail({
       </motion.ul>
       {!projects.length && (
         <p className={styles.empty}>
-          <LocalizedText value={messages.empty} paragraph />
+          <LocalizedText value={messages.empty} variant="body" />
         </p>
       )}
     </section>

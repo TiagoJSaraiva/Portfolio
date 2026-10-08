@@ -217,7 +217,7 @@ describe('coordinated locale transition', () => {
         <MemoryRouter>
           <Header />
           <p data-testid="paragraph">
-            <LocalizedText value={value} paragraph />
+            <LocalizedText value={value} variant="body" />
           </p>
         </MemoryRouter>
       </LocaleProvider>,
@@ -233,29 +233,38 @@ describe('coordinated locale transition', () => {
     expect(document.querySelector('[data-locale-letter]')).toBeNull()
   })
 
-  it.each([139, 140])(
-    'uses the paragraph cutoff at %i graphemes rather than code points',
+  it.each([1, 139, 140])(
+    'reveals %i graphemes according to text role rather than length or HTML tag',
     (length) => {
       const value = { en: 'Old paragraph.', pt: 'e\u0301'.repeat(length) }
       render(
         <LocaleProvider>
           <MemoryRouter>
             <Header />
+            <h1>
+              <LocalizedText value={value} />
+            </h1>
             <p data-testid="paragraph">
-              <LocalizedText value={value} paragraph />
+              <LocalizedText value={value} variant="body" />
             </p>
+            <LocalizedText value={value} variant="body" className="tagline" />
           </MemoryRouter>
         </LocaleProvider>,
       )
       toggle()
       advance(localeExitMs)
       const paragraph = screen.getByTestId('paragraph')
-      expect(paragraph.querySelectorAll('[data-locale-letter]')).toHaveLength(
-        length < 140 ? length : 0,
-      )
+      expect(paragraph.querySelector('[data-locale-letter]')).toBeNull()
+      expect(document.querySelector('.tagline [data-locale-letter]')).toBeNull()
+      const heading = screen.getByRole('heading')
+      expect(heading.querySelectorAll('[data-locale-letter]')).toHaveLength(length)
+      expect(heading).toHaveAccessibleName(value.pt)
       expect(paragraph.querySelector('[aria-hidden="true"]')!.textContent).toBe(value.pt)
       advance(localeRevealMs)
       expect(paragraph.textContent).toBe(value.pt)
+      expect(heading.textContent).toBe(value.pt)
+      expect(document.querySelector('.tagline')!.textContent).toBe(value.pt)
+      expect(document.querySelector('[data-locale-phase]')).toBeNull()
     },
   )
   it('supports unequal paragraph counts and localized empty/image states', () => {
@@ -284,8 +293,9 @@ describe('coordinated locale transition', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Toggle' }))
     advance(localeExitMs)
     expect(screen.getByRole('img', { name: messages.missingImage.pt })).toBeInTheDocument()
-    expect(screen.getByText('Primeiro.')).toBeInTheDocument()
-    expect(screen.getByText('Segundo.')).toBeInTheDocument()
+    const paragraphs = document.querySelectorAll('article p [aria-hidden="true"]')
+    expect(paragraphs[0]!.textContent).toBe('Primeiro.')
+    expect(paragraphs[1]!.textContent).toBe('Segundo.')
     expect(document.querySelector('[data-locale-phase="reveal"]')).not.toBeNull()
     advance(localeRevealMs)
     fireEvent.click(screen.getByRole('button', { name: 'Toggle' }))
