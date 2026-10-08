@@ -82,6 +82,66 @@ test('navigation, sharing, history, language persistence and keyboard', async ({
   await expect(page.locator('h1')).toBeFocused()
 })
 
+test('language codes stay in place as their emphasis changes', async ({ page }) => {
+  for (const width of [360, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.goto('/')
+    const englishToggle = page.getByRole('button', { name: 'Change language to Portuguese' })
+    const codes = page.locator('header button [data-active]')
+    await expect(codes).toHaveText(['EN', 'PT'])
+    const transitionDurations = await codes
+      .nth(0)
+      .evaluate((element) => getComputedStyle(element).transitionDuration)
+    expect(transitionDurations).toBe('0.18s, 0.18s')
+
+    const initialPositions = await codes.evaluateAll((elements) =>
+      elements.map((element) => {
+        const { x, y, width, height } = element.getBoundingClientRect()
+        return { centerX: x + width / 2, centerY: y + height / 2 }
+      }),
+    )
+    await expect(codes.nth(0)).toHaveCSS('font-size', '11px')
+    await expect(codes.nth(0)).toHaveCSS('color', 'rgb(233, 233, 237)')
+    await expect(codes.nth(1)).toHaveCSS('font-size', '9px')
+    await expect(codes.nth(1)).toHaveCSS('color', 'rgb(98, 98, 110)')
+
+    await englishToggle.click()
+    const portugueseToggle = page.getByRole('button', { name: 'Mudar idioma para inglês' })
+    await expect(codes).toHaveText(['EN', 'PT'])
+    await expect(codes.nth(0)).toHaveCSS('font-size', '9px')
+    await expect(codes.nth(0)).toHaveCSS('color', 'rgb(98, 98, 110)')
+    await expect(codes.nth(1)).toHaveCSS('font-size', '11px')
+    await expect(codes.nth(1)).toHaveCSS('color', 'rgb(233, 233, 237)')
+
+    const portuguesePositions = await codes.evaluateAll((elements) =>
+      elements.map((element) => {
+        const { x, y, width, height } = element.getBoundingClientRect()
+        return { centerX: x + width / 2, centerY: y + height / 2 }
+      }),
+    )
+    for (const [index, position] of portuguesePositions.entries()) {
+      expect(Math.abs(position.centerX - initialPositions[index].centerX)).toBeLessThan(0.5)
+      expect(Math.abs(position.centerY - initialPositions[index].centerY)).toBeLessThan(0.5)
+    }
+
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    const reducedTransitionDurations = await codes
+      .nth(0)
+      .evaluate((element) => getComputedStyle(element).transitionDuration)
+    expect(
+      reducedTransitionDurations
+        .split(',')
+        .every((duration) => Number.parseFloat(duration) <= 0.00001),
+    ).toBe(true)
+    await portugueseToggle.click()
+    await expect(codes.nth(0)).toHaveCSS('font-size', '11px')
+    await expect(codes.nth(0)).toHaveCSS('color', 'rgb(233, 233, 237)')
+    await expect(codes.nth(1)).toHaveCSS('font-size', '9px')
+    await expect(codes.nth(1)).toHaveCSS('color', 'rgb(98, 98, 110)')
+  }
+})
+
 test('hover expansion, continuous motion, pause, drag and reduced motion', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 })
   await page.goto('/#/games')

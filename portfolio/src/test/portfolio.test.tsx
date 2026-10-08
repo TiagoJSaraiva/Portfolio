@@ -178,6 +178,32 @@ describe('language', () => {
     expect(window.location.hash).toBe('#/games/orbit')
   })
 
+  it('keeps EN and PT in a fixed order while active emphasis follows the locale', async () => {
+    const user = userEvent.setup()
+    render(
+      <LocaleProvider>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </LocaleProvider>,
+    )
+
+    const englishButton = screen.getByRole('button', { name: 'Change language to Portuguese' })
+    const codes = within(englishButton).getAllByText(/^(EN|PT)$/)
+    expect(codes.map((code) => code.textContent)).toEqual(['EN', 'PT'])
+    expect(codes.map((code) => code.getAttribute('data-active'))).toEqual(['true', 'false'])
+
+    await user.click(englishButton)
+    expect(codes.map((code) => code.textContent)).toEqual(['EN', 'PT'])
+    expect(codes.map((code) => code.getAttribute('data-active'))).toEqual(['false', 'true'])
+    expect(localStorage.getItem('tiago-portfolio-locale')).toBe('pt')
+
+    const portugueseButton = screen.getByRole('button', { name: 'Mudar idioma para inglês' })
+    await user.click(portugueseButton)
+    expect(codes.map((code) => code.getAttribute('data-active'))).toEqual(['true', 'false'])
+    expect(localStorage.getItem('tiago-portfolio-locale')).toBe('en')
+  })
+
   it('restores a saved locale and ignores invalid saved values', () => {
     localStorage.setItem('tiago-portfolio-locale', 'pt')
     const first = render(

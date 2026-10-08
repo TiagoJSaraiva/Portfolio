@@ -42,9 +42,19 @@
   letter-spacing: 0.04em;
   font-weight: 600;
 }
-.language span {
+.languageCode {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
   color: #62626e;
   font-size: 9px;
+  transition:
+    font-size 180ms ease,
+    color 180ms ease;
+}
+.languageCode[data-active='true'] {
+  color: inherit;
+  font-size: 11px;
 }
 .socials {
   display: flex;
