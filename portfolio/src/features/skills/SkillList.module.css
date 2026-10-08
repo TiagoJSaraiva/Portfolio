@@ -13,8 +13,6 @@
   display: flex;
   gap: 9px;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ffffff20 transparent;
 }
 .list li {
   flex-shrink: 0;
