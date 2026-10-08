@@ -22,8 +22,12 @@ export function Header({ category }: { category?: CategoryId }) {
       )}
       <div className={styles.right}>
         <button className={styles.language} onClick={toggleLocale} aria-label={t('language')}>
-          {locale.toUpperCase()}
-          <span>{locale === 'en' ? 'PT' : 'EN'}</span>
+          <span className={styles.languageCode} data-active={locale === 'en'}>
+            EN
+          </span>
+          <span className={styles.languageCode} data-active={locale === 'pt'}>
+            PT
+          </span>
         </button>
         <div className={styles.socials}>
           {profile.githubUrl && (
