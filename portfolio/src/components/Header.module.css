@@ -88,7 +88,7 @@
 .categories a:hover {
   background: rgba(var(--accent-rgb), 0.13);
 }
-.categories span {
+.categories a > span {
   font-size: 11px;
 }
 @media (max-width: 899px) {
@@ -120,7 +120,7 @@
   .categories a {
     padding: 8px;
   }
-  .categories span {
+  .categories a > span {
     display: none;
   }
   .home {

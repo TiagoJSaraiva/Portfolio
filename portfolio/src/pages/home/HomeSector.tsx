@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 import { useLocale } from '../../app/locale'
 import { CategoryIcon } from '../../components/CategoryIcon'
+import { LocalizedText } from '../../components/LocalizedText'
 import type { Category } from '../../data/types'
 import styles from './HomeSector.module.css'
 
@@ -22,10 +23,14 @@ export function HomeSector({ category, index }: { category: Category; index: num
         </div>
         <div className={styles.label}>
           <span>0{index + 1}</span>
-          <h2>{category.label[locale]}</h2>
+          <h2>
+            <LocalizedText value={category.label} />
+          </h2>
           <ArrowUpRight size={16} />
         </div>
-        <p>{category.tagline[locale]}</p>
+        <p>
+          <LocalizedText value={category.tagline} paragraph />
+        </p>
       </div>
     </Link>
   )

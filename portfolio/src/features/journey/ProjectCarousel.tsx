@@ -7,6 +7,8 @@ import type { RefObject } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useLocale } from '../../app/locale'
 import { ProjectImage } from '../../components/ProjectImage'
+import { LocalizedText } from '../../components/LocalizedText'
+import { messages } from '../../data/messages'
 import type { Project } from '../../data/types'
 import styles from './ProjectCarousel.module.css'
 
@@ -165,7 +167,7 @@ export function ProjectCarousel({
                 }}
               >
                 <ProjectImage project={project} className={styles.image} />
-                <span>{project.title[locale]}</span>
+                <LocalizedText value={project.title} className={styles.caption} />
               </Link>
             </div>
           ))}
@@ -173,7 +175,7 @@ export function ProjectCarousel({
       </div>
       <div className={styles.controls}>
         <span>
-          {t('drag')}
+          <LocalizedText value={messages.drag} />
           <span className={styles.line} />
         </span>
         <div>

@@ -5,6 +5,8 @@ import { Link } from 'react-router'
 import { useLocale } from '../../app/locale'
 import { ProjectImage } from '../../components/ProjectImage'
 import { GithubIcon } from '../../components/BrandIcons'
+import { LocalizedText } from '../../components/LocalizedText'
+import { messages } from '../../data/messages'
 import type { Category, Project } from '../../data/types'
 import { ProjectCarousel } from './ProjectCarousel'
 import styles from './JourneyPanel.module.css'
@@ -18,7 +20,7 @@ export function JourneyPanel({
   projects: Project[]
   selected?: Project
 }) {
-  const { locale, t } = useLocale()
+  const { locale } = useLocale()
   const panelRef = useRef<HTMLDivElement>(null)
   return (
     <motion.div ref={panelRef} className={styles.panel} layout="position">
@@ -33,27 +35,41 @@ export function JourneyPanel({
           <div className={styles.projectTop}>
             <Link to={`/${category.id}`} className={styles.back}>
               <ArrowLeft size={14} />
-              {t('back')}
+              <LocalizedText value={messages.back} />
             </Link>
             <span className={styles.year}>{selected.year}</span>
           </div>
           <div className={styles.story}>
             <ProjectImage project={selected} className={styles.projectImage} />
-            {selected.demo && <span className={`eyebrow ${styles.demo}`}>{t('demo')}</span>}
-            <h1 tabIndex={-1} data-page-heading>
-              {selected.title[locale]}
+            {selected.demo && (
+              <LocalizedText className={`eyebrow ${styles.demo}`} value={messages.demo} />
+            )}
+            <h1 tabIndex={-1} data-page-heading aria-label={selected.title[locale]}>
+              <LocalizedText value={selected.title} />
             </h1>
-            {selected.description[locale].map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+            {selected.description[locale].map((_, index) => (
+              <p key={index}>
+                <LocalizedText
+                  paragraph
+                  value={{
+                    en: selected.description.en[index] ?? '',
+                    pt: selected.description.pt[index] ?? '',
+                  }}
+                />
+              </p>
             ))}
           </div>
-          {selected.demo && <p className={styles.note}>{t('demoNote')}</p>}
+          {selected.demo && (
+            <p className={styles.note}>
+              <LocalizedText value={messages.demoNote} paragraph />
+            </p>
+          )}
           {(selected.githubUrl || selected.projectUrl) && (
             <div className={styles.actions}>
               {selected.githubUrl && (
                 <a href={selected.githubUrl} target="_blank" rel="noopener noreferrer">
                   <GithubIcon size={16} />
-                  {t('github')}
+                  <LocalizedText value={messages.github} />
                   <ArrowUpRight size={14} />
                 </a>
               )}
@@ -64,7 +80,7 @@ export function JourneyPanel({
                   rel="noopener noreferrer"
                   className={styles.primary}
                 >
-                  {t('visit')}
+                  <LocalizedText value={messages.visit} />
                   <ArrowUpRight size={16} />
                 </a>
               )}
@@ -82,18 +98,26 @@ export function JourneyPanel({
           >
             <span className={`eyebrow ${styles.eyebrow}`}>
               <span className={styles.dot} />
-              {t('journey')}
+              <LocalizedText value={messages.journey} />
             </span>
-            <h1 tabIndex={-1} data-page-heading>
-              {category.headline[locale]}
+            <h1 tabIndex={-1} data-page-heading aria-label={category.headline[locale]}>
+              <LocalizedText value={category.headline} />
             </h1>
             <div className={styles.description}>
-              {category.description[locale].map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+              {category.description[locale].map((_, index) => (
+                <p key={index}>
+                  <LocalizedText
+                    paragraph
+                    value={{
+                      en: category.description.en[index] ?? '',
+                      pt: category.description.pt[index] ?? '',
+                    }}
+                  />
+                </p>
               ))}
             </div>
             <div className={styles.bottom}>
-              <span>{category.tagline[locale]}</span>
+              <LocalizedText value={category.tagline} />
               <ArrowDownRight size={24} strokeWidth={1} />
             </div>
           </motion.article>

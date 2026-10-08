@@ -18,6 +18,12 @@ Categorias/projetos inexistentes mostram a tela 404, inclusive um projeto perten
 
 O contexto de idioma inicia em inglês e permite EN/PT. Uma escolha válida é salva em `tiago-portfolio-locale`; armazenamento bloqueado não impede o uso da interface. O documento recebe `lang` e título atualizados. Estado de hover, arraste e pausa fica nos componentes responsáveis.
 
+A troca de idioma coordena duas fases no mesmo contexto: 150 ms de fade out e 450 ms de revelação. `LocalizedText` recebe um valor `Localized<string>` e anima somente textos diferentes entre os idiomas. Todas as palavras começam juntas; atrasos proporcionais à posição dos grafemas fazem palavras curtas e longas terminar juntas. Espaços e quebras de linha são preservados. Parágrafos usam a prop `paragraph`: com 140 ou mais grafemas no idioma de destino, a entrada usa fade do texto inteiro para limitar o custo de renderização. A contagem para ao atingir esse limite, sem criar arrays de letras para textos longos. Sem `Intl.Segmenter`, a entrada de qualquer texto também usa fade inteiro.
+
+A escolha é persistida no clique. EN/PT mantêm suas posições e começam imediatamente a animação de tamanho/cor; durante a troca, o botão usa `aria-disabled` e ignora novas ativações sem perder foco. Idioma efetivo, atributos acessíveis e título do documento mudam após o fade out. A revelação mantém uma versão acessível completa e oculta as letras visuais dos leitores de tela; ao terminar, remove os elementos temporários. Um único temporizador ativo coordena a página, sem atualizações do React por letra ou quadro.
+
+Carregamento inicial e restauração do idioma salvo não animam os textos. Movimento reduzido troca imediatamente; ativar essa preferência durante o efeito também conclui a troca. Navegar durante qualquer fase conclui o idioma solicitado antes de apresentar a página de destino, preservando o comportamento de foco e histórico.
+
 ## Composição
 
 `HomePage` e `HomeSector` ficam isolados em `src/pages/home`. No desktop, os polígonos de Jogos, Web e Misc têm a mesma área, com junção em 50% da largura e um terço da altura. A apresentação sobrepõe a junção, permitindo que os setores continuem clicáveis. Abaixo de 900 px, a apresentação precede três blocos iguais empilhados.

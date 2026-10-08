@@ -1,11 +1,11 @@
-import { useLocale } from '../../app/locale'
 import { Header } from '../../components/Header'
+import { LocalizedText } from '../../components/LocalizedText'
+import { messages } from '../../data/messages'
 import { categories, copyrightYear, profile } from '../../data/portfolio'
 import { HomeSector } from './HomeSector'
 import styles from './HomePage.module.css'
 
 export function HomePage() {
-  const { locale, t } = useLocale()
   return (
     <div className={styles.page}>
       <Header />
@@ -30,19 +30,23 @@ export function HomePage() {
           ))}
         </div>
         <div className={styles.hub}>
-          <span className={`eyebrow ${styles.hello}`}>{t('hello')}</span>
+          <LocalizedText className={`eyebrow ${styles.hello}`} value={messages.hello} />
           <h1 tabIndex={-1} data-page-heading aria-label={profile.name}>
             {profile.name.split(' ').map((part, index) => (
               <span key={index}>{part}</span>
             ))}
           </h1>
-          <p className={styles.role}>{profile.role[locale]}</p>
+          <p className={styles.role}>
+            <LocalizedText value={profile.role} paragraph />
+          </p>
           <span className={styles.divider} />
-          <p className={styles.invitation}>{profile.invitation[locale]}</p>
+          <p className={styles.invitation}>
+            <LocalizedText value={profile.invitation} paragraph />
+          </p>
         </div>
       </main>
       <footer className={styles.footer}>
-        <span>{t('footer')}</span>
+        <LocalizedText value={messages.footer} />
         <span>
           © {copyrightYear} {profile.name}
         </span>

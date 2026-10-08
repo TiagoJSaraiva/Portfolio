@@ -49,7 +49,9 @@ describe('content contract', () => {
         [false, false],
       ])
     }
-    for (const message of Object.values(messages)) {
+    expect(messages.footer).toEqual({ en: '', pt: '' })
+    for (const [key, message] of Object.entries(messages)) {
+      if (key === 'footer') continue
       expect(message.en).toBeTruthy()
       expect(message.pt).toBeTruthy()
     }
@@ -81,19 +83,17 @@ describe('project behavior', () => {
   it('opens a project from the rail, changes skills, and returns to the journey', async () => {
     const user = userEvent.setup()
     renderApp('/games')
-    const rail = screen.getByRole('region', { name: 'Selected work' })
+    const rail = screen.getByRole('region', { name: messages.selectedWork.en })
     await user.click(within(rail).getByRole('link', { name: /Orbit/ }))
     expect(await screen.findByRole('heading', { level: 1, name: 'Orbit' })).toBeInTheDocument()
     expect(window.location.hash).toBe('#/games/orbit')
     expect(screen.getByRole('region', { name: 'Built with' })).toHaveTextContent('Luau')
     expect(screen.getByRole('region', { name: 'Built with' })).not.toHaveTextContent('TypeScript')
-    await user.click(screen.getByRole('link', { name: 'Back to the journey' }))
+    await user.click(screen.getByRole('link', { name: messages.back.en }))
     expect(
       await screen.findByRole('heading', { level: 1, name: /Little worlds/ }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Tools of the trade' })).toHaveTextContent(
-      'TypeScript',
-    )
+    expect(screen.getByRole('region', { name: messages.skills.en })).toHaveTextContent('TypeScript')
   })
 
   it.each(['/other', '/games/unknown', '/web/orbit', '/games/orbit/extra'])(
@@ -171,7 +171,7 @@ describe('language', () => {
     renderApp('/games/orbit')
     expect(document.documentElement.lang).toBe('en')
     await user.click(screen.getByRole('button', { name: 'Change language to Portuguese' }))
-    expect(screen.getByRole('link', { name: 'Voltar à trajetória' })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: messages.back.pt })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Ver no GitHub' })).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('pt-BR')
     expect(localStorage.getItem('tiago-portfolio-locale')).toBe('pt')
@@ -198,7 +198,8 @@ describe('language', () => {
     expect(codes.map((code) => code.getAttribute('data-active'))).toEqual(['false', 'true'])
     expect(localStorage.getItem('tiago-portfolio-locale')).toBe('pt')
 
-    const portugueseButton = screen.getByRole('button', { name: 'Mudar idioma para inglês' })
+    const portugueseButton = await screen.findByRole('button', { name: 'Mudar idioma para inglês' })
+    await waitFor(() => expect(portugueseButton).not.toHaveAttribute('aria-disabled'))
     await user.click(portugueseButton)
     expect(codes.map((code) => code.getAttribute('data-active'))).toEqual(['true', 'false'])
     expect(localStorage.getItem('tiago-portfolio-locale')).toBe('en')
