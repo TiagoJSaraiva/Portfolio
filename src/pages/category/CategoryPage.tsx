@@ -1,7 +1,8 @@
 import { useParams } from 'react-router'
-import { useLocale } from '../../app/locale'
 import { CategoryIcon } from '../../components/CategoryIcon'
 import { Header } from '../../components/Header'
+import { LocalizedText } from '../../components/LocalizedText'
+import { messages } from '../../data/messages'
 import { categories, copyrightYear, getCategory, getProjects, profile } from '../../data/portfolio'
 import { JourneyPanel } from '../../features/journey/JourneyPanel'
 import { ProjectRail } from '../../features/projects/ProjectRail'
@@ -11,7 +12,6 @@ import styles from './CategoryPage.module.css'
 
 export function CategoryPage() {
   const { categoryId, projectId } = useParams()
-  const { locale, t } = useLocale()
   const category = getCategory(categoryId)
   if (!category) return <NotFoundPage />
   const projects = getProjects(category.id)
@@ -24,10 +24,10 @@ export function CategoryPage() {
         <div className={styles.intro}>
           <div className={styles.category}>
             <CategoryIcon category={category.id} size={18} />
-            <span className="eyebrow">{category.label[locale]}</span>
+            <LocalizedText className="eyebrow" value={category.label} />
             <span className={styles.index}>/ 0{categories.indexOf(category) + 1}</span>
           </div>
-          <span className={styles.tagline}>{category.tagline[locale]}</span>
+          <LocalizedText className={styles.tagline} value={category.tagline} />
         </div>
         <div className={styles.layout} data-mode={category.id}>
           <div className={styles.skills}>
@@ -41,7 +41,7 @@ export function CategoryPage() {
           </div>
         </div>
         <footer className={styles.footer}>
-          <span>{t('footer')}</span>
+          <LocalizedText value={messages.footer} />
           <span>
             © {copyrightYear} {profile.name}
           </span>

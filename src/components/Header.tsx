@@ -5,10 +5,13 @@ import { useLocale } from '../app/locale'
 import { categories, profile } from '../data/portfolio'
 import type { CategoryId } from '../data/types'
 import { CategoryIcon } from './CategoryIcon'
+import { LocalizedText } from './LocalizedText'
+import { messages } from '../data/messages'
 import styles from './Header.module.css'
 
 export function Header({ category }: { category?: CategoryId }) {
-  const { locale, t, toggleLocale } = useLocale()
+  const { locale, t, toggleLocale, transition } = useLocale()
+  const activeLocale = transition?.to ?? locale
   return (
     <header className={styles.header}>
       <Link to="/" className={styles.brand} aria-label={`${profile.name} — ${t('home')}`}>
@@ -16,16 +19,21 @@ export function Header({ category }: { category?: CategoryId }) {
       </Link>
       {category && (
         <Link className={styles.home} to="/">
-          {t('home')}
+          <LocalizedText value={messages.home} />
           <ArrowUpRight size={13} />
         </Link>
       )}
       <div className={styles.right}>
-        <button className={styles.language} onClick={toggleLocale} aria-label={t('language')}>
-          <span className={styles.languageCode} data-active={locale === 'en'}>
+        <button
+          className={styles.language}
+          onClick={toggleLocale}
+          aria-label={t('language')}
+          aria-disabled={transition ? true : undefined}
+        >
+          <span className={styles.languageCode} data-active={activeLocale === 'en'}>
             EN
           </span>
-          <span className={styles.languageCode} data-active={locale === 'pt'}>
+          <span className={styles.languageCode} data-active={activeLocale === 'pt'}>
             PT
           </span>
         </button>
@@ -64,7 +72,7 @@ export function Header({ category }: { category?: CategoryId }) {
                   data-category={item.id}
                 >
                   <CategoryIcon category={item.id} />
-                  <span>{item.label[locale]}</span>
+                  <LocalizedText value={item.label} />
                 </Link>
               ))}
           </nav>

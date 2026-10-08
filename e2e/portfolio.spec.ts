@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { messages } from '../src/data/messages'
 
 for (const width of [360, 768, 1440]) {
   test(`layouts and project links at ${width}px`, async ({ page }) => {
@@ -37,7 +38,9 @@ for (const width of [360, 768, 1440]) {
           page.getByRole('navigation', { name: 'Explore other categories' }).getByRole('link'),
         ).toHaveCount(2)
         if (width < 900) {
-          const rail = await page.getByRole('region', { name: 'Selected work' }).boundingBox()
+          const rail = await page
+            .getByRole('region', { name: messages.selectedWork.en })
+            .boundingBox()
           const heading = await page.locator('h1').boundingBox()
           expect(rail!.y).toBeLessThan(heading!.y)
         }
@@ -62,7 +65,7 @@ test('navigation, sharing, history, language persistence and keyboard', async ({
     .click()
   await expect(page).toHaveURL(/#\/games$/)
   await page
-    .getByRole('region', { name: 'Selected work' })
+    .getByRole('region', { name: messages.selectedWork.en })
     .getByRole('link', { name: /Orbit/ })
     .click()
   await expect(page.locator('h1')).toHaveText('Orbit')
@@ -70,8 +73,8 @@ test('navigation, sharing, history, language persistence and keyboard', async ({
   await expect(page.locator('h1')).toHaveText('Orbit')
   await page.getByRole('button', { name: 'Change language to Portuguese' }).click()
   await page.reload()
-  await expect(page.getByRole('link', { name: 'Voltar à trajetória' })).toBeVisible()
-  await page.getByRole('link', { name: 'Voltar à trajetória' }).click()
+  await expect(page.getByRole('link', { name: messages.back.pt })).toBeVisible()
+  await page.getByRole('link', { name: messages.back.pt }).click()
   await page.goBack()
   await expect(page.locator('h1')).toHaveText('Orbit')
   await page.goForward()
@@ -145,7 +148,7 @@ test('language codes stay in place as their emphasis changes', async ({ page }) 
 test('hover expansion, continuous motion, pause, drag and reduced motion', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 })
   await page.goto('/#/games')
-  const rail = page.getByRole('region', { name: 'Selected work' })
+  const rail = page.getByRole('region', { name: messages.selectedWork.en })
   const first = rail.locator('li').first()
   const second = rail.locator('li').nth(1)
   const heightBefore = (await first.boundingBox())!.height
@@ -185,7 +188,10 @@ test('hover expansion, continuous motion, pause, drag and reduced motion', async
   await page.waitForTimeout(1200)
   expect(await getTransform()).toBe(reduced)
   await page.goto('/#/misc')
-  const miscCard = page.getByRole('region', { name: 'Selected work' }).locator('li').first()
+  const miscCard = page
+    .getByRole('region', { name: messages.selectedWork.en })
+    .locator('li')
+    .first()
   const widthBefore = (await miscCard.boundingBox())!.width
   await miscCard.hover()
   await expect
@@ -243,11 +249,11 @@ test('touch scrolling does not open a project accidentally', async ({ browser })
   const page = await context.newPage()
   await page.goto('http://127.0.0.1:5173/#/games')
   await page
-    .getByRole('region', { name: 'Selected work' })
+    .getByRole('region', { name: messages.selectedWork.en })
     .getByRole('link', { name: /Orbit/ })
     .tap()
   await expect(page.locator('h1')).toHaveText('Orbit')
-  await page.getByRole('link', { name: 'Back to the journey' }).tap()
+  await page.getByRole('link', { name: messages.back.en }).tap()
   await expect(page.locator('h1')).toContainText('Little worlds')
   const viewport = (await page.locator('[data-carousel-viewport]').boundingBox())!
   const session = await context.newCDPSession(page)

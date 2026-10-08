@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { useLocale } from '../../app/locale'
 import { ProjectImage } from '../../components/ProjectImage'
+import { LocalizedText } from '../../components/LocalizedText'
+import { messages } from '../../data/messages'
 import type { CategoryId, Project } from '../../data/types'
 import styles from './ProjectRail.module.css'
 
@@ -16,7 +18,7 @@ export function ProjectRail({
   category: CategoryId
   selectedId?: string
 }) {
-  const { locale, t } = useLocale()
+  const { t } = useLocale()
   const [hovered, setHovered] = useState<string>()
   return (
     <section
@@ -25,7 +27,7 @@ export function ProjectRail({
       aria-label={t('selectedWork')}
     >
       <div className={styles.heading}>
-        <span className="eyebrow">{t('selectedWork')}</span>
+        <LocalizedText className="eyebrow" value={messages.selectedWork} />
         <span>{String(projects.length).padStart(2, '0')}</span>
       </div>
       <motion.ul className={styles.list} layoutScroll>
@@ -50,15 +52,23 @@ export function ProjectRail({
               <div className={styles.tint} />
               <div className={styles.content}>
                 <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>
-                <h3>{project.title[locale]}</h3>
+                <h3>
+                  <LocalizedText value={project.title} />
+                </h3>
                 <ArrowUpRight size={16} className={styles.arrow} />
               </div>
-              <p className={styles.summary}>{project.summary[locale]}</p>
+              <p className={styles.summary}>
+                <LocalizedText value={project.summary} paragraph />
+              </p>
             </Link>
           </motion.li>
         ))}
       </motion.ul>
-      {!projects.length && <p className={styles.empty}>{t('empty')}</p>}
+      {!projects.length && (
+        <p className={styles.empty}>
+          <LocalizedText value={messages.empty} paragraph />
+        </p>
+      )}
     </section>
   )
 }

@@ -1,0 +1,47 @@
+[data-locale-phase='exit'] {
+  animation: disappear 150ms ease-out both;
+}
+
+.letter {
+  animation: appear var(--letter-duration) ease-out var(--letter-delay) both;
+}
+
+.fallback {
+  animation: appear 450ms ease-out both;
+}
+
+.accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  user-select: none;
+}
+
+@keyframes disappear {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-locale-phase='exit'],
+  .letter,
+  .fallback {
+    animation: none;
+  }
+}

@@ -2,6 +2,8 @@ import { ImageOff } from 'lucide-react'
 import { useState } from 'react'
 import { useLocale } from '../app/locale'
 import type { Project } from '../data/types'
+import { LocalizedText } from './LocalizedText'
+import { messages } from '../data/messages'
 import styles from './ProjectImage.module.css'
 
 export function ProjectImage({
@@ -17,7 +19,7 @@ export function ProjectImage({
     return (
       <div className={`${styles.fallback} ${className}`} role="img" aria-label={t('missingImage')}>
         <ImageOff size={24} aria-hidden="true" />
-        <span>{t('missingImage')}</span>
+        <LocalizedText value={messages.missingImage} />
       </div>
     )
   return (

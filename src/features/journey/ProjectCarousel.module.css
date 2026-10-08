@@ -43,7 +43,7 @@
 .slide a:hover .image {
   opacity: 1;
 }
-.slide span {
+.caption {
   position: absolute;
   left: 11px;
   bottom: 9px;

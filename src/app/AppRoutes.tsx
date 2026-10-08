@@ -1,7 +1,9 @@
 import { motion } from 'motion/react'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router'
 import { profile } from '../data/portfolio'
+import { messages } from '../data/messages'
+import { LocalizedText } from '../components/LocalizedText'
 import { CategoryPage } from '../pages/category/CategoryPage'
 import { HomePage } from '../pages/home/HomePage'
 import { NotFoundPage } from '../pages/not-found/NotFoundPage'
@@ -9,7 +11,10 @@ import { useLocale } from './locale'
 
 export function AppRoutes() {
   const location = useLocation()
-  const { locale, t } = useLocale()
+  const { locale, finishLocaleTransition } = useLocale()
+  useLayoutEffect(() => {
+    finishLocaleTransition()
+  }, [location.pathname, finishLocaleTransition])
   useEffect(() => {
     const heading = document.querySelector<HTMLElement>('[data-page-heading]')
     if (location.pathname !== '/') heading?.focus({ preventScroll: true })
@@ -38,7 +43,7 @@ export function AppRoutes() {
           }
         }}
       >
-        {t('skip')}
+        <LocalizedText value={messages.skip} />
       </a>
       <motion.div
         key={location.pathname.split('/')[1] || 'home'}

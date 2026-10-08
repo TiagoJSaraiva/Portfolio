@@ -123,11 +123,12 @@
     left: 50% !important;
     top: 50% !important;
     display: grid;
-    grid-template-columns: 86px auto;
+    grid-template-columns: 86px minmax(0, 1fr);
     grid-template-rows: auto auto;
     text-align: left;
     column-gap: 30px;
-    width: 260px;
+    width: calc(100% - 48px);
+    max-width: 360px;
   }
   .icon {
     width: 78px;
@@ -146,6 +147,8 @@
     grid-column: 2;
     margin-top: 8px;
     align-self: start;
+    white-space: normal;
+    line-height: 1.6;
   }
   .sector .glow {
     left: 30% !important;
