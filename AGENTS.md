@@ -4,6 +4,7 @@
 
 - O aplicativo está em `portfolio/`, com React, TypeScript, Vite e pnpm. O `package.json` da raiz não é o aplicativo.
 - Documentação relevante está em `/docs`. Leia `docs/arquitetura.md` e `docs/conteudo.md` antes de alterar arquitetura ou conteúdo.
+- Para pedidos relacionados a issues mencionados no prompt, consulte e siga também `docs/issue-workflow.md`; as instruções desse arquivo são válidas nesses casos.
 - `docs/instrucao.txt` preserva o pedido original; `wireframes/Paginas.pdf` é a referência para composição e interações.
 - Não há servidor, banco de dados ou CMS. Todo o conteúdo é declarado em TypeScript e assets locais.
 
