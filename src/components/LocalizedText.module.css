@@ -6,7 +6,7 @@
   animation: appear var(--letter-duration) ease-out var(--letter-delay) both;
 }
 
-.fallback {
+.wholeText {
   animation: appear 450ms ease-out both;
 }
 
@@ -41,7 +41,7 @@
 @media (prefers-reduced-motion: reduce) {
   [data-locale-phase='exit'],
   .letter,
-  .fallback {
+  .wholeText {
     animation: none;
   }
 }

@@ -37,16 +37,16 @@ export function HomePage() {
             ))}
           </h1>
           <p className={styles.role}>
-            <LocalizedText value={profile.role} paragraph />
+            <LocalizedText value={profile.role} variant="body" />
           </p>
           <span className={styles.divider} />
           <p className={styles.invitation}>
-            <LocalizedText value={profile.invitation} paragraph />
+            <LocalizedText value={profile.invitation} variant="body" />
           </p>
         </div>
       </main>
       <footer className={styles.footer}>
-        <LocalizedText value={messages.footer} />
+        <LocalizedText value={messages.footer} variant="body" />
         <span>
           © {copyrightYear} {profile.name}
         </span>

@@ -30,6 +30,7 @@ for (const width of [360, 768, 1440]) {
           let sawReveal = false
           let measured: { element: Element; width: number; height: number }[] = []
           let firstWordTiming: { delay: number; duration: number }[] = []
+          let bodyFades: { letters: number; duration: number; delay: number }[] = []
           const start = performance.now()
           button.click()
           // A second activation must not queue or reverse this transition.
@@ -42,6 +43,7 @@ for (const width of [360, 768, 1440]) {
             elapsed: number
             retainedFocus: boolean
             firstWordTiming: { delay: number; duration: number }[]
+            bodyFades: { letters: number; duration: number; delay: number }[]
             sizeChanges: number[]
           }>((resolve, reject) => {
             function frame() {
@@ -62,6 +64,18 @@ for (const width of [360, 768, 1440]) {
                     return { element, width: rect.width, height: rect.height }
                   },
                 )
+                bodyFades = Array.from(
+                  document.querySelectorAll(
+                    'main p [data-locale-phase="reveal"], main [class*="tagline"][data-locale-phase="reveal"]',
+                  ),
+                ).map((body) => {
+                  const css = getComputedStyle(body.querySelector('[aria-hidden="true"]')!)
+                  return {
+                    letters: body.querySelectorAll('[data-locale-letter]').length,
+                    duration: Number.parseFloat(css.animationDuration) * 1000,
+                    delay: Number.parseFloat(css.animationDelay) * 1000,
+                  }
+                })
                 const visual = letters[0]!.parentElement!
                 const word = visual.textContent!.match(/\S+/u)![0]
                 const length = Array.from(
@@ -93,6 +107,7 @@ for (const width of [360, 768, 1440]) {
                   elapsed: performance.now() - start,
                   retainedFocus: document.activeElement === button,
                   firstWordTiming,
+                  bodyFades,
                   sizeChanges: measured.map(({ element, width, height }) => {
                     const rect = element.getBoundingClientRect()
                     return Math.max(Math.abs(rect.width - width), Math.abs(rect.height - height))
@@ -112,6 +127,9 @@ for (const width of [360, 768, 1440]) {
         expect(result.retainedFocus).toBe(true)
         expect(result.elapsed).toBeGreaterThanOrEqual(590)
         expect(result.sizeChanges.every((change) => change < 1)).toBe(true)
+        expect(result.bodyFades.length).toBeGreaterThan(0)
+        for (const fade of result.bodyFades)
+          expect(fade).toEqual({ letters: 0, duration: 450, delay: 0 })
         expect(result.firstWordTiming[0]!.delay).toBe(0)
         const last = result.firstWordTiming.at(-1)!
         expect(last.delay + last.duration).toBeCloseTo(450, 0)
@@ -202,6 +220,9 @@ test('a selected project keeps its route and accessible labels throughout a long
   const paragraph = page.locator('article p').first()
   await expect(paragraph.locator('[data-locale-letter]')).toHaveCount(0)
   await expect(paragraph.locator('[aria-hidden="true"]')).toHaveText(longText)
+  const shortParagraph = page.locator('article p').nth(1)
+  await expect(shortParagraph.locator('[data-locale-letter]')).toHaveCount(0)
+  await expect(shortParagraph.locator('[aria-hidden="true"]')).toHaveText('Mais um parágrafo.')
   await expect(page.getByRole('link', { name: messages.github.pt })).toBeVisible()
   await expect(page.getByRole('link', { name: messages.visit.pt, exact: true })).toBeVisible()
   await page.clock.runFor(450)

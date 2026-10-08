@@ -11,38 +11,28 @@ function getSegmenter() {
   return graphemeSegmenter
 }
 
-function isLongParagraph(text: string, segmenter: Intl.Segmenter) {
-  const graphemes = segmenter.segment(text)[Symbol.iterator]()
-  // Stop at the threshold; long paragraphs never allocate per-letter arrays.
-  for (let count = 0; count < 140; count++) {
-    if (graphemes.next().done) return false
-  }
-  return true
-}
-
 export function LocalizedText({
   value,
   className,
-  paragraph = false,
+  variant = 'label',
 }: {
   value: Localized
   className?: string
-  paragraph?: boolean
+  variant?: 'label' | 'body'
 }) {
   const { locale, transition } = useLocale()
   const text = value[locale]
   const phase =
     transition && value[transition.from] !== value[transition.to] ? transition.phase : undefined
-  const segmenter = phase === 'reveal' ? getSegmenter() : undefined
-  const revealLetters = segmenter && !(paragraph && isLongParagraph(text, segmenter))
+  const segmenter = phase === 'reveal' && variant === 'label' ? getSegmenter() : undefined
 
   return (
     <span className={className} data-locale-phase={phase}>
       {phase === 'reveal' ? (
         <>
           <span className={styles.accessible}>{text}</span>
-          <span aria-hidden="true" className={!revealLetters ? styles.fallback : undefined}>
-            {revealLetters
+          <span aria-hidden="true" className={!segmenter ? styles.wholeText : undefined}>
+            {segmenter
               ? text.split(/(\s+)/u).map((word, wordIndex) => {
                   if (!word || /^\s+$/u.test(word)) return word
                   const letters = Array.from(segmenter.segment(word), (part) => part.segment)

@@ -27,7 +27,7 @@ export function CategoryPage() {
             <LocalizedText className="eyebrow" value={category.label} />
             <span className={styles.index}>/ 0{categories.indexOf(category) + 1}</span>
           </div>
-          <LocalizedText className={styles.tagline} value={category.tagline} />
+          <LocalizedText className={styles.tagline} value={category.tagline} variant="body" />
         </div>
         <div className={styles.layout} data-mode={category.id}>
           <div className={styles.skills}>
@@ -41,7 +41,7 @@ export function CategoryPage() {
           </div>
         </div>
         <footer className={styles.footer}>
-          <LocalizedText value={messages.footer} />
+          <LocalizedText value={messages.footer} variant="body" />
           <span>
             © {copyrightYear} {profile.name}
           </span>

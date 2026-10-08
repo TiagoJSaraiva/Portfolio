@@ -17,7 +17,7 @@ export function NotFoundPage() {
           <LocalizedText value={messages.notFoundTitle} />
         </h1>
         <p>
-          <LocalizedText value={messages.notFound} paragraph />
+          <LocalizedText value={messages.notFound} variant="body" />
         </p>
         <Link to="/">
           <ArrowLeft size={16} />

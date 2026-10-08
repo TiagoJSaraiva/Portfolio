@@ -29,7 +29,7 @@ export function HomeSector({ category, index }: { category: Category; index: num
           <ArrowUpRight size={16} />
         </div>
         <p>
-          <LocalizedText value={category.tagline} paragraph />
+          <LocalizedText value={category.tagline} variant="body" />
         </p>
       </div>
     </Link>
