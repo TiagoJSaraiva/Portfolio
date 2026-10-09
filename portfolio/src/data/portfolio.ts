@@ -85,8 +85,8 @@ export const categories: Category[] = [
     id: 'misc',
     label: { en: 'Misc', pt: 'Misc' },
     tagline: {
-      en: 'Desktop systems, APIs, scripts, experimental projects, among others.',
-      pt: 'Sistemas para desktop, APIs, scripts, projetos experimentais, entre outros.',
+      en: 'Desktop applications, APIs, scripts, experimental projects, among others.',
+      pt: 'Aplicativos para desktop, APIs, scripts, projetos experimentais, entre outros.',
     }, // { en: 'Follow the curiosity.', pt: 'Siga a curiosidade.' }
     headline: {
       en: 'Some ideas don’t\nfit in a box.',
@@ -119,9 +119,9 @@ const seeds: Record<
 > = {
   games: [
     {
-      id: 'orbit',
-      title: 'Orbit',
-      pt: 'Orbit',
+      id: 'multiverse-heroes',
+      title: 'Multiverse Heroes',
+      pt: 'Multiverse Heroes',
       enSummary: 'An adventure beyond the familiar.',
       ptSummary: 'Uma aventura além do conhecido.',
       skills: ['luau', 'roblox', 'gamedesign'],
