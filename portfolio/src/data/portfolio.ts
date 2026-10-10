@@ -115,11 +115,13 @@ const seeds: Record<
     enSummary: string
     ptSummary: string
     skills: string[]
+    artwork?: string
   }[]
 > = {
   games: [
     {
       id: 'multiverse-heroes',
+      artwork: 'orbit',
       title: 'Multiverse Heroes',
       pt: 'Multiverse Heroes',
       enSummary: 'An adventure beyond the familiar.',
@@ -241,7 +243,7 @@ export const projects: Project[] = categories.flatMap(({ id: category }) =>
         'Este espaço contará a história real: o desafio, as decisões por trás do trabalho e o que aprendi no caminho. Por enquanto, a imagem, a descrição e os links disponíveis demonstram o funcionamento do portfólio.',
       ],
     },
-    image: artwork[`../assets/projects/${seed.id}.svg`],
+    image: artwork[`../assets/projects/${seed.artwork ?? seed.id}.svg`],
     skillIds: seed.skills,
     githubUrl: index === 0 || index === 1 ? githubUrl : undefined,
     projectUrl: index === 0 || index === 2 ? projectUrl : undefined,

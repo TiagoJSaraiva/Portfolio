@@ -35,6 +35,7 @@ describe('content contract', () => {
     for (const project of projects) {
       expect(project.title.en).toBeTruthy()
       expect(project.title.pt).toBeTruthy()
+      expect(project.image).toBeTruthy()
       expect(project.description.en.length).toBeGreaterThan(0)
       expect(project.description.pt.length).toBeGreaterThan(0)
       expect(project.skillIds.every((id) => skills.some((skill) => skill.id === id))).toBe(true)
@@ -57,19 +58,28 @@ describe('content contract', () => {
   })
 })
 
-describe('landing-only navigation', () => {
-  it('keeps the three category buttons inert', async () => {
+describe('category navigation', () => {
+  it('selects each category and restores the landing with focus on return', async () => {
     const user = userEvent.setup()
     renderApp('/')
     for (const category of categories) {
       await user.click(screen.getByRole('button', { name: category.label.en }))
+      expect(window.location.hash).toBe(`#/${category.id}`)
+      expect(document.querySelector('[data-transition-phase]')).toHaveAttribute(
+        'data-transition-phase',
+        'covering',
+      )
+      fireEvent(window, new Event('resize'))
+      expect(screen.getByRole('heading', { level: 1, name: category.label.en })).toBeInTheDocument()
+      await user.click(screen.getByRole('button', { name: messages.backHome.en }))
       expect(window.location.hash).toBe('#/')
+      expect(screen.getByRole('button', { name: category.label.en })).toHaveFocus()
     }
     expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
   })
 
   it.each(['/other', '/games/unknown', '/web/orbit', '/games/orbit/extra'])(
-    'redirects old route %s to the landing page',
+    'redirects unsupported route %s to the landing page',
     async (route) => {
       renderApp(route)
       expect(
@@ -135,7 +145,8 @@ describe('project components', () => {
       </LocaleProvider>,
     )
     expect(screen.queryByRole('navigation', { name: 'Explore other categories' })).toBeNull()
-    expect(screen.getByRole('link', { name: /Tiago Saraiva/ })).toHaveAttribute('href', '/')
+    expect(screen.queryByRole('link', { name: /Tiago Saraiva/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', profile.githubUrl)
     expect(screen.queryByRole('link', { name: 'LinkedIn' })).not.toBeInTheDocument()
   })
 })
