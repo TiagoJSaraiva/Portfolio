@@ -83,7 +83,7 @@ export const categories: Category[] = [
   },
   {
     id: 'misc',
-    label: { en: 'Misc', pt: 'Misc' },
+    label: { en: 'Misc', pt: 'Diversos' },
     tagline: {
       en: 'Desktop applications, APIs, scripts, experimental projects, among others.',
       pt: 'Aplicativos para desktop, APIs, scripts, projetos experimentais, entre outros.',
