@@ -10,6 +10,7 @@ export const messages = {
   projectSkills: { en: 'Built with', pt: 'Feito com' },
   journey: { en: 'A little about the journey', pt: 'Um pouco da trajetória' },
   back: { en: 'go back', pt: 'voltar' },
+  backHome: { en: 'Back to home', pt: 'Voltar ao início' },
   github: { en: 'View on GitHub', pt: 'Ver no GitHub' },
   visit: { en: 'Open project', pt: 'Abrir projeto' },
   demo: { en: 'Demo project', pt: 'Projeto demonstrativo' },

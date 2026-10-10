@@ -29,23 +29,25 @@ for (const width of [360, 768, 1440]) {
   })
 }
 
-test('inert category buttons and reduced motion preserve language switching', async ({ page }) => {
+test('category navigation and reduced motion preserve language switching', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
 
   const games = page.getByRole('button', { name: 'Games', exact: true })
   await games.focus()
   await page.keyboard.press('Enter')
-  await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
+  await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/games')
 
   await page.getByRole('button', { name: 'Change language to Portuguese' }).click()
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
-  await expect(page.getByRole('button', { name: 'Jogos', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Jogos', exact: true })).toBeAttached()
+  await page.getByRole('button', { name: 'Voltar ao início' }).click()
+  await expect(page.getByRole('button', { name: 'Jogos', exact: true })).toBeFocused()
   await expect(page.locator('[data-locale-phase]')).toHaveCount(0)
 })
 
-test('legacy category and project URLs redirect to the only page', async ({ page }) => {
-  for (const route of ['/games', '/web', '/misc', '/games/orbit', '/web/atlas']) {
+test('unsupported project URLs still redirect to the landing page', async ({ page }) => {
+  for (const route of ['/games/orbit', '/web/atlas', '/unknown']) {
     await page.goto(`/#${route}`)
     await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
     await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Tiago Saraiva')

@@ -1,57 +1,79 @@
 import { expect, test } from '@playwright/test'
 
 for (const width of [360, 768, 1440]) {
-  test(`landing layout and inert category buttons at ${width}px`, async ({ page }) => {
+  test(`landing, categories and direct navigation at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
 
-    for (const route of ['/', '/games', '/web/atlas', '/misc/toolbox']) {
-      await page.goto(`/#${route}`)
-      await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Tiago Saraiva')
-      await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
-      await expect(page.getByRole('button', { name: 'Games', exact: true })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Web', exact: true })).toBeVisible()
-      await expect(page.getByRole('button', { name: 'Misc', exact: true })).toBeVisible()
+    await page.goto('/')
+    await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Tiago Saraiva')
+    await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
+    await expect(page.getByRole('button', { name: 'Games', exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Web', exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Misc', exact: true })).toBeVisible()
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
+      .toBe(true)
+
+    await expect(page.locator('footer')).toHaveCount(0)
+    await expect(page.locator('header a[href="#/"]')).toHaveCount(0)
+    await page.screenshot({ path: `test-results/screenshots/${width}-home.png`, fullPage: true })
+    for (const [id, label] of [
+      ['games', 'Games'],
+      ['web', 'Web'],
+      ['misc', 'Misc'],
+    ]) {
+      await page
+        .getByRole('button', { name: label, exact: true })
+        .getByText(label, { exact: true })
+        .click()
+      await expect.poll(() => page.evaluate(() => window.location.hash)).toBe(`#/${id}`)
+      await expect(page.locator('[data-transition-phase]')).toHaveAttribute(
+        'data-transition-phase',
+        'ready',
+      )
+      await expect(page.getByRole('heading', { level: 1, name: label })).toBeAttached()
+      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
+      await expect(page.getByRole('button', { name: 'Pause automatic scrolling' })).toHaveCount(0)
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
         .toBe(true)
-
-      if (route === '/') {
-        for (const label of ['Games', 'Web', 'Misc']) {
-          await page
-            .getByRole('button', { name: label, exact: true })
-            .getByText(label, { exact: true })
-            .click()
-          await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
-          await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Tiago Saraiva')
-        }
-        await page.screenshot({
-          path: `test-results/screenshots/${width}-home.png`,
-          fullPage: true,
-          animations: 'disabled',
-        })
-      }
+      await page.screenshot({ path: `test-results/screenshots/${width}-${id}.png`, fullPage: true })
+      await page.getByRole('button', { name: 'Back to home' }).click()
+      await expect(page.getByRole('button', { name: label, exact: true })).toBeFocused()
+      await page.goto(`/#/${id}`)
+      await expect(page.locator('[data-transition-phase]')).toHaveAttribute(
+        'data-transition-phase',
+        'ready',
+      )
+      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
+      await page.reload()
+      await expect(page.locator('[data-flying-icon]')).toHaveCount(0)
+      await page.getByRole('button', { name: 'Back to home' }).click()
     }
   })
 }
 
-test('category buttons stay inert while language changes and persists', async ({ page }) => {
+test('language changes and persists across category navigation', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   const games = page.getByRole('button', { name: 'Games', exact: true })
   await games.focus()
   await page.keyboard.press('Enter')
-  await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe('#/games')
 
   await page.getByRole('button', { name: 'Change language to Portuguese' }).click()
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
-  await expect(page.getByRole('button', { name: 'Jogos', exact: true })).toBeVisible()
-  await expect.poll(() => page.evaluate(() => window.location.hash || '#/')).toBe('#/')
+  await expect(page.getByRole('heading', { level: 1, name: 'Jogos', exact: true })).toBeAttached()
+  await expect.poll(() => page.evaluate(() => window.location.hash)).toBe('#/games')
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem('tiago-portfolio-locale')))
     .toBe('pt')
 
   await page.reload()
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR')
+  await expect(page.getByRole('button', { name: 'Voltar ao início' })).toBeVisible()
+  await page.getByRole('button', { name: 'Voltar ao início' }).click()
   await expect(page.getByRole('button', { name: 'Web', exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Jogos', exact: true })).toBeVisible()
 })
