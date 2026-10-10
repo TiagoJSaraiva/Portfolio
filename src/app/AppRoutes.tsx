@@ -1,12 +1,10 @@
 import { motion } from 'motion/react'
 import { useEffect, useLayoutEffect } from 'react'
-import { Route, Routes, useLocation } from 'react-router'
+import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { profile } from '../data/portfolio'
 import { messages } from '../data/messages'
 import { LocalizedText } from '../components/LocalizedText'
-import { CategoryPage } from '../pages/category/CategoryPage'
 import { HomePage } from '../pages/home/HomePage'
-import { NotFoundPage } from '../pages/not-found/NotFoundPage'
 import { useLocale } from './locale'
 
 export function AppRoutes() {
@@ -53,9 +51,7 @@ export function AppRoutes() {
       >
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/:categoryId" element={<CategoryPage />} />
-          <Route path="/:categoryId/:projectId" element={<CategoryPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </motion.div>
     </>
