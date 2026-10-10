@@ -50,7 +50,7 @@ Na landing, Enter e Espaço selecionam pelo botão do setor; a bola não acresce
 
 O gesto registra o tamanho inicial da tela e o confere na soltura, garantindo cancelamento mesmo se o evento de redimensionamento ainda estiver pendente. O botão de retorno também aceita a liberação de um toque curto dentro de seus limites: isso mantém o retorno disponível quando o navegador não sintetiza um clique após o arraste. Deslocar 6 px ou cancelar esse toque não executa o retorno; clique e teclado continuam disponíveis, sem navegação duplicada.
 
-A esteira pausa com hover, foco, arraste e controle explícito; também permite navegação manual. O arraste permanece em pausa até o ponteiro ser liberado, mesmo fora da faixa, e não ativa links. Enter abre links mesmo após arrastar. Cópias para continuidade visual não acrescentam controles ao percurso de teclado ou à árvore acessível. Categorias vazias exibem mensagem traduzida; um projeto único não inicia movimento automático. Imagens ausentes ou quebradas usam o fallback traduzido existente.
+A esteira continua rolando sob o ponteiro e pausa com foco, arraste e controle explícito; também permite navegação manual. O arraste permanece em pausa até o ponteiro ser liberado, mesmo fora da faixa, e não ativa links. Enter abre links mesmo após arrastar. Cópias para continuidade visual não acrescentam controles ao percurso de teclado ou à árvore acessível. Categorias vazias exibem mensagem traduzida; um projeto único não inicia movimento automático. Imagens ausentes ou quebradas usam o fallback traduzido existente.
 
 ## Verificação
 

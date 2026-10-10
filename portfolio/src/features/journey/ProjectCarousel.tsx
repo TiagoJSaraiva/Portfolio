@@ -29,7 +29,6 @@ export function ProjectCarousel({
   const reducedMotion = useReducedMotionPreference()
   const [paused, setPaused] = useState(false)
   const [interacting, setInteracting] = useState(false)
-  const hovering = useRef(false)
   const focused = useRef(false)
   const dragStart = useRef<number | undefined>(undefined)
   const dragged = useRef(false)
@@ -60,16 +59,7 @@ export function ProjectCarousel({
   useEffect(() => {
     if (!api) return
     const panel = panelRef.current
-    const sync = () =>
-      setInteracting(hovering.current || focused.current || dragStart.current !== undefined)
-    const enter = () => {
-      hovering.current = true
-      sync()
-    }
-    const leave = () => {
-      hovering.current = false
-      sync()
-    }
+    const sync = () => setInteracting(focused.current || dragStart.current !== undefined)
     const isControl = (target: EventTarget | null) =>
       target instanceof HTMLElement &&
       !!target.closest('a, button, input, select, textarea, [contenteditable="true"]') &&
@@ -95,19 +85,14 @@ export function ProjectCarousel({
       dragged.current = true
       pointerUp()
     }
-    panel?.addEventListener('mouseenter', enter)
-    panel?.addEventListener('mouseleave', leave)
     panel?.addEventListener('focusin', focusIn)
     panel?.addEventListener('focusout', focusOut)
     window.addEventListener('pointermove', pointerMove)
     window.addEventListener('pointerup', pointerUp)
     window.addEventListener('pointercancel', pointerCancel)
-    hovering.current = panel?.matches(':hover') ?? false
     focused.current = isControl(document.activeElement)
     sync()
     return () => {
-      panel?.removeEventListener('mouseenter', enter)
-      panel?.removeEventListener('mouseleave', leave)
       panel?.removeEventListener('focusin', focusIn)
       panel?.removeEventListener('focusout', focusOut)
       window.removeEventListener('pointermove', pointerMove)
@@ -162,12 +147,12 @@ export function ProjectCarousel({
         }}
         onPointerUp={() => {
           dragStart.current = undefined
-          setInteracting(hovering.current || focused.current)
+          setInteracting(focused.current)
         }}
         onPointerCancel={() => {
           dragStart.current = undefined
           dragged.current = true
-          setInteracting(hovering.current || focused.current)
+          setInteracting(focused.current)
         }}
       >
         <div className={styles.track} data-carousel-track>
