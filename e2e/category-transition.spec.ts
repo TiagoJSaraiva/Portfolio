@@ -210,7 +210,7 @@ test('touch selection restores the scrolled mobile landing', async ({ browser })
   await context.close()
 })
 
-test('trail pauses for hover, focus, explicit control and drags outside; Enter still opens a link', async ({
+test('trail keeps scrolling on hover and pauses for focus, explicit control and drags outside; Enter still opens a link', async ({
   page,
   context,
 }) => {
@@ -233,7 +233,7 @@ test('trail pauses for hover, focus, explicit control and drags outside; Enter s
   await page.clock.runFor(50)
   const hovered = await position()
   await page.clock.runFor(250)
-  expect(await position()).toBe(hovered)
+  expect(await position()).not.toBe(hovered)
   await page.mouse.move(20, 850)
   const pause = page.getByRole('button', { name: 'Pause automatic scrolling' })
   await pause.click()
