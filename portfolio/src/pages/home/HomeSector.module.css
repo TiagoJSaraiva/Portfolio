@@ -1,6 +1,16 @@
 .sector {
   position: absolute;
   inset: 0;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
   transition: background 0.3s;
   overflow: hidden;
 }
@@ -15,6 +25,7 @@
 }
 .glow {
   position: absolute;
+  pointer-events: none;
   width: 480px;
   height: 480px;
   border-radius: 50%;
@@ -74,14 +85,17 @@
   font-size: 9px;
   opacity: 0.5;
 }
-.label h2 {
+.title {
+  font-family: var(--heading);
+  font-weight: 500;
   font-size: 21px;
 }
 .label > svg {
   opacity: 0.5;
   transition: transform 0.3s;
 }
-.content p {
+.tagline {
+  display: block;
   font-size: 10px;
   letter-spacing: 0.02em;
   margin-top: 10px;
@@ -143,7 +157,7 @@
     align-self: end;
     justify-content: flex-start;
   }
-  .content p {
+  .tagline {
     grid-column: 2;
     margin-top: 8px;
     align-self: start;

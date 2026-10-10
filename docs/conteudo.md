@@ -1,5 +1,7 @@
 # Como substituir os exemplos
 
+No momento, somente a landing page está ativa. Os dados de categorias e projetos abaixo foram mantidos para uma etapa futura, mas não aparecem na interface enquanto uma nova mecânica não for definida.
+
 ## Onde editar
 
 | Conteúdo | Fonte |
@@ -38,7 +40,7 @@ const projeto: Project = {
 }
 ```
 
-O projeto aparecerá automaticamente na categoria, na faixa e na rota `#/web/meu-projeto`. Mantenha IDs estáveis após publicar links. Habilidades devem existir no catálogo; acrescente uma nova habilidade ali antes de referenciá-la.
+Quando as páginas de categoria e projeto voltarem a ser conectadas à interface, o projeto poderá aparecer na categoria, na faixa e na rota `#/web/meu-projeto`. Mantenha IDs estáveis caso esses links voltem a ser compartilhados. Habilidades devem existir no catálogo; acrescente uma nova habilidade ali antes de referenciá-la.
 
 Se `image` estiver ausente ou não carregar, a interface apresenta “Preview coming soon”/“Prévia em breve”. Forneça uma imagem com proporção próxima de 800×520; os cards usam recorte com `object-fit: cover`.
 

@@ -10,13 +10,12 @@ As versões resolvidas estão no lockfile. Bibliotecas de interação: React Rou
 
 | URL após o hash | Tela |
 | --- | --- |
-| `/` | Entrada artística |
-| `/games`, `/web`, `/misc` | Trajetória e projetos de uma categoria |
-| `/:categoryId/:projectId` | Projeto no painel da categoria |
+| `/` | Landing page |
+| Qualquer outro caminho | Redireciona para `/` |
 
-Categorias/projetos inexistentes mostram a tela 404, inclusive um projeto pertencente a outra categoria. Idioma não muda a rota nem o projeto selecionado. Atualizar e compartilhar a URL preserva a seleção; voltar/avançar usa o histórico do navegador.
+Os três setores centrais são botões sem ação. Não há navegação para categorias ou projetos. O seletor EN/PT continua disponível na landing page; URLs antigas de categorias e projetos redirecionam à raiz.
 
-O contexto de idioma inicia em inglês e permite EN/PT. Uma escolha válida é salva em `tiago-portfolio-locale`; armazenamento bloqueado não impede o uso da interface. O documento recebe `lang` e título atualizados. Estado de hover, arraste e pausa fica nos componentes responsáveis.
+O contexto de idioma inicia em inglês e permite EN/PT. Uma escolha válida é salva em `tiago-portfolio-locale`; armazenamento bloqueado não impede o uso da interface. O documento recebe `lang` e título atualizados. Interações locais ficam nos componentes responsáveis.
 
 A troca de idioma coordena duas fases no mesmo contexto: 150 ms de fade out e 450 ms de revelação. `LocalizedText` recebe um valor `Localized<string>` e anima somente textos diferentes entre os idiomas. A função do texto define a entrada, independentemente do tamanho: títulos, rótulos e controles usam a variante padrão `label`, com revelação por grafemas; corpos de texto usam `variant="body"`, com fade do texto inteiro durante os 450 ms. Isso inclui apresentação, convites, descrições, resumos, taglines, notas, mensagens explicativas e rodapé, mesmo quando renderizados em `span`. Corpos de texto não são segmentados nem criam elementos por letra. Na revelação por grafemas, todas as palavras começam juntas; atrasos proporcionais à posição das letras fazem palavras curtas e longas terminar juntas. Espaços e quebras de linha são preservados. Sem `Intl.Segmenter`, a entrada de títulos e rótulos também usa fade inteiro.
 
@@ -26,22 +25,12 @@ Carregamento inicial e restauração do idioma salvo não animam os textos. Movi
 
 ## Composição
 
-`HomePage` e `HomeSector` ficam isolados em `src/pages/home`. No desktop, os polígonos de Jogos, Web e Misc têm a mesma área, com junção em 50% da largura e um terço da altura. A apresentação sobrepõe a junção, permitindo que os setores continuem clicáveis. Abaixo de 900 px, a apresentação precede três blocos iguais empilhados.
-
-`CategoryPage` monta `ProjectRail`, `JourneyPanel` e `SkillList`. O grid espelha Jogos/Web e coloca a lista horizontal acima do painel em Misc. No celular/tablet, todos os modos exibem projetos, painel e habilidades nessa ordem. Descrições não têm truncamento; no desktop o texto do projeto flui ao lado da imagem e continua abaixo dela.
+`HomePage` e `HomeSector` ficam isolados em `src/pages/home`. No desktop, os polígonos de Jogos, Web e Misc têm a mesma área, com junção em 50% da largura e um terço da altura. A apresentação sobrepõe a junção. Abaixo de 900 px, a apresentação precede três blocos iguais empilhados.
 
 ## Movimento e acessibilidade
 
-Motion controla entrada e mudanças de posição. CSS anima tamanho dos cards e indicadores. `MotionConfig` respeita a preferência do sistema, complementado por CSS para movimento reduzido.
-
-O carrossel usa Embla com arraste livre e Auto Scroll. Para mais de um projeto, repete três grupos visuais para sustentar o loop em painéis largos. Só o primeiro grupo integra a sequência de Tab; as cópias continuam clicáveis e ficam ocultas dos leitores de tela. Zero projetos omite a faixa e um projeto desativa movimento automático e controles de avanço. As pausas de hover e foco nos controles abrangem o painel inteiro; pausa explícita permanece até o usuário retomá-la. O título recebe foco de orientação sem bloquear a reprodução inicial. Arraste mantém a pausa até a liberação, inclusive fora do painel. Preferência por movimento reduzido desativa reprodução automática.
-
-Links e botões usam nomes acessíveis, foco visível, Enter/Space conforme sua semântica e alvos apropriados ao toque. A navegação direciona o foco ao título; há um link de pular para o conteúdo. Falha de imagem produz um fallback traduzido.
-
-A ativação por Enter nas imagens navega diretamente pela rota. Isso evita que a supressão de cliques do Embla após um arraste bloqueie uma ativação de teclado. Preserve a cobertura de arraste seguido de Enter ao alterar esse comportamento.
+Motion controla a entrada da landing page. `MotionConfig` respeita a preferência do sistema, complementado por CSS para movimento reduzido. Os setores usam botões nativos, com foco visível e ativação por teclado/toque; por enquanto, não executam ação. O link de pular para o conteúdo e os nomes acessíveis permanecem disponíveis.
 
 ## Verificação
 
-Vitest + Testing Library + jsdom verificam contratos, navegação, tradução e conteúdo condicional. Embla é substituído nos testes de componentes, pois jsdom não fornece layout; seu comportamento real é verificado em Chromium com Playwright.
-
-Playwright verifica as três larguras de referência, imagens, ausência de overflow, histórico, foco, idioma, expansão, reprodução/pausa, arraste, movimento reduzido e toque. Screenshots e traces são gerados em `portfolio/test-results/`, ignorado pelo Git. O servidor de teste é local; nenhuma publicação é realizada.
+Vitest + Testing Library + jsdom verificam componentes e a troca de idioma. O comportamento visual da landing page é verificado em Chromium com Playwright nas larguras de referência. Screenshots e traces são gerados em `portfolio/test-results/`, ignorado pelo Git. O servidor de teste é local; nenhuma publicação é realizada.

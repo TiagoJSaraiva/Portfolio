@@ -15,16 +15,6 @@
 .brand span {
   color: var(--accent);
 }
-.home {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--muted);
-}
-.home:hover {
-  color: #fff;
-}
 .right {
   display: flex;
   gap: 26px;
@@ -68,29 +58,6 @@
 .socials a:hover {
   color: #fff;
 }
-.categories {
-  display: flex;
-  gap: 8px;
-  padding-left: 26px;
-  border-left: 1px solid var(--border);
-}
-.categories a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 10px 13px;
-  color: var(--accent);
-  border-radius: 8px;
-  background: rgba(var(--accent-rgb), 0.05);
-  transition: background 0.2s;
-}
-.categories a:hover {
-  background: rgba(var(--accent-rgb), 0.13);
-}
-.categories a > span {
-  font-size: 11px;
-}
 @media (max-width: 899px) {
   .header {
     padding: 0 24px;
@@ -99,9 +66,6 @@
   }
   .right {
     gap: 18px;
-  }
-  .categories {
-    padding-left: 18px;
   }
 }
 @media (max-width: 540px) {
@@ -112,19 +76,6 @@
   }
   .right {
     gap: 14px;
-  }
-  .categories {
-    padding-left: 14px;
-    gap: 5px;
-  }
-  .categories a {
-    padding: 8px;
-  }
-  .categories a > span {
-    display: none;
-  }
-  .home {
-    font-size: 11px;
   }
   .socials {
     gap: 8px;

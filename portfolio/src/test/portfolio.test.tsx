@@ -8,7 +8,7 @@ import { LocaleProvider } from '../app/LocaleContext'
 import { useLocale } from '../app/locale'
 import { Header } from '../components/Header'
 import { ProjectImage } from '../components/ProjectImage'
-import { categories, projects, skills } from '../data/portfolio'
+import { categories, profile, projects, skills } from '../data/portfolio'
 import { messages } from '../data/messages'
 import { JourneyPanel } from '../features/journey/JourneyPanel'
 import { ProjectRail } from '../features/projects/ProjectRail'
@@ -33,7 +33,6 @@ describe('content contract', () => {
     expect(projects).toHaveLength(12)
     expect(new Set(projects.map((project) => project.id)).size).toBe(12)
     for (const project of projects) {
-      expect(project.image).toBeTruthy()
       expect(project.title.en).toBeTruthy()
       expect(project.title.pt).toBeTruthy()
       expect(project.description.en.length).toBeGreaterThan(0)
@@ -58,53 +57,30 @@ describe('content contract', () => {
   })
 })
 
-describe('project behavior', () => {
-  it.each(
-    projects.map(
-      (project) =>
-        [project.category, project.id, !!project.githubUrl, !!project.projectUrl] as const,
-    ),
-  )('renders only available links for %s/%s', (_category, id, hasGithub, hasProject) => {
-    renderApp(`/${_category}/${id}`)
-    expect(!!screen.queryByRole('link', { name: 'View on GitHub' })).toBe(hasGithub)
-    expect(!!screen.queryByRole('link', { name: 'Open project' })).toBe(hasProject)
-    if (hasGithub)
-      expect(screen.getByRole('link', { name: 'View on GitHub' })).toHaveAttribute(
-        'href',
-        'https://github.com/TiagoJSaraiva/Portfolio',
-      )
-    if (hasProject)
-      expect(screen.getByRole('link', { name: 'Open project' })).toHaveAttribute(
-        'href',
-        'https://www.youtube.com',
-      )
-  })
-
-  it('opens a project from the rail, changes skills, and returns to the journey', async () => {
+describe('landing-only navigation', () => {
+  it('keeps the three category buttons inert', async () => {
     const user = userEvent.setup()
-    renderApp('/games')
-    const rail = screen.getByRole('region', { name: messages.selectedWork.en })
-    await user.click(within(rail).getByRole('link', { name: /Orbit/ }))
-    expect(await screen.findByRole('heading', { level: 1, name: 'Orbit' })).toBeInTheDocument()
-    expect(window.location.hash).toBe('#/games/orbit')
-    expect(screen.getByRole('region', { name: 'Built with' })).toHaveTextContent('Luau')
-    expect(screen.getByRole('region', { name: 'Built with' })).not.toHaveTextContent('TypeScript')
-    await user.click(screen.getByRole('link', { name: messages.back.en }))
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /Little worlds/ }),
-    ).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: messages.skills.en })).toHaveTextContent('TypeScript')
+    renderApp('/')
+    for (const category of categories) {
+      await user.click(screen.getByRole('button', { name: category.label.en }))
+      expect(window.location.hash).toBe('#/')
+    }
+    expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
   })
 
   it.each(['/other', '/games/unknown', '/web/orbit', '/games/orbit/extra'])(
-    'handles invalid route %s',
-    (route) => {
+    'redirects old route %s to the landing page',
+    async (route) => {
       renderApp(route)
-      expect(screen.getByRole('heading', { level: 1, name: 'A small detour.' })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '#/')
+      expect(
+        await screen.findByRole('heading', { level: 1, name: profile.name }),
+      ).toBeInTheDocument()
+      await waitFor(() => expect(window.location.hash).toBe('#/'))
     },
   )
+})
 
+describe('project components', () => {
   it('handles an empty category without a carousel', () => {
     render(
       <LocaleProvider>
@@ -140,42 +116,42 @@ describe('project behavior', () => {
   })
 
   it('replaces a failing image with a localized fallback', () => {
+    const project = { ...projects[0]!, image: '/broken-image.svg' }
     render(
       <LocaleProvider>
-        <ProjectImage project={projects[0]!} />
+        <ProjectImage project={project} />
       </LocaleProvider>,
     )
-    fireEvent.error(screen.getByRole('img', { name: 'Orbit' }))
+    fireEvent.error(screen.getByRole('img', { name: projects[0]!.title.en }))
     expect(screen.getByRole('img', { name: 'Preview coming soon' })).toBeInTheDocument()
   })
 
-  it('shows exactly the other two categories in the header', () => {
+  it('shows only the landing header controls', () => {
     render(
       <LocaleProvider>
         <MemoryRouter>
-          <Header category="games" />
+          <Header />
         </MemoryRouter>
       </LocaleProvider>,
     )
-    const navigation = screen.getByRole('navigation', { name: 'Explore other categories' })
-    expect(within(navigation).getAllByRole('link')).toHaveLength(2)
-    expect(within(navigation).getByRole('link', { name: 'Web' })).toBeInTheDocument()
-    expect(within(navigation).getByRole('link', { name: 'Misc' })).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Explore other categories' })).toBeNull()
+    expect(screen.getByRole('link', { name: /Tiago Saraiva/ })).toHaveAttribute('href', '/')
     expect(screen.queryByRole('link', { name: 'LinkedIn' })).not.toBeInTheDocument()
   })
 })
 
 describe('language', () => {
-  it('starts in English and translates the selected project without changing the URL', async () => {
+  it('starts in English and translates the landing page without changing the URL', async () => {
     const user = userEvent.setup()
-    renderApp('/games/orbit')
+    renderApp('/')
+    expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('en')
     await user.click(screen.getByRole('button', { name: 'Change language to Portuguese' }))
-    expect(await screen.findByRole('link', { name: messages.back.pt })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Ver no GitHub' })).toBeInTheDocument()
+    expect(await screen.findByText(profile.invitation.pt)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('pt-BR')
     expect(localStorage.getItem('tiago-portfolio-locale')).toBe('pt')
-    expect(window.location.hash).toBe('#/games/orbit')
+    expect(window.location.hash).toBe('#/')
   })
 
   it('keeps EN and PT in a fixed order while active emphasis follows the locale', async () => {

@@ -7,7 +7,7 @@ import { localeExitMs, localeRevealMs, useLocale } from '../app/locale'
 import { Header } from '../components/Header'
 import { LocalizedText } from '../components/LocalizedText'
 import { messages } from '../data/messages'
-import { categories, projects } from '../data/portfolio'
+import { categories, profile, projects } from '../data/portfolio'
 import type { Localized } from '../data/types'
 import { JourneyPanel } from '../features/journey/JourneyPanel'
 import { ProjectRail } from '../features/projects/ProjectRail'
@@ -305,30 +305,12 @@ describe('coordinated locale transition', () => {
     expect(screen.queryByText('Segundo.')).not.toBeInTheDocument()
     expect(screen.getByText(messages.empty.en)).toBeInTheDocument()
   })
-  it.each([0, localeExitMs])('completes the locale on navigation after %i ms', (time) => {
-    window.history.replaceState(null, '', '/#/games')
-    render(<App />)
-    toggle()
-    expect(window.location.hash).toBe('#/games')
-    if (time) advance(time)
-    fireEvent.click(screen.getByRole('link', { name: /Tiago Saraiva/ }))
-    expect(window.location.hash).toBe('#/')
-    expect(document.documentElement.lang).toBe('pt-BR')
-    expect(document.querySelector('[data-locale-phase]')).toBeNull()
-    expect(document.title).toBe('Designer e desenvolvedor. — Tiago Saraiva')
-    advance(1000)
-    expect(document.documentElement.lang).toBe('pt-BR')
-  })
-  it('uses the complete translated heading for the document title during reveal', () => {
-    window.history.replaceState(null, '', '/#/web')
+  it('keeps the landing title and heading translated during reveal', () => {
+    window.history.replaceState(null, '', '/#/')
     render(<App />)
     toggle()
     advance(localeExitMs)
-    expect(document.title).toBe(
-      `${categories[1]!.headline.pt.replace(/\s+/g, ' ')} — Tiago Saraiva`,
-    )
-    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName(
-      /Boas ideias merecem\s+ótimas interfaces\./,
-    )
+    expect(document.title).toBe(`${profile.role.pt} — ${profile.name}`)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName(profile.name)
   })
 })
