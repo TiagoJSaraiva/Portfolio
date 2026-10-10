@@ -284,7 +284,13 @@ export function ProjectCarousel({
           {!reducedMotion && projects.length > 1 && (
             <button
               type="button"
-              onClick={() => setPaused((value) => !value)}
+              onClick={() => {
+                if (paused) {
+                  focused.current = false
+                  setInteracting(dragStart.current !== undefined)
+                }
+                setPaused(!paused)
+              }}
               aria-label={t(paused ? 'play' : 'pause')}
               aria-pressed={paused}
             >
