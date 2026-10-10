@@ -60,7 +60,7 @@ export const categories: Category[] = [
   },
   {
     id: 'web',
-    label: { en: 'Web', pt: 'Web' },
+    label: { en: 'Web Projects', pt: 'Projetos Web' },
     tagline: {
       en: 'Web systems, static websites, and other web projects.',
       pt: 'Sistemas web, sites estáticos e outros projetos web.',

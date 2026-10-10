@@ -5,9 +5,9 @@ export const transitionConfig = {
   fade: 0.22,
   settle: 0.25,
   reveal: 0.65,
-  acceleration: 3600,
-  maxSpeed: 1800,
-  overshootPerSpeed: 0.016,
+  acceleration: 4500,
+  maxSpeed: 8000,
+  overshootPerSpeed: 0.014,
 } as const
 
 export type TransitionPhase = 'idle' | 'covering' | 'flying' | 'revealing' | 'ready'
