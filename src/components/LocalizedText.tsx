@@ -15,15 +15,21 @@ export function LocalizedText({
   value,
   className,
   variant = 'label',
+  reveal = false,
 }: {
   value: Localized
   className?: string
   variant?: 'label' | 'body'
+  reveal?: boolean
 }) {
   const { locale, transition } = useLocale()
   const text = value[locale]
   const phase =
-    transition && value[transition.from] !== value[transition.to] ? transition.phase : undefined
+    transition && value[transition.from] !== value[transition.to]
+      ? transition.phase
+      : reveal
+        ? 'reveal'
+        : undefined
   const segmenter = phase === 'reveal' && variant === 'label' ? getSegmenter() : undefined
 
   return (

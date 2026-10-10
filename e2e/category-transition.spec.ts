@@ -42,6 +42,7 @@ for (const width of [360, 768, 1440]) {
       await page.screenshot({ path: `test-results/screenshots/${width}-${category}-coverage.png` })
       await page.clock.runFor(450)
       await expect(state).toHaveAttribute('data-transition-phase', 'flying')
+      await expect(page.locator('#main-content h1')).toHaveCount(0)
       const inset = width < 900 ? 28 : 48
       let overshot = false
       for (let frame = 0; frame < 30; frame++) {
@@ -57,6 +58,13 @@ for (const width of [360, 768, 1440]) {
       }
       expect(overshot).toBe(true)
       await expect(state).toHaveAttribute('data-transition-phase', 'revealing')
+      const title = page.getByRole('heading', { level: 1, name: label, exact: true })
+      await expect(title).toBeVisible()
+      await expect(title.locator('[data-locale-letter]')).toHaveCount(label.length)
+      await expect(title.locator('[data-locale-phase]')).toHaveAttribute(
+        'data-locale-phase',
+        'reveal',
+      )
       await page.clock.runFor(200)
       await expect(page.locator('[data-carousel-viewport]')).toBeVisible()
       await page.screenshot({ path: `test-results/screenshots/${width}-${category}-reveal.png` })
@@ -67,6 +75,13 @@ for (const width of [360, 768, 1440]) {
       expect(target!.x).toBe(inset)
       expect(target!.y).toBe(inset)
       expect(target!.width).toBe(width < 900 ? 78 : 104)
+      const titleBox = await title.boundingBox()
+      expect(titleBox!.x).toBeGreaterThan(target!.x + target!.width + 12)
+      expect(
+        Math.abs(titleBox!.y + titleBox!.height / 2 - target!.y - target!.height / 2),
+      ).toBeLessThan(1)
+      expect(titleBox!.x + titleBox!.width).toBeLessThan(width)
+      await expect(title.locator('[data-locale-letter]')).toHaveCount(0)
       await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
@@ -147,7 +162,7 @@ for (const phase of ['flying', 'revealing']) {
     await page.clock.runFor(750)
     for (
       let frame = 0;
-      frame < 30 && (await state.getAttribute('data-transition-phase')) !== phase;
+      frame < 80 && (await state.getAttribute('data-transition-phase')) !== phase;
       frame++
     ) {
       await page.clock.runFor(40)
