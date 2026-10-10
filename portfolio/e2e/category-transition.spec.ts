@@ -9,9 +9,11 @@ for (const width of [360, 768, 1440]) {
     test(`${category} coverage, flight and reveal at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 960 })
       await page.emulateMedia({ reducedMotion: 'no-preference' })
+      await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+      await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
       await page.goto('/')
-      await page.clock.install()
-      await page.clock.pauseAt(new Date())
+      await page.evaluate(() => document.fonts.ready)
+      await page.clock.runFor(100)
       const state = page.locator('[data-transition-phase]')
       const icons = await page.locator('[data-sector-icon]').evaluateAll((elements) =>
         elements.map((element) => {
@@ -95,9 +97,10 @@ for (const width of [360, 768, 1440]) {
 test('history cancels transitions and forward navigation does not replay them', async ({
   page,
 }) => {
+  await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+  await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
   await page.goto('/')
-  await page.clock.install()
-  await page.clock.pauseAt(new Date())
+  await page.clock.runFor(100)
   await page
     .getByRole('button', { name: 'Games', exact: true })
     .getByText('Games', { exact: true })
@@ -120,9 +123,10 @@ test('history cancels transitions and forward navigation does not replay them', 
 
 test('resize and reduced motion finish an active transition safely', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 })
+  await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+  await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
   await page.goto('/')
-  await page.clock.install()
-  await page.clock.pauseAt(new Date())
+  await page.clock.runFor(100)
   await page
     .getByRole('button', { name: 'Web', exact: true })
     .getByText('Web', { exact: true })
@@ -151,9 +155,10 @@ test('resize and reduced motion finish an active transition safely', async ({ pa
 for (const phase of ['flying', 'revealing']) {
   test(`reduced motion interrupts ${phase} and settles the trail immediately`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 960 })
+    await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+    await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
     await page.goto('/')
-    await page.clock.install()
-    await page.clock.pauseAt(new Date())
+    await page.clock.runFor(100)
     await page
       .getByRole('button', { name: 'Misc', exact: true })
       .getByText('Misc', { exact: true })
