@@ -34,6 +34,8 @@ Após a cobertura, o círculo voa ao canto superior esquerdo, mantendo 104 px no
 
 O carrossel compartilhado admite apresentações `journey` (componentes antigos, sem rota ativa) e `trail` (categoria atual), e um controle `autoStart`. A esteira mostra título, imagem, indicação demonstrativa e links externos opcionais independentes. Nenhum card abre detalhes internos nesta etapa. Trajetória e habilidades permanecem disponíveis no código para uma etapa futura.
 
+Quando o círculo termina o voo e o overshoot, o título da categoria aparece à sua direita, alinhado ao centro do círculo. A fase `revealing` também ativa a prop `reveal` de `LocalizedText`, reutilizando a revelação por grafemas e os mesmos tempos da troca de idioma (450 ms no total). Ao terminar a entrada da esteira, o título passa a texto normal; trocas EN/PT continuam coordenadas pelo contexto de idioma. Links diretos e movimento reduzido exibem o título imediatamente.
+
 ## Movimento e acessibilidade
 
 Motion controla a sequência usando valores animados, sem renders React por quadro. As fases avançam pela conclusão dos efeitos. Novas seleções são ignoradas durante a transição; navegação cancela os controles ativos. Redimensionar ou ativar movimento reduzido durante o efeito conclui no layout atualizado. Movimento reduzido abre o estado final imediatamente e desativa a rolagem automática. Os setores e o retorno usam botões nativos com foco visível e ativação por teclado/toque. O link de pular para o conteúdo e os nomes acessíveis permanecem disponíveis.

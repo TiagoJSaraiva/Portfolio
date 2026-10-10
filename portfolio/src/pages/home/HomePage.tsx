@@ -161,7 +161,7 @@ export function HomePage({ category }: { category?: CategoryId }) {
           </p>
         </div>
       </main>
-      {category && showTrail && (
+      {category && selectedCategory && showTrail && (
         <main
           id="main-content"
           className={styles.categoryStage}
@@ -169,13 +169,16 @@ export function HomePage({ category }: { category?: CategoryId }) {
           aria-busy={phase !== 'ready'}
         >
           <h1
-            className={styles.accessibleHeading}
+            className={styles.categoryTitle}
             tabIndex={-1}
             ref={headingRef}
             data-page-heading
-            aria-label={selectedCategory?.label[locale]}
+            aria-label={selectedCategory.label[locale]}
           >
-            {selectedCategory?.label[locale]}
+            <LocalizedText
+              value={selectedCategory.label}
+              reveal={phase === 'revealing' && !reducedMotion}
+            />
           </h1>
           <motion.div
             className={styles.trail}

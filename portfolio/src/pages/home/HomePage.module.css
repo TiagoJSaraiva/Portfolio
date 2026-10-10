@@ -181,12 +181,15 @@
   padding: 20px 28px 0;
   text-align: center;
 }
-.accessibleHeading {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
+.categoryTitle {
+  position: fixed;
+  top: 100px;
+  left: 184px;
+  max-width: calc(100% - 232px);
+  transform: translateY(-50%);
+  font-size: 38px;
+  line-height: 1.2;
+  color: var(--accent);
 }
 @media (max-width: 899px) {
   .composition {
@@ -254,6 +257,12 @@
   .cornerIcon > svg {
     width: 32px;
     height: 32px;
+  }
+  .categoryTitle {
+    top: 67px;
+    left: 130px;
+    max-width: calc(100% - 158px);
+    font-size: 28px;
   }
 }
 @media (max-width: 540px) {
