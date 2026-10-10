@@ -11,9 +11,10 @@ As versões resolvidas estão no lockfile. Bibliotecas de interação: React Rou
 | URL após o hash | Tela |
 | --- | --- |
 | `/` | Landing page |
+| `/games`, `/web`, `/misc` | Categoria com esteira de projetos |
 | Qualquer outro caminho | Redireciona para `/` |
 
-Os três setores centrais são botões sem ação. Não há navegação para categorias ou projetos. O seletor EN/PT continua disponível na landing page; URLs antigas de categorias e projetos redirecionam à raiz.
+Os três setores abrem as categorias. A URL muda no clique; uma composição React persistente coordena `idle → covering → flying → revealing → ready`, sem remontar ao trocar de rota. A geometria é medida no clique, incluindo escala de hover e posição de rolagem. Links diretos, recarga e avanço no histórico abrem a categoria pronta; voltar cancela animações pendentes. O círculo da categoria no canto superior esquerdo volta à landing e restaura o foco e a rolagem do setor selecionado. Rotas internas de projetos ainda não estão ativas.
 
 O contexto de idioma inicia em inglês e permite EN/PT. Uma escolha válida é salva em `tiago-portfolio-locale`; armazenamento bloqueado não impede o uso da interface. O documento recebe `lang` e título atualizados. Interações locais ficam nos componentes responsáveis.
 
@@ -25,11 +26,19 @@ Carregamento inicial e restauração do idioma salvo não animam os textos. Movi
 
 ## Composição
 
-`HomePage` e `HomeSector` ficam isolados em `src/pages/home`. No desktop, os polígonos de Jogos, Web e Misc têm a mesma área, com junção em 50% da largura e um terço da altura. A apresentação sobrepõe a junção. Abaixo de 900 px, a apresentação precede três blocos iguais empilhados.
+`HomePage`, `HomeSector` e a transição ficam isolados em `src/pages/home`. No desktop, os polígonos de Jogos, Web e Misc têm a mesma área, com junção em 50% da largura e um terço da altura. A apresentação sobrepõe a junção. Abaixo de 900 px, a apresentação precede três blocos retangulares contíguos, com divisórias de largura total. O logo e o rodapé foram removidos. O cabeçalho é uma camada transparente fixa de controles EN/PT e sociais, sem faixa, fundo, borda ou espaço reservado no fluxo.
+
+A cobertura é um caminho SVG opaco grafite com acento de categoria. Web e Jogos giram a divisória inferior ao redor da junção até a superior; Misc gira ambas em sentidos opostos. Os outros setores são encobertos pela superfície em movimento. No celular, os limites superior e inferior do bloco selecionado expandem simultaneamente até os limites da tela. A apresentação e os textos selecionados somem por fade; o círculo é representado em uma camada acima da cobertura, sem corte pelo setor.
+
+Após a cobertura, o círculo voa ao canto superior esquerdo, mantendo 104 px no desktop e 78 px abaixo de 900 px. A aceleração é constante até o limite de velocidade; a duração depende da distância medida. O overshoot escala com a velocidade alcançada, com limites que preservam o círculo e seu anel dentro da tela. As constantes de cobertura, fade, voo, acomodação e subida ficam em `homeTransition.ts`. Ao estabilizar o círculo, a esteira sobe de baixo com desaceleração; só então inicia a rolagem horizontal contínua para a esquerda.
+
+O carrossel compartilhado admite apresentações `journey` (componentes antigos, sem rota ativa) e `trail` (categoria atual), e um controle `autoStart`. A esteira mostra título, imagem, indicação demonstrativa e links externos opcionais independentes. Nenhum card abre detalhes internos nesta etapa. Trajetória e habilidades permanecem disponíveis no código para uma etapa futura.
 
 ## Movimento e acessibilidade
 
-Motion controla a entrada da landing page. `MotionConfig` respeita a preferência do sistema, complementado por CSS para movimento reduzido. Os setores usam botões nativos, com foco visível e ativação por teclado/toque; por enquanto, não executam ação. O link de pular para o conteúdo e os nomes acessíveis permanecem disponíveis.
+Motion controla a sequência usando valores animados, sem renders React por quadro. As fases avançam pela conclusão dos efeitos. Novas seleções são ignoradas durante a transição; navegação cancela os controles ativos. Redimensionar ou ativar movimento reduzido durante o efeito conclui no layout atualizado. Movimento reduzido abre o estado final imediatamente e desativa a rolagem automática. Os setores e o retorno usam botões nativos com foco visível e ativação por teclado/toque. O link de pular para o conteúdo e os nomes acessíveis permanecem disponíveis.
+
+A esteira pausa com hover, foco, arraste e controle explícito; também permite navegação manual. O arraste permanece em pausa até o ponteiro ser liberado, mesmo fora da faixa, e não ativa links. Enter abre links mesmo após arrastar. Cópias para continuidade visual não acrescentam controles ao percurso de teclado ou à árvore acessível. Categorias vazias exibem mensagem traduzida; um projeto único não inicia movimento automático. Imagens ausentes ou quebradas usam o fallback traduzido existente.
 
 ## Verificação
 

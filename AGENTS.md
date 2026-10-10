@@ -24,9 +24,8 @@ Use pnpm e mantenha `portfolio/pnpm-lock.yaml` atualizado. Não introduza lockfi
 
 ## Organização e responsabilidades
 
-- `src/app`: providers, idioma e rotas. Navegação usa React Router com hash; projeto aberto pertence à URL.
-- `src/pages/home`: composição artística exclusiva da entrada. Mantenha geometria, decoração e animações locais; mudanças nessa tela não devem alterar os componentes de categoria.
-- `src/pages/category`: composição responsiva dos modos Jogos, Web e Misc.
+- `src/app`: providers, idioma e rotas. Navegação usa React Router com hash; categoria aberta pertence à URL. Rotas de detalhes de projetos ficam para uma etapa futura.
+- `src/pages/home`: composição persistente da entrada e categoria, com geometria, decoração e sequência de transição locais. Preserve a composição montada ao navegar entre essas telas.
 - `src/features`: comportamento compartilhado de projetos, trajetória/carrossel e habilidades.
 - `src/components`: elementos reutilizáveis sem conteúdo pessoal fixo.
 - `src/data`: contratos tipados, perfil, categorias, projetos, habilidades e textos da interface.
@@ -47,11 +46,11 @@ Use os tipos existentes, props explícitas e estado local para interações. Nã
 ## Design e interação
 
 - Fundo grafite; violeta para Jogos, ciano para Web e âmbar para Misc. Use os tokens de categoria, sem duplicar paletas.
-- Desktop: Jogos tem projetos à direita; Web à esquerda; Misc acima. Abaixo de 900 px, projetos vêm antes do painel e habilidades depois.
-- Cards expandem na direção da lista e deslocam os seguintes. Preserve rolagem e seleção por teclado/toque.
-- A faixa contínua pertence ao painel de trajetória; pausa com hover, foco, arraste e controle explícito. Arrastar não deve abrir um projeto.
+- Desktop: setores convergem em 50% da largura e um terço da altura. Abaixo de 900 px, apresentação vem antes dos blocos retangulares contíguos, com divisórias de largura total.
+- Seleção executa cobertura, voo com overshoot e subida da esteira. Cards da esteira têm título, imagem e links externos independentes; detalhes internos, trajetória e habilidades ficam para depois.
+- A faixa contínua da categoria pausa com hover, foco, arraste e controle explícito. Arrastar não deve abrir links; Enter após arrastar continua funcionando.
 - Respeite `prefers-reduced-motion`; desative movimento automático e deslocamentos animados. Preserve foco visível e nomes acessíveis de ícones.
-- Projeto selecionado substitui trajetória e habilidades. Links de GitHub/acesso ficam no rodapé; voltar à trajetória restaura a categoria na URL.
+- O círculo no canto superior esquerdo volta à landing e restaura foco/rolagem. Links diretos de categoria abrem o estado final. EN/PT e sociais ficam sobre a página, sem logo, rodapé ou faixa visual de cabeçalho.
 
 ## Validação e Git
 
