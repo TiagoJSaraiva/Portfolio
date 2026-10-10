@@ -14,7 +14,9 @@ import { ProjectCarousel } from '../../features/journey/ProjectCarousel'
 import { HomeSector } from './HomeSector'
 import { CategoryTransition } from './CategoryTransition'
 import { transitionConfig } from './homeTransition'
-import type { SelectionGeometry, TransitionPhase } from './homeTransition'
+import { useLandingInteraction } from './useLandingInteraction'
+import { landingInteractionConfig } from './landingInteraction'
+import type { Point, SelectionGeometry, TransitionPhase } from './homeTransition'
 import styles from './HomePage.module.css'
 
 export function HomePage({ category }: { category?: CategoryId }) {
@@ -27,9 +29,12 @@ export function HomePage({ category }: { category?: CategoryId }) {
   const lastSelection = useRef<{ category: CategoryId; scroll: number } | null>(null)
   const selecting = useRef(false)
   const previousCategory = useRef(category)
+  const returningHome = useRef(false)
+  const backTouch = useRef<{ pointerId: number; start: Point; moved: boolean } | null>(null)
   const [geometry, setGeometry] = useState<SelectionGeometry | null>(null)
   const [animationPhase, setAnimationPhase] = useState<TransitionPhase>('idle')
   const [renderedCategory, setRenderedCategory] = useState(category)
+  const [ballLayer, setBallLayer] = useState<HTMLDivElement | null>(null)
   // Router navigation may commit after the click's local state update.
   if (renderedCategory !== category) {
     setRenderedCategory(category)
@@ -49,6 +54,8 @@ export function HomePage({ category }: { category?: CategoryId }) {
   }, [])
 
   useLayoutEffect(() => {
+    if (category) returningHome.current = false
+    backTouch.current = null
     if (!category) selecting.current = false
     if (!category && previousCategory.current) {
       const saved = lastSelection.current
@@ -83,7 +90,9 @@ export function HomePage({ category }: { category?: CategoryId }) {
     }
   }, [active, reducedMotion, finish])
 
-  const select = (id: CategoryId, icon: HTMLSpanElement, sector: HTMLButtonElement) => {
+  const interaction = useLandingInteraction(category, reducedMotion, select)
+
+  function select(id: CategoryId, icon: HTMLSpanElement, sector: HTMLButtonElement) {
     if (selecting.current || category) return
     selecting.current = true
     finishLocaleTransition()
@@ -105,10 +114,17 @@ export function HomePage({ category }: { category?: CategoryId }) {
     navigate(`/${id}`)
   }
 
+  function returnHome() {
+    if (returningHome.current) return
+    returningHome.current = true
+    navigate('/')
+  }
+
   return (
     <div
       className={styles.page}
       data-transition-phase={phase}
+      data-attraction-enabled={!category && !reducedMotion && !interaction.locked}
       style={{ '--selection-fade': `${transitionConfig.fade}s` } as CSSProperties}
     >
       <Header />
@@ -141,10 +157,16 @@ export function HomePage({ category }: { category?: CategoryId }) {
               category={category}
               index={index}
               selected={active?.category === category.id}
-              onSelect={select}
+              layer={ballLayer}
+              interaction={interaction}
             />
           ))}
         </div>
+        <div
+          className={styles.ballLayer}
+          ref={setBallLayer}
+          data-covering={phase === 'covering' || undefined}
+        />
         <div className={styles.hub} data-fading={phase === 'covering' || undefined}>
           <LocalizedText className={`eyebrow ${styles.hello}`} value={messages.hello} />
           <h1 tabIndex={-1} data-page-heading aria-label={profile.name}>
@@ -211,7 +233,42 @@ export function HomePage({ category }: { category?: CategoryId }) {
           className={styles.cornerIcon}
           data-category={category}
           aria-label={t('backHome')}
-          onClick={() => navigate('/')}
+          onPointerDown={(event) => {
+            backTouch.current = null
+            if (event.pointerType === 'touch' && event.isPrimary)
+              backTouch.current = {
+                pointerId: event.pointerId,
+                start: { x: event.clientX, y: event.clientY },
+                moved: false,
+              }
+          }}
+          onPointerMove={(event) => {
+            const touch = backTouch.current
+            if (
+              touch?.pointerId === event.pointerId &&
+              Math.hypot(event.clientX - touch.start.x, event.clientY - touch.start.y) >=
+                landingInteractionConfig.dragThreshold
+            )
+              touch.moved = true
+          }}
+          onPointerCancel={() => {
+            backTouch.current = null
+          }}
+          onPointerUp={(event) => {
+            const touch = backTouch.current
+            if (!touch || touch.pointerId !== event.pointerId || touch.moved) return
+            const bounds = event.currentTarget.getBoundingClientRect()
+            if (
+              event.clientX >= bounds.left &&
+              event.clientX <= bounds.right &&
+              event.clientY >= bounds.top &&
+              event.clientY <= bounds.bottom
+            )
+              returnHome()
+          }}
+          onClick={(event) => {
+            if (event.detail === 0 || !backTouch.current?.moved) returnHome()
+          }}
         >
           <span className={styles.iconRing} aria-hidden="true" />
           <CategoryIcon category={category} size={42} />

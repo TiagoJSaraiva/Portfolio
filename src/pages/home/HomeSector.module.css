@@ -55,13 +55,34 @@
   left: 50%;
   top: 78%;
 }
+.iconPlaceholder {
+  width: 104px;
+  height: 104px;
+  display: block;
+  margin: 0 auto 24px;
+}
+.ballPosition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 104px;
+  height: 104px;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  color: var(--accent);
+}
+.ballPosition[data-dragging] {
+  cursor: grabbing;
+}
 .icon {
   width: 104px;
   height: 104px;
   display: grid;
   place-items: center;
   position: relative;
-  margin: 0 auto 24px;
+  margin: 0;
   border-radius: 50%;
   background: rgba(var(--accent-rgb), 0.045);
   border: 1px solid rgba(var(--accent-rgb), 0.18);
@@ -74,6 +95,10 @@
   inset: -12px;
   border: 1px solid rgba(var(--accent-rgb), 0.07);
   border-radius: 50%;
+  pointer-events: none;
+}
+.icon > svg {
+  pointer-events: none;
 }
 .label {
   display: flex;
@@ -106,8 +131,7 @@
 .sector:focus-visible {
   background: rgba(var(--accent-rgb), 0.018);
 }
-.sector:hover .icon,
-.sector:focus-visible .icon {
+.icon[data-highlight] {
   transform: scale(1.16);
   background: rgba(var(--accent-rgb), 0.1);
 }
@@ -120,7 +144,7 @@
 .sector[data-selected] .glow {
   visibility: hidden;
 }
-.sector[data-selected] .icon {
+.ballPosition[data-selected] {
   visibility: hidden;
 }
 .sector[data-selected] .label,
@@ -131,7 +155,7 @@
 .sector:focus-visible {
   outline: 0;
 }
-.sector:focus-visible .icon {
+.icon[data-focused] {
   outline: 2px solid var(--accent);
   outline-offset: 7px;
 }
@@ -161,11 +185,16 @@
     width: calc(100% - 48px);
     max-width: 360px;
   }
-  .icon {
+  .iconPlaceholder {
     width: 78px;
     height: 78px;
     grid-row: 1 / 3;
     margin: 0;
+  }
+  .icon,
+  .ballPosition {
+    width: 78px;
+    height: 78px;
   }
   .icon > svg {
     width: 32px;

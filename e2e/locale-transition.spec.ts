@@ -4,9 +4,10 @@ for (const width of [360, 768, 1440]) {
   test(`language transition completes on the landing page at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 960 })
     await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+    await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
     await page.goto('/')
-    await page.clock.install()
-    await page.clock.pauseAt(new Date())
+    await page.clock.runFor(100)
 
     const languageButton = page.locator('header button')
     for (const target of ['pt-BR', 'en']) {

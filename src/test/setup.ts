@@ -18,5 +18,10 @@ Object.defineProperty(window, 'matchMedia', {
 })
 window.scrollTo = vi.fn()
 Element.prototype.scrollIntoView = vi.fn()
+globalThis.ResizeObserver = class {
+  observe = vi.fn()
+  unobserve = vi.fn()
+  disconnect = vi.fn()
+}
 // Layout/drag/animation are tested in Chromium, not in jsdom's layout-free DOM.
 vi.mock('embla-carousel-react', () => ({ default: () => [vi.fn(), undefined] }))
