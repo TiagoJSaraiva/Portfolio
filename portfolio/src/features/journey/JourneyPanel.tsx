@@ -64,18 +64,18 @@ export function JourneyPanel({
               <LocalizedText value={messages.demoNote} variant="body" />
             </p>
           )}
-          {(selected.githubUrl || selected.projectUrl) && (
+          {(selected.github || selected.access) && (
             <div className={styles.actions}>
-              {selected.githubUrl && (
-                <a href={selected.githubUrl} target="_blank" rel="noopener noreferrer">
+              {selected.github && (
+                <a href={selected.github} target="_blank" rel="noopener noreferrer">
                   <GithubIcon size={16} />
                   <LocalizedText value={messages.github} />
                   <ArrowUpRight size={14} />
                 </a>
               )}
-              {selected.projectUrl && (
+              {selected.access && (
                 <a
-                  href={selected.projectUrl}
+                  href={selected.access}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.primary}

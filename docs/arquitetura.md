@@ -8,11 +8,11 @@ As versões resolvidas estão no lockfile. Bibliotecas de interação: React Rou
 
 ## Navegação e estado
 
-| URL após o hash | Tela |
-| --- | --- |
-| `/` | Landing page |
+| URL após o hash           | Tela                              |
+| ------------------------- | --------------------------------- |
+| `/`                       | Landing page                      |
 | `/games`, `/web`, `/misc` | Categoria com esteira de projetos |
-| Qualquer outro caminho | Redireciona para `/` |
+| Qualquer outro caminho    | Redireciona para `/`              |
 
 Os três setores abrem as categorias. A URL muda no clique do setor ou na soltura da bola; uma composição React persistente coordena `idle → covering → flying → revealing → ready`, sem remontar ao trocar de rota. A geometria é medida na seleção, incluindo escala de hover, deslocamento da bola e posição de rolagem. Links diretos, recarga e avanço no histórico abrem a categoria pronta; voltar cancela animações pendentes. O círculo da categoria no canto superior esquerdo volta à landing e restaura o foco e a rolagem do setor selecionado. Rotas internas de projetos ainda não estão ativas.
 
@@ -38,7 +38,7 @@ A cobertura é um caminho SVG opaco grafite com acento de categoria. Web e Jogos
 
 Após a cobertura, o círculo voa ao canto superior esquerdo, mantendo 104 px no desktop e 78 px abaixo de 900 px. A aceleração é constante até o limite de velocidade; a duração depende da distância medida. O overshoot escala com a velocidade alcançada, com limites que preservam o círculo e seu anel dentro da tela. As constantes de cobertura, fade, voo, acomodação e subida ficam em `homeTransition.ts`. Ao estabilizar o círculo, a esteira sobe de baixo com desaceleração; só então inicia a rolagem horizontal contínua para a esquerda.
 
-O carrossel compartilhado admite apresentações `journey` (componentes antigos, sem rota ativa) e `trail` (categoria atual), e um controle `autoStart`. A esteira mostra título, imagem, indicação demonstrativa e links externos opcionais independentes. Nenhum card abre detalhes internos nesta etapa. Trajetória e habilidades permanecem disponíveis no código para uma etapa futura.
+O carrossel compartilhado admite apresentações `journey` (componentes antigos, sem rota ativa) e `trail` (categoria atual), e um controle `autoStart`. A esteira mostra título, imagem, indicação demonstrativa e links externos opcionais independentes. Imagens de projeto são compostas por background e logo centralizado de 64 px; projetos sem o par usam o fallback traduzido. Nenhum card abre detalhes internos nesta etapa. Trajetória e habilidades permanecem disponíveis no código para uma etapa futura.
 
 Quando o círculo termina o voo e o overshoot, o título da categoria aparece à sua direita, alinhado ao centro do círculo. A fase `revealing` também ativa a prop `reveal` de `LocalizedText`, reutilizando a revelação por grafemas e os mesmos tempos da troca de idioma (450 ms no total). Ao terminar a entrada da esteira, o título passa a texto normal; trocas EN/PT continuam coordenadas pelo contexto de idioma. Links diretos e movimento reduzido exibem o título imediatamente.
 
@@ -50,7 +50,7 @@ Na landing, Enter e Espaço selecionam pelo botão do setor; a bola não acresce
 
 O gesto registra o tamanho inicial da tela e o confere na soltura, garantindo cancelamento mesmo se o evento de redimensionamento ainda estiver pendente. O botão de retorno também aceita a liberação de um toque curto dentro de seus limites: isso mantém o retorno disponível quando o navegador não sintetiza um clique após o arraste. Deslocar 6 px ou cancelar esse toque não executa o retorno; clique e teclado continuam disponíveis, sem navegação duplicada.
 
-A esteira continua rolando sob o ponteiro e pausa com foco, arraste e controle explícito; também permite navegação manual. O arraste permanece em pausa até o ponteiro ser liberado, mesmo fora da faixa, e não ativa links. Enter abre links mesmo após arrastar. Cópias para continuidade visual não acrescentam controles ao percurso de teclado ou à árvore acessível. Categorias vazias exibem mensagem traduzida; um projeto único não inicia movimento automático. Imagens ausentes ou quebradas usam o fallback traduzido existente.
+A esteira continua rolando sob o ponteiro e pausa com foco, arraste e controle explícito; também permite navegação manual. O arraste permanece em pausa até o ponteiro ser liberado, mesmo fora da faixa, e não ativa links. Enter abre links mesmo após arrastar. Cópias para continuidade visual não acrescentam controles ao percurso de teclado ou à árvore acessível. Categorias vazias exibem mensagem traduzida; um projeto único não inicia movimento automático. Imagens sem par ou com background/logo quebrado usam o fallback traduzido existente.
 
 ## Verificação
 

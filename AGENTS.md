@@ -39,7 +39,7 @@ Use os tipos existentes, props explícitas e estado local para interações. Nã
 - Conteúdo pessoal fica em `src/data/portfolio.ts`; textos de interface em `src/data/messages.ts`; contratos em `src/data/types.ts`.
 - IDs de categorias são `games`, `web`, `misc`. IDs de projetos devem ser únicos e estáveis, pois fazem parte dos links compartilháveis.
 - Referencie habilidades por ID. Não duplique nomes e descrições nos componentes.
-- `githubUrl`, `projectUrl` e links sociais são opcionais. Sem URL, omita o link inteiro; não crie botões desabilitados nem `href="#"`.
+- `github` e `access` dos projetos são opcionais; `profile.githubUrl` e `profile.linkedinUrl` são os campos sociais. Sem URL, omita o link inteiro; não crie botões desabilitados nem `href="#"`.
 - Os projetos atuais são explicitamente demonstrativos. Não transforme textos de exemplo em afirmações sobre experiência profissional real.
 - Imagens reais pertencem a `src/assets`; importe-as pelo Vite. Evite caminhos absolutos que presumem publicação na raiz de um domínio.
 
@@ -59,4 +59,3 @@ Use os tipos existentes, props explícitas e estado local para interações. Nã
 - Teste URLs diretas, histórico, idioma, quatro combinações de links, ausência de imagem e estados vazios. No carrossel, preserve os casos de arraste para fora do painel e ativação por Enter após arrastar.
 - O usuário autorizou commits por módulo concluído na `main`. Não faça push.
 - Não altere os README nem o `package.json` da raiz nesta etapa. Hospedagem no GitHub Pages será configurada posteriormente; não acrescente deploy ou CI de publicação sem novo pedido.
-

@@ -16,16 +16,21 @@ export interface Category {
   skillIds: string[]
 }
 
+export interface ProjectArtwork {
+  background: string
+  logo: string
+}
+
 export interface Project {
   id: string
   category: CategoryId
   title: Localized
   summary: Localized
   description: Localized<string[]>
-  image?: string
+  image?: ProjectArtwork
   skillIds: string[]
-  githubUrl?: string
-  projectUrl?: string
+  github?: string
+  access?: string
   demo: boolean
   year: string
 }

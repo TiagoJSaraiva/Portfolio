@@ -48,7 +48,11 @@ export function ProjectRail({
               onFocus={() => setHovered(project.id)}
               onBlur={() => setHovered(undefined)}
             >
-              <ProjectImage project={project} className={styles.image} />
+              <ProjectImage
+                project={project}
+                className={styles.image}
+                backgroundClassName={styles.background}
+              />
               <div className={styles.tint} />
               <div className={styles.content}>
                 <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>
