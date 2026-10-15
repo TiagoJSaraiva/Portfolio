@@ -2,6 +2,8 @@ import multiverseHeroesBackground from '../assets/projects/MultiverseHeroes/bg.p
 import multiverseHeroesLogo from '../assets/projects/MultiverseHeroes/logo.png'
 import killemClankersBackground from '../assets/projects/KillEmClankers/bg.png'
 import killemClankersLogo from '../assets/projects/KillEmClankers/logo.png'
+import endlessRoomsBackground from '../assets/projects/EndlessRooms/bg.png'
+import endlessRoomsLogo from '../assets/projects/EndlessRooms/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -137,10 +139,13 @@ const seeds: Record<
       access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
-      id: 'little-grove',
-      title: 'Little Grove',
-      pt: 'Little Grove',
-      skills: ['roblox', 'gamedesign', 'ui'],
+      id: 'endless-rooms',
+      title: "Endless Rooms",
+      pt: "Endless Rooms",
+      skills: ['luau', 'roblox', 'gamedesign'],
+      image: { background: endlessRoomsBackground, logo: endlessRoomsLogo },
+      github: 'https://github.com/TiagoJSaraiva/kill-em-clankers-game',
+      access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
       id: 'echo',
