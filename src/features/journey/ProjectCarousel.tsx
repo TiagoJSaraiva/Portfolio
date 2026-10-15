@@ -164,7 +164,11 @@ export function ProjectCarousel({
             >
               {presentation === 'trail' ? (
                 <article className={styles.projectCard} data-project-id={project.id}>
-                  <ProjectImage project={project} className={styles.image} />
+                  <ProjectImage
+                    project={project}
+                    className={styles.image}
+                    backgroundClassName={styles.background}
+                  />
                   <div className={styles.cardContent}>
                     {project.demo && (
                       <LocalizedText className={styles.demo} value={messages.demo} />
@@ -172,16 +176,16 @@ export function ProjectCarousel({
                     <h2>
                       <LocalizedText value={project.title} />
                     </h2>
-                    {(project.projectUrl || project.githubUrl) && (
+                    {(project.access || project.github) && (
                       <div className={styles.actions}>
                         {[
                           {
-                            url: project.projectUrl,
+                            url: project.access,
                             label: messages.visit,
                             icon: <ArrowRight size={14} />,
                           },
                           {
-                            url: project.githubUrl,
+                            url: project.github,
                             label: messages.github,
                             icon: <GithubIcon size={14} />,
                           },
@@ -251,7 +255,11 @@ export function ProjectCarousel({
                     }
                   }}
                 >
-                  <ProjectImage project={project} className={styles.image} />
+                  <ProjectImage
+                    project={project}
+                    className={styles.image}
+                    backgroundClassName={styles.background}
+                  />
                   <LocalizedText value={project.title} className={styles.caption} />
                 </Link>
               )}

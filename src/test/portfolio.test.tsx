@@ -35,20 +35,22 @@ describe('content contract', () => {
     for (const project of projects) {
       expect(project.title.en).toBeTruthy()
       expect(project.title.pt).toBeTruthy()
-      expect(project.image).toBeTruthy()
       expect(project.description.en.length).toBeGreaterThan(0)
       expect(project.description.pt.length).toBeGreaterThan(0)
       expect(project.skillIds.every((id) => skills.some((skill) => skill.id === id))).toBe(true)
     }
-    for (const category of categories) {
-      const group = projects.filter((project) => project.category === category.id)
-      expect(group.map((project) => [!!project.githubUrl, !!project.projectUrl])).toEqual([
-        [true, true],
-        [true, false],
-        [false, true],
-        [false, false],
-      ])
-    }
+    const multiverse = projects.find((project) => project.id === 'multiverse-heroes')!
+    expect(multiverse.image?.background).toContain('MultiverseHeroes/bg.png')
+    expect(multiverse.image?.logo).toContain('MultiverseHeroes/logo.png')
+    expect(multiverse.github).toBe('https://github.com/TiagoJSaraiva/Roblox-Game')
+    expect(multiverse.access).toBe(
+      'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
+    )
+    expect(
+      projects
+        .filter((project) => project.id !== 'multiverse-heroes')
+        .every((project) => !project.image && !project.github && !project.access),
+    ).toBe(true)
     expect(messages.footer).toEqual({ en: '', pt: '' })
     for (const [key, message] of Object.entries(messages)) {
       if (key === 'footer') continue
@@ -125,15 +127,33 @@ describe('project components', () => {
     expect(screen.getByRole('img', { name: 'Preview coming soon' })).toBeInTheDocument()
   })
 
-  it('replaces a failing image with a localized fallback', () => {
-    const project = { ...projects[0]!, image: '/broken-image.svg' }
+  it.each(['background', 'logo'] as const)('falls back when the %s image fails', (part) => {
+    const project = {
+      ...projects[0]!,
+      image: { background: '/broken-background.png', logo: '/broken-logo.png' },
+    }
     render(
       <LocaleProvider>
         <ProjectImage project={project} />
       </LocaleProvider>,
     )
-    fireEvent.error(screen.getByRole('img', { name: projects[0]!.title.en }))
+    fireEvent.error(document.querySelector(`img[src="/broken-${part}.png"]`)!)
     expect(screen.getByRole('img', { name: 'Preview coming soon' })).toBeInTheDocument()
+  })
+
+  it('renders a project background and logo as one accessible image', () => {
+    const project = projects.find((item) => item.id === 'multiverse-heroes')!
+    render(
+      <LocaleProvider>
+        <ProjectImage project={project} />
+      </LocaleProvider>,
+    )
+    const composition = screen.getByRole('img', { name: project.title.en })
+    const [background, logo] = composition.querySelectorAll('img')
+    expect(background).toHaveAttribute('src', project.image?.background)
+    expect(background).toHaveAttribute('alt', '')
+    expect(logo).toHaveAttribute('src', project.image?.logo)
+    expect(logo).toHaveAttribute('alt', '')
   })
 
   it('shows only the landing header controls', () => {

@@ -151,7 +151,7 @@ test('circle and ring stay inside every edge; Escape cancels and Enter still sel
   await expect(page).toHaveURL(/#\/games$/)
   await finishTransition(page)
   await page.getByRole('button', { name: 'Back to home' }).click()
-  await page.getByRole('button', { name: 'Web', exact: true }).press('Space')
+  await page.getByRole('button', { name: 'Web Projects', exact: true }).press('Space')
   await expect(page).toHaveURL(/#\/web$/)
 })
 

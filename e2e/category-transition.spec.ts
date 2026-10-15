@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 for (const width of [360, 768, 1440]) {
   for (const [category, label] of [
     ['games', 'Games'],
-    ['web', 'Web'],
+    ['web', 'Web Projects'],
     ['misc', 'Misc'],
   ]) {
     test(`${category} coverage, flight and reveal at ${width}px`, async ({ page }) => {
@@ -62,7 +62,9 @@ for (const width of [360, 768, 1440]) {
       await expect(state).toHaveAttribute('data-transition-phase', 'revealing')
       const title = page.getByRole('heading', { level: 1, name: label, exact: true })
       await expect(title).toBeVisible()
-      await expect(title.locator('[data-locale-letter]')).toHaveCount(label.length)
+      await expect(title.locator('[data-locale-letter]')).toHaveCount(
+        label.replaceAll(' ', '').length,
+      )
       await expect(title.locator('[data-locale-phase]')).toHaveAttribute(
         'data-locale-phase',
         'reveal',
@@ -128,8 +130,8 @@ test('resize and reduced motion finish an active transition safely', async ({ pa
   await page.goto('/')
   await page.clock.runFor(100)
   await page
-    .getByRole('button', { name: 'Web', exact: true })
-    .getByText('Web', { exact: true })
+    .getByRole('button', { name: 'Web Projects', exact: true })
+    .getByText('Web Projects', { exact: true })
     .click()
   await page.clock.runFor(150)
   await page.setViewportSize({ width: 360, height: 800 })
@@ -215,12 +217,12 @@ test('trail keeps scrolling on hover and pauses for focus, explicit control and 
   context,
 }) => {
   await page.setViewportSize({ width: 1440, height: 960 })
-  await context.route(/https:\/\/(www\.youtube\.com|github\.com)\/.*/, (route) =>
+  await context.route(/https:\/\/(www\.roblox\.com|github\.com)\/.*/, (route) =>
     route.fulfill({ body: '<title>Project destination</title>' }),
   )
   await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
   await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
-  await page.goto('/#/web')
+  await page.goto('/#/games')
   const track = page.locator('[data-carousel-track]')
   const position = () =>
     track.evaluate((element) => new DOMMatrixReadOnly(getComputedStyle(element).transform).m41)
@@ -248,7 +250,7 @@ test('trail keeps scrolling on hover and pauses for focus, explicit control and 
   const resumed = await position()
   await page.clock.runFor(250)
   expect(await position()).not.toBe(resumed)
-  const visit = page.getByRole('link', { name: 'Open project — Studio', exact: true })
+  const visit = page.getByRole('link', { name: 'Open project — Multiverse Heroes', exact: true })
   await visit.focus()
   await page.clock.runFor(600)
   const focused = await position()
@@ -267,7 +269,7 @@ test('trail keeps scrolling on hover and pauses for focus, explicit control and 
   await visit.press('Enter')
   const destination = await opened
   await destination.waitForLoadState()
-  expect(destination.url()).toBe('https://www.youtube.com/')
+  expect(destination.url()).toBe('https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes')
   await destination.close()
   await page.getByRole('heading', { level: 1 }).focus()
   await page.mouse.move(20, 850)

@@ -1,12 +1,8 @@
-import type { Category, CategoryId, Profile, Project, Skill } from './types'
+import multiverseHeroesBackground from '../assets/projects/MultiverseHeroes/bg.png'
+import multiverseHeroesLogo from '../assets/projects/MultiverseHeroes/logo.png'
+import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
-const artwork = import.meta.glob<string>('../assets/projects/*.svg', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-})
-const githubUrl = 'https://github.com/TiagoJSaraiva/Portfolio'
-const projectUrl = 'https://www.youtube.com'
+const profileGithubUrl = 'https://github.com/TiagoJSaraiva/Portfolio'
 export const copyrightYear = new Date().getFullYear()
 
 export const profile: Profile = {
@@ -16,7 +12,7 @@ export const profile: Profile = {
     en: 'What kind of projects do you wanna see?',
     pt: 'Que tipo de projetos você deseja ver?',
   },
-  githubUrl,
+  githubUrl: profileGithubUrl,
 }
 
 export const skills: Skill[] = [
@@ -115,18 +111,22 @@ const seeds: Record<
     enSummary: string
     ptSummary: string
     skills: string[]
-    artwork?: string
+    image?: ProjectArtwork
+    github?: string
+    access?: string
   }[]
 > = {
   games: [
     {
       id: 'multiverse-heroes',
-      artwork: 'orbit',
       title: 'Multiverse Heroes',
       pt: 'Multiverse Heroes',
       enSummary: 'An adventure beyond the familiar.',
       ptSummary: 'Uma aventura além do conhecido.',
       skills: ['luau', 'roblox', 'gamedesign'],
+      image: { background: multiverseHeroesBackground, logo: multiverseHeroesLogo },
+      github: 'https://github.com/TiagoJSaraiva/Roblox-Game',
+      access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
       id: 'neon-rush',
@@ -224,7 +224,7 @@ const seeds: Record<
 }
 
 export const projects: Project[] = categories.flatMap(({ id: category }) =>
-  seeds[category].map((seed, index) => ({
+  seeds[category].map((seed) => ({
     id: seed.id,
     category,
     title: { en: seed.title, pt: seed.pt },
@@ -243,10 +243,10 @@ export const projects: Project[] = categories.flatMap(({ id: category }) =>
         'Este espaço contará a história real: o desafio, as decisões por trás do trabalho e o que aprendi no caminho. Por enquanto, a imagem, a descrição e os links disponíveis demonstram o funcionamento do portfólio.',
       ],
     },
-    image: artwork[`../assets/projects/${seed.artwork ?? seed.id}.svg`],
+    image: seed.image,
     skillIds: seed.skills,
-    githubUrl: index === 0 || index === 1 ? githubUrl : undefined,
-    projectUrl: index === 0 || index === 2 ? projectUrl : undefined,
+    github: seed.github,
+    access: seed.access,
     demo: true,
     year: '2026',
   })),
