@@ -1,2 +1,3 @@
 - Multiverse heroes: yes, yes
-- Kill them clankers: no, no
+- Kill them clankers: yes, yes
+- Endless rooms: no, no

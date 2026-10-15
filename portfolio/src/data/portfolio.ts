@@ -1,5 +1,8 @@
 import multiverseHeroesBackground from '../assets/projects/MultiverseHeroes/bg.png'
 import multiverseHeroesLogo from '../assets/projects/MultiverseHeroes/logo.png'
+import killemClankersBackground from '../assets/projects/KillEmClankers/bg.png'
+import killemClankersLogo from '../assets/projects/KillEmClankers/logo.png'
+
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
 const profileGithubUrl = 'https://github.com/TiagoJSaraiva/Portfolio'
@@ -129,8 +132,8 @@ const seeds: Record<
       title: "Kill'em Clankers",
       pt: "Kill'em Clankers",
       skills: ['luau', 'roblox', 'gamedesign'],
-      image: { background: multiverseHeroesBackground, logo: multiverseHeroesLogo },
-      github: 'https://github.com/TiagoJSaraiva/Roblox-Game',
+      image: { background: killemClankersBackground, logo: killemClankersLogo },
+      github: 'https://github.com/TiagoJSaraiva/kill-em-clankers-game',
       access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
