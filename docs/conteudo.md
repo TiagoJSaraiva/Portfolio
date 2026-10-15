@@ -27,7 +27,6 @@ const projeto: Project = {
   id: "meu-projeto",
   category: "web",
   title: { en: "My project", pt: "Meu projeto" },
-  summary: { en: "Short summary.", pt: "Resumo curto." },
   description: {
     en: ["The challenge.", "Implementation and learnings."],
     pt: ["O desafio.", "Implementação e aprendizados."],

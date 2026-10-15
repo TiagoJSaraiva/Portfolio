@@ -108,8 +108,6 @@ const seeds: Record<
     id: string
     title: string
     pt: string
-    enSummary: string
-    ptSummary: string
     skills: string[]
     image?: ProjectArtwork
     github?: string
@@ -121,35 +119,30 @@ const seeds: Record<
       id: 'multiverse-heroes',
       title: 'Multiverse Heroes',
       pt: 'Multiverse Heroes',
-      enSummary: 'An adventure beyond the familiar.',
-      ptSummary: 'Uma aventura além do conhecido.',
       skills: ['luau', 'roblox', 'gamedesign'],
       image: { background: multiverseHeroesBackground, logo: multiverseHeroesLogo },
       github: 'https://github.com/TiagoJSaraiva/Roblox-Game',
       access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
-      id: 'neon-rush',
-      title: 'Neon Rush',
-      pt: 'Neon Rush',
-      enSummary: 'Find your rhythm in the city lights.',
-      ptSummary: 'Encontre seu ritmo nas luzes da cidade.',
-      skills: ['luau', 'gamedesign', 'ui'],
+      id: 'kill-em-clankers',
+      title: "Kill'em Clankers",
+      pt: "Kill'em Clankers",
+      skills: ['luau', 'roblox', 'gamedesign'],
+      image: { background: multiverseHeroesBackground, logo: multiverseHeroesLogo },
+      github: 'https://github.com/TiagoJSaraiva/Roblox-Game',
+      access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
       id: 'little-grove',
       title: 'Little Grove',
       pt: 'Little Grove',
-      enSummary: 'A small place to slow down.',
-      ptSummary: 'Um pequeno lugar para desacelerar.',
       skills: ['roblox', 'gamedesign', 'ui'],
     },
     {
       id: 'echo',
       title: 'Echo',
       pt: 'Echo',
-      enSummary: 'A puzzle of light and perspective.',
-      ptSummary: 'Um quebra-cabeça de luz e perspectiva.',
       skills: ['luau', 'typescript', 'gamedesign'],
     },
   ],
@@ -158,32 +151,24 @@ const seeds: Record<
       id: 'studio',
       title: 'Studio',
       pt: 'Studio',
-      enSummary: 'A home for independent creative work.',
-      ptSummary: 'Um espaço para criação independente.',
       skills: ['react', 'css', 'motion'],
     },
     {
       id: 'atlas',
       title: 'Atlas',
       pt: 'Atlas',
-      enSummary: 'Your next destination, thoughtfully planned.',
-      ptSummary: 'Seu próximo destino, pensado com cuidado.',
       skills: ['react', 'typescript', 'ui'],
     },
     {
       id: 'pulse',
       title: 'Pulse',
       pt: 'Pulse',
-      enSummary: 'Making complex information feel simple.',
-      ptSummary: 'Informações complexas de um jeito simples.',
       skills: ['react', 'typescript', 'css'],
     },
     {
       id: 'folio',
       title: 'Folio',
       pt: 'Folio',
-      enSummary: 'An expressive canvas for good ideas.',
-      ptSummary: 'Uma tela expressiva para boas ideias.',
       skills: ['css', 'motion', 'ui'],
     },
   ],
@@ -192,32 +177,24 @@ const seeds: Record<
       id: 'frequency',
       title: 'Frequency',
       pt: 'Frequency',
-      enSummary: 'See the shape of sound.',
-      ptSummary: 'Veja a forma do som.',
       skills: ['audio', 'typescript', 'creative'],
     },
     {
       id: 'generative',
       title: 'Generative',
       pt: 'Generative',
-      enSummary: 'Order, chance, and everything between.',
-      ptSummary: 'Ordem, acaso e tudo entre eles.',
       skills: ['svg', 'creative', 'typescript'],
     },
     {
       id: 'toolbox',
       title: 'Toolbox',
       pt: 'Toolbox',
-      enSummary: 'Small tools for everyday friction.',
-      ptSummary: 'Pequenas ferramentas para o dia a dia.',
       skills: ['python', 'typescript'],
     },
     {
       id: 'chromatic',
       title: 'Chromatic',
       pt: 'Chromatic',
-      enSummary: 'A study in color and motion.',
-      ptSummary: 'Um estudo sobre cor e movimento.',
       skills: ['svg', 'creative', 'css'],
     },
   ],
@@ -228,17 +205,14 @@ export const projects: Project[] = categories.flatMap(({ id: category }) =>
     id: seed.id,
     category,
     title: { en: seed.title, pt: seed.pt },
-    summary: { en: seed.enSummary, pt: seed.ptSummary },
     description: {
       en: [
-        seed.enSummary +
-          ' This is an illustrative project created to explore how design, interaction, and code can work together.',
+        'This is an illustrative project created to explore how design, interaction, and code can work together.',
         'The concept brings together a focused visual identity, a clear interaction flow, and a modular approach to implementation. Every element is designed to support the experience, from the first impression to the smallest feedback.',
         'This space will eventually tell the real story: the challenge, the decisions behind the work, and what I learned along the way. For now, the artwork, description, and available links demonstrate the portfolio’s behavior.',
       ],
       pt: [
-        seed.ptSummary +
-          ' Este é um projeto ilustrativo criado para explorar como design, interação e código podem trabalhar juntos.',
+        'Este é um projeto ilustrativo criado para explorar como design, interação e código podem trabalhar juntos.',
         'O conceito reúne uma identidade visual consistente, um fluxo claro de interação e uma implementação modular. Cada elemento contribui para a experiência, da primeira impressão ao menor retorno visual.',
         'Este espaço contará a história real: o desafio, as decisões por trás do trabalho e o que aprendi no caminho. Por enquanto, a imagem, a descrição e os links disponíveis demonstram o funcionamento do portfólio.',
       ],

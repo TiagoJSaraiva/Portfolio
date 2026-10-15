@@ -61,9 +61,6 @@ export function ProjectRail({
                 </h3>
                 <ArrowUpRight size={16} className={styles.arrow} />
               </div>
-              <p className={styles.summary}>
-                <LocalizedText value={project.summary} variant="body" />
-              </p>
             </Link>
           </motion.li>
         ))}

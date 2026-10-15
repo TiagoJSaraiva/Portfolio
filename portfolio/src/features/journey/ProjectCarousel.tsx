@@ -170,9 +170,6 @@ export function ProjectCarousel({
                     backgroundClassName={styles.background}
                   />
                   <div className={styles.cardContent}>
-                    {project.demo && (
-                      <LocalizedText className={styles.demo} value={messages.demo} />
-                    )}
                     <h2>
                       <LocalizedText value={project.title} />
                     </h2>
