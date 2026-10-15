@@ -114,13 +114,6 @@
 .projectCard .background {
   opacity: 0.85;
 }
-.projectCard::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(transparent, #101115ed 90%);
-}
 .cardContent {
   position: relative;
   z-index: 3;
