@@ -25,7 +25,6 @@ export interface Project {
   id: string
   category: CategoryId
   title: Localized
-  summary: Localized
   description: Localized<string[]>
   image?: ProjectArtwork
   skillIds: string[]
