@@ -4,6 +4,10 @@ import killemClankersBackground from '../assets/projects/KillEmClankers/bg.png'
 import killemClankersLogo from '../assets/projects/KillEmClankers/logo.png'
 import endlessRoomsBackground from '../assets/projects/EndlessRooms/bg.png'
 import endlessRoomsLogo from '../assets/projects/EndlessRooms/logo.png'
+import inkmancerBackground from '../assets/projects/Inkmancer/bg.png'
+import inkmancerLogo from '../assets/projects/Inkmancer/logo.png'
+import terrarianBasicNeedsBackground from '../assets/projects/TerrarianBasicNeeds/bg.png'
+import terrarianBasicNeedsLogo from '../assets/projects/TerrarianBasicNeeds/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -130,6 +134,14 @@ const seeds: Record<
       access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     },
     {
+      id: 'terrarian-basic-needs',
+      title: 'Terrarian Basic Needs',
+      pt: 'Terrarian Basic Needs',
+      image: { background: terrarianBasicNeedsBackground, logo: terrarianBasicNeedsLogo },
+      skills: ['luau', 'typescript', 'gamedesign'],
+      github: 'https://github.com/TiagoJSaraiva/Terrarian-Basic-Needs',
+    },
+    {
       id: 'kill-em-clankers',
       title: "Kill'em Clankers",
       pt: "Kill'em Clankers",
@@ -147,17 +159,11 @@ const seeds: Record<
       github: 'https://github.com/TiagoJSaraiva/raylib-CJOPOO',
     },
     {
-      id: 'terrarian-basic-needs',
-      title: 'Terrarian Basic Needs',
-      pt: 'Terrarian Basic Needs',
-      skills: ['luau', 'typescript', 'gamedesign'],
-      github: 'https://github.com/TiagoJSaraiva/Terrarian-Basic-Needs',
-    },
-    {
       id: 'inkmancer',
       title: 'Inkmancer',
       pt: 'Inkmancer',
       skills: ['luau', 'typescript', 'gamedesign'],
+      image: { background: inkmancerBackground, logo: inkmancerLogo },
       github: 'https://github.com/TiagoJSaraiva/Inkmancer',
     },
 
