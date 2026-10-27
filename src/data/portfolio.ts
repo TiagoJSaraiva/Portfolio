@@ -144,15 +144,23 @@ const seeds: Record<
       pt: "Endless Rooms",
       skills: ['luau', 'roblox', 'gamedesign'],
       image: { background: endlessRoomsBackground, logo: endlessRoomsLogo },
-      github: 'https://github.com/TiagoJSaraiva/kill-em-clankers-game',
-      access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
+      github: 'https://github.com/TiagoJSaraiva/raylib-CJOPOO',
     },
     {
-      id: 'echo',
-      title: 'Echo',
-      pt: 'Echo',
+      id: 'terrarian-basic-needs',
+      title: 'Terrarian Basic Needs',
+      pt: 'Terrarian Basic Needs',
       skills: ['luau', 'typescript', 'gamedesign'],
+      github: 'https://github.com/TiagoJSaraiva/Terrarian-Basic-Needs',
     },
+    {
+      id: 'inkmancer',
+      title: 'Inkmancer',
+      pt: 'Inkmancer',
+      skills: ['luau', 'typescript', 'gamedesign'],
+      github: 'https://github.com/TiagoJSaraiva/Inkmancer',
+    },
+
   ],
   web: [
     {
