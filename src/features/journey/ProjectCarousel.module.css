@@ -143,6 +143,15 @@
   background: #101115b3;
   font-size: 10px;
 }
+.actionLabel {
+  display: grid;
+}
+.actionLabel > * {
+  grid-area: 1 / 1;
+}
+.actionLabel > [aria-hidden='true'] {
+  visibility: hidden;
+}
 .empty {
   padding: 48px 28px;
   text-align: center;
