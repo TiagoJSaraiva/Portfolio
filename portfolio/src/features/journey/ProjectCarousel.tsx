@@ -218,7 +218,11 @@ export function ProjectCarousel({
                                 }}
                               >
                                 {icon}
-                                <LocalizedText value={label} />
+                                <span className={styles.actionLabel}>
+                                  {/* Reserves the English width so the button keeps its size across locales. */}
+                                  <span aria-hidden="true">{label.en}</span>
+                                  <LocalizedText value={label} />
+                                </span>
                               </a>
                             ),
                         )}
