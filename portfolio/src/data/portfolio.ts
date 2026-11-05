@@ -125,6 +125,7 @@ const seeds: Record<
     image?: ProjectArtwork
     github?: string
     access?: string
+    demo?: boolean
   }[]
 > = {
   games: [
@@ -178,24 +179,28 @@ const seeds: Record<
       title: 'Studio',
       pt: 'Studio',
       skills: ['react', 'css', 'motion'],
+      demo: true,
     },
     {
       id: 'atlas',
       title: 'Atlas',
       pt: 'Atlas',
       skills: ['react', 'typescript', 'ui'],
+      demo: true,
     },
     {
       id: 'pulse',
       title: 'Pulse',
       pt: 'Pulse',
       skills: ['react', 'typescript', 'css'],
+      demo: true,
     },
     {
       id: 'folio',
       title: 'Folio',
       pt: 'Folio',
       skills: ['css', 'motion', 'ui'],
+      demo: true,
     },
   ],
   misc: [
@@ -260,7 +265,7 @@ export const projects: Project[] = categories.flatMap(({ id: category }) =>
     skillIds: seed.skills,
     github: seed.github,
     access: seed.access,
-    demo: true,
+    demo: seed.demo ?? false,
     year: '2026',
   })),
 )

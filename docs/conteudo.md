@@ -56,6 +56,8 @@ LinkedIn não aparece porque `profile.linkedinUrl` ainda não foi fornecido. Bas
 
 `pnpm artwork` regenera SVGs demonstrativos, mas esses arquivos não são atribuídos automaticamente aos projetos. Declare a imagem de cada projeto com imports locais explícitos; não use arte demonstrativa para substituir assets reais.
 
+Nos `seeds`, marque com `demo: true` apenas os projetos ainda demonstrativos; o aviso de trabalho ilustrativo só aparece nas categorias que tenham ao menos um deles.
+
 Nos `seeds`, os campos opcionais `image`, `github` e `access` pertencem ao projeto correspondente. Multiverse Heroes é o exemplo atual de imagem composta; os outros projetos exibem o fallback até receberem seus próprios assets.
 
 Os testes de contrato mantêm os doze exemplos demonstrativos e cobrem as quatro combinações possíveis dos links opcionais com fixtures.
