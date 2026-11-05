@@ -80,6 +80,16 @@ describe('category navigation', () => {
     expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
   })
 
+  it.each([
+    ['/web', true],
+    ['/games', false],
+    ['/misc', false],
+  ])('shows the demo note on %s only when it has demo projects: %s', async (route, visible) => {
+    renderApp(route)
+    await screen.findAllByRole('article')
+    expect(!!screen.queryByText(messages.demoNote.en)).toBe(visible)
+  })
+
   it.each(['/other', '/games/unknown', '/web/orbit', '/games/orbit/extra'])(
     'redirects unsupported route %s to the landing page',
     async (route) => {

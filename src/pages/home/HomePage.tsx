@@ -220,9 +220,11 @@ export function HomePage({ category }: { category?: CategoryId }) {
               presentation="trail"
               autoStart={phase === 'ready'}
             />
-            <p className={styles.demoNote}>
-              <LocalizedText value={messages.demoNote} variant="body" />
-            </p>
+            {getProjects(category).some((project) => project.demo) && (
+              <p className={styles.demoNote}>
+                <LocalizedText value={messages.demoNote} variant="body" />
+              </p>
+            )}
           </motion.div>
         </main>
       )}
