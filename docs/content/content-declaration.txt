@@ -1,3 +1,45 @@
-- Multiverse heroes: yes, yes
-- Kill them clankers: yes, yes
-- Endless rooms: no, no
+- Multiverse heroes - feito
+- Kill them clankers - hospedar
+- Endless rooms - embedar e hospedar
+- Terrarian basic needs - feito
+- Inkmancer - Atrelar links e opção de download
+
+Web
+
+- PMS - Não vai entrar ainda
+- Litaldibet - Pronto
+- ProjectFlow - Hospedar
+- Aprenda Xadrez - Hospedar
+- Central do Alfabeto - Ajeitar
+- CantinaIF - Ajeitar
+
+Diversos
+- Track your meals - URL https://github.com/TiagoJSaraiva/Track-your-meals/releases/latest
+- Simple Keeper - pronto
+- bf runner CLI - pronto
+- Pixel normalizer - pronto
+- Reel Blocker - dar tapinha em escopo (instruir uso em qualquer navegador V8, ao invés de só operaGx)
+
+Verificação final:
+
+Jogos
+Multiverse heroes - links funcionando
+Kill them clankers - gh funcionando e hospedado corretamente.
+Endless rooms - gh funcionando e hospedado corretamente.
+Terrarian basic needs - links funcionando
+Inkmancer - gh funcionando e download funcionando
+
+Web
+PMS - gh funcionando, hospedado com conta demonstrativa acessível. Infraestrutura sólida sem necessidade de manutenção.
+Litaldibet - link do site funcionando (não vai funfar anyway, mas tudo bem)
+ProjectFlow - gh funcionando, hospedado, infra sólido sem manutenção necessária
+Aprenda xadrez - gh funcionando, hospedado
+Central do Alfabeto - gh funcionando, instrução de como usar localmente e script de setup geral de todas as ends.
+CantinaIF - gh funcionando, instrução de como usar localmente e script de setup geral de todas as ends, que também popule o sistema para demonstração.
+
+Diversos
+Track your meals - gh funcionando, download funcionando. GH - https://github.com/TiagoJSaraiva/Track-your-meals, ACESSO - https://github.com/TiagoJSaraiva/Track-your-meals/releases/tag/v1.0.0
+Simple Keeper - gh funcionando, download funcionando. GH - https://github.com/TiagoJSaraiva/Simple-Keeper, ACESSO - https://github.com/TiagoJSaraiva/Simple-Keeper/releases/tag/v1.0.0
+bf runner - gh funcionando, download funcionando. GH - https://github.com/TiagoJSaraiva/BF-Interpreter-CLI
+Pixel normalizer - gh funcionando, download funcionando. GH - https://github.com/TiagoJSaraiva/Pixel-normalizer
+Reel Blocker - gh funcionando, download funcionando. GH - https://github.com/TiagoJSaraiva/reel-blocker

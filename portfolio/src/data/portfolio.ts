@@ -8,6 +8,8 @@ import inkmancerBackground from '../assets/projects/Inkmancer/bg.png'
 import inkmancerLogo from '../assets/projects/Inkmancer/logo.png'
 import terrarianBasicNeedsBackground from '../assets/projects/TerrarianBasicNeeds/bg.png'
 import terrarianBasicNeedsLogo from '../assets/projects/TerrarianBasicNeeds/logo.png'
+import simpleKeeperBackground from '../assets/projects/SimpleKeeper/bg.png'
+import simpleKeeperLogo from '../assets/projects/SimpleKeeper/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -217,6 +219,7 @@ const seeds: Record<
       title: 'Simple Keeper',
       pt: 'Simple Keeper',
       skills: ['cpp', 'qt'],
+      image: {background: simpleKeeperBackground, logo: simpleKeeperLogo},
       github: 'https://github.com/TiagoJSaraiva/Simple-Keeper',
       access: 'https://github.com/TiagoJSaraiva/Simple-Keeper/releases/latest',
     },
