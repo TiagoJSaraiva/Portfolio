@@ -10,6 +10,8 @@ import terrarianBasicNeedsBackground from '../assets/projects/TerrarianBasicNeed
 import terrarianBasicNeedsLogo from '../assets/projects/TerrarianBasicNeeds/logo.png'
 import simpleKeeperBackground from '../assets/projects/SimpleKeeper/bg.png'
 import simpleKeeperLogo from '../assets/projects/SimpleKeeper/logo.png'
+import trackYourMealsBackground from '../assets/projects/TrackYourMeals/bg.png'
+import trackYourMealsLogo from '../assets/projects/TrackYourMeals/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -147,6 +149,7 @@ const seeds: Record<
       image: { background: terrarianBasicNeedsBackground, logo: terrarianBasicNeedsLogo },
       skills: ['luau', 'typescript', 'gamedesign'],
       github: 'https://github.com/TiagoJSaraiva/Terrarian-Basic-Needs',
+      access: 'https://steamcommunity.com/sharedfiles/filedetails/?id=3555532206'
     },
     {
       id: 'kill-em-clankers',
@@ -155,7 +158,7 @@ const seeds: Record<
       skills: ['luau', 'roblox', 'gamedesign'],
       image: { background: killemClankersBackground, logo: killemClankersLogo },
       github: 'https://github.com/TiagoJSaraiva/kill-em-clankers-game',
-      access: 'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
+      access: 'https://tiagojsaraiva.github.io/kill-em-clankers-game/',
     },
     {
       id: 'endless-rooms',
@@ -213,6 +216,7 @@ const seeds: Record<
       skills: ['csharp'],
       github: 'https://github.com/TiagoJSaraiva/Track-your-meals',
       access: 'https://github.com/TiagoJSaraiva/Track-your-meals/releases/latest',
+      image: {background: trackYourMealsBackground, logo: trackYourMealsLogo},
     },
     {
       id: 'simple-keeper',
