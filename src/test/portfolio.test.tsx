@@ -166,6 +166,19 @@ describe('project components', () => {
     expect(logo).toHaveAttribute('alt', '')
   })
 
+  it('renders only the background when a project has no logo', () => {
+    const { background } = projects.find((item) => item.id === 'multiverse-heroes')!.image!
+    const project = { ...projects[0]!, image: { background } }
+    render(
+      <LocaleProvider>
+        <ProjectImage project={project} />
+      </LocaleProvider>,
+    )
+    const composition = screen.getByRole('img', { name: project.title.en })
+    expect(composition.querySelectorAll('img')).toHaveLength(1)
+    expect(composition.querySelector('[data-project-logo]')).toBeNull()
+  })
+
   it('shows only the landing header controls', () => {
     render(
       <LocaleProvider>
