@@ -38,13 +38,16 @@ export function ProjectImage({
         decoding="async"
         onError={() => setFailedSource(sourceKey)}
       />
-      <img
-        className={styles.logo}
-        src={project.image.logo}
-        alt=""
-        decoding="async"
-        onError={() => setFailedSource(sourceKey)}
-      />
+      {project.image.logo && (
+        <img
+          className={styles.logo}
+          src={project.image.logo}
+          alt=""
+          decoding="async"
+          data-project-logo
+          onError={() => setFailedSource(sourceKey)}
+        />
+      )}
     </div>
   )
 }

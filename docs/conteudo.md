@@ -17,7 +17,7 @@ As categorias estão ativas em `#/games`, `#/web` e `#/misc`. O clique na landin
 
 ## Adicionar um projeto real
 
-Guarde a arte em uma pasta do projeto dentro de `portfolio/src/assets/projects/`, com os arquivos `bg.png` e `logo.png`. Importe os dois arquivos pelo Vite e declare o par no objeto do projeto. Exemplo:
+Guarde a arte em uma pasta do projeto dentro de `portfolio/src/assets/projects/`, com o arquivo `bg.png` e, opcionalmente, `logo.png`. Importe os arquivos pelo Vite e declare-os no objeto do projeto. Exemplo:
 
 ```ts
 import background from "../assets/projects/MeuProjeto/bg.png";
@@ -42,7 +42,7 @@ const projeto: Project = {
 
 O projeto aparece na esteira da categoria definida pelo campo `category`. IDs de categoria válidos são `games`, `web` e `misc`; mantenha IDs de projeto únicos e estáveis para futuros links compartilháveis. A rota `#/web/meu-projeto` ainda não está ativa. Habilidades devem existir no catálogo; acrescente uma nova habilidade ali antes de referenciá-la.
 
-O background preenche o card com `object-fit: cover`; o logo fica sobreposto no centro, com 64 px de altura e largura proporcional. Se `image` estiver ausente, ou se o background ou logo não carregar, a interface apresenta “Preview coming soon”/“Prévia em breve”.
+O background preenche o card com `object-fit: cover`; o logo fica sobreposto no centro, com 64 px de altura e largura proporcional. Sem `logo`, o título do projeto aparece nesse mesmo ponto central; com logo, o título fica disponível apenas para leitores de tela. Se `image` estiver ausente, ou se o background ou logo não carregar, a interface apresenta “Preview coming soon”/“Prévia em breve” na parte superior do card, com o título ao centro.
 
 ## Links opcionais
 

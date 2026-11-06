@@ -63,10 +63,7 @@ for (const width of [360, 768, 1440]) {
         const contentLayout = await card.evaluate((element) => {
           const logoRect = element.querySelectorAll('img')[1]!.getBoundingClientRect()
           const content = element.children[1]!
-          const textRects = [
-            content.querySelector('h2')!.getBoundingClientRect(),
-            content.querySelector('a')!.parentElement!.getBoundingClientRect(),
-          ]
+          const textRects = [content.querySelector('a')!.parentElement!.getBoundingClientRect()]
           const contentClear = textRects.every(
             (rect) =>
               logoRect.right <= rect.left ||
@@ -107,6 +104,58 @@ for (const width of [360, 768, 1440]) {
       await expect(page.locator('[data-flying-icon]')).toHaveCount(0)
       await page.getByRole('button', { name: 'Back to home' }).click()
     }
+  })
+}
+
+for (const width of [360, 768, 1440]) {
+  test(`card titles only appear centered without a logo at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.route('**/MultiverseHeroes/logo*.png', (route) => route.abort())
+    await page.goto('/#/misc')
+    const titleBox = (id: string) =>
+      page
+        .locator(`[data-project-id="${id}"]`)
+        .first()
+        .evaluate((card) => {
+          const cardRect = card.getBoundingClientRect()
+          const title = card.querySelector('h2')!.getBoundingClientRect()
+          return {
+            width: title.width,
+            dx: Math.abs(title.x + title.width / 2 - (cardRect.x + cardRect.width / 2)),
+            dy: Math.abs(title.y + title.height / 2 - (cardRect.y + cardRect.height / 2)),
+          }
+        })
+
+    const withLogo = page.locator('[data-project-id="simple-keeper"]').first()
+    await expect(withLogo.locator('img[data-project-logo]')).toBeAttached()
+    await expect(withLogo.getByRole('heading', { level: 2 })).toHaveText('Simple Keeper')
+    expect((await titleBox('simple-keeper')).width).toBeLessThanOrEqual(1)
+
+    const withoutLogo = page.locator('[data-project-id="bf-runner"]').first()
+    await expect(withoutLogo.locator('img')).toHaveCount(0)
+    const centered = await titleBox('bf-runner')
+    expect(centered.width).toBeGreaterThan(1)
+    expect(centered.dx).toBeLessThan(1)
+    expect(centered.dy).toBeLessThan(1)
+    const overlap = await withoutLogo.evaluate((card) => {
+      const title = card.querySelector('h2')!.getBoundingClientRect()
+      const message = card.querySelector('[role="img"] > span')!.getBoundingClientRect()
+      const action = card.querySelector('a')!.getBoundingClientRect()
+      return message.bottom > title.top || action.top < title.bottom
+    })
+    expect(overlap).toBe(false)
+
+    await page.goto('/#/games')
+    const broken = page.locator('[data-project-id="multiverse-heroes"]').first()
+    await expect(broken.locator('[role="img"]')).toHaveAttribute(
+      'aria-label',
+      'Preview coming soon',
+    )
+    expect((await titleBox('multiverse-heroes')).width).toBeGreaterThan(1)
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true)
   })
 }
 

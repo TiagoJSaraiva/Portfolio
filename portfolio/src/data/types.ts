@@ -18,7 +18,7 @@ export interface Category {
 
 export interface ProjectArtwork {
   background: string
-  logo: string
+  logo?: string
 }
 
 export interface Project {
