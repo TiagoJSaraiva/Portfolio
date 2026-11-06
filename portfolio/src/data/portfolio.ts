@@ -12,6 +12,9 @@ import simpleKeeperBackground from '../assets/projects/SimpleKeeper/bg.png'
 import simpleKeeperLogo from '../assets/projects/SimpleKeeper/logo.png'
 import trackYourMealsBackground from '../assets/projects/TrackYourMeals/bg.png'
 import trackYourMealsLogo from '../assets/projects/TrackYourMeals/logo.png'
+import pixelNormalizerBackground from '../assets/projects/PixelNormalizer/bg.png'
+import bfRunnerBackground from '../assets/projects/BfRunner/bg.png'
+import reelBlockerBackground from '../assets/projects/ReelBlocker/bg.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -233,6 +236,7 @@ const seeds: Record<
       pt: 'BF Runner CLI',
       skills: ['javascript'],
       github: 'https://github.com/TiagoJSaraiva/BF-Interpreter-CLI',
+      image: {background: bfRunnerBackground},
     },
     {
       id: 'pixel-normalizer',
@@ -240,6 +244,7 @@ const seeds: Record<
       pt: 'Pixel Normalizer',
       skills: ['typescript'],
       github: 'https://github.com/TiagoJSaraiva/Pixel-normalizer',
+      image: {background: pixelNormalizerBackground},
     },
     {
       id: 'reel-blocker',
@@ -247,6 +252,7 @@ const seeds: Record<
       pt: 'Reel Blocker',
       skills: ['javascript', 'css'],
       github: 'https://github.com/TiagoJSaraiva/reel-blocker',
+      image: {background: reelBlockerBackground},
     },
   ],
 }
