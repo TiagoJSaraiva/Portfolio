@@ -5,7 +5,102 @@ import { LocaleProvider } from '../app/LocaleContext'
 import { messages } from '../data/messages'
 import { projects } from '../data/portfolio'
 import { ProjectCarousel } from '../features/journey/ProjectCarousel'
-import { flight, iconTarget } from '../pages/home/homeTransition'
+import { clipToViewport, coverage, flight, iconTarget } from '../pages/home/homeTransition'
+import type { SelectionGeometry } from '../pages/home/homeTransition'
+import type { CategoryId } from '../data/types'
+
+function desktopGeometry(category: CategoryId, scrolled = 0): SelectionGeometry {
+  const scene = { left: 0, top: -scrolled, width: 1440, height: 900 }
+  return {
+    category,
+    width: 1440,
+    height: 900,
+    mobile: false,
+    pivot: { x: 720, y: 300 - scrolled },
+    scene,
+    sector: scene,
+    icon: { left: 0, top: 0, width: 104, height: 104 },
+    belt: { origin: { x: 0, y: 0 }, startTime: null },
+  }
+}
+
+function vertices(path: string) {
+  const values = path.match(/-?[\d.]+/g)!.map(Number)
+  return values.flatMap((_, index) => (index % 2 ? [] : [[values[index], values[index + 1]]]))
+}
+
+function contains(polygon: number[][], [x, y]: number[]) {
+  let inside = false
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const [xi, yi] = polygon[i]
+    const [xj, yj] = polygon[j]
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+
+describe('coverage surface', () => {
+  const centers: Record<CategoryId, number[]> = {
+    games: [331, 279],
+    web: [1109, 279],
+    misc: [720, 702],
+  }
+
+  it('stays inside the viewport so the coverage belt mask is screen-sized', () => {
+    for (const category of ['games', 'web', 'misc'] as const) {
+      for (const scrolled of [0, 400]) {
+        for (const progress of [0, 0.25, 0.5, 0.9]) {
+          for (const [x, y] of vertices(
+            coverage(desktopGeometry(category, scrolled), progress).surface,
+          )) {
+            expect(x).toBeGreaterThanOrEqual(0)
+            expect(x).toBeLessThanOrEqual(1440)
+            expect(y).toBeGreaterThanOrEqual(0)
+            expect(y).toBeLessThanOrEqual(900)
+          }
+        }
+      }
+    }
+  })
+
+  it('starts as the selected sector and ends as the whole screen', () => {
+    for (const category of ['games', 'web', 'misc'] as const) {
+      const start = vertices(coverage(desktopGeometry(category), 0).surface)
+      for (const [id, center] of Object.entries(centers))
+        expect(contains(start, center)).toBe(id === category)
+      const almost = vertices(coverage(desktopGeometry(category), 0.97).surface)
+      for (const center of Object.values(centers)) expect(contains(almost, center)).toBe(true)
+      expect(coverage(desktopGeometry(category), 1).surface).toBe('M0 0H1440V900H0Z')
+    }
+  })
+
+  it('clips polygons to the viewport edges', () => {
+    const clipped = clipToViewport(
+      [
+        [-10, -10],
+        [20, -10],
+        [20, 20],
+        [-10, 20],
+      ],
+      10,
+      10,
+    )
+    // The starting vertex is irrelevant; the polygon must be exactly the viewport.
+    expect(clipped).toHaveLength(4)
+    expect(new Set(clipped.map(String))).toEqual(new Set(['0,0', '10,0', '10,10', '0,10']))
+    expect(
+      clipToViewport(
+        [
+          [20, 20],
+          [30, 20],
+          [30, 30],
+        ],
+        10,
+        10,
+      ),
+    ).toEqual([])
+  })
+})
 
 describe('distance-based flight', () => {
   it('accelerates, reaches its speed cap, and scales overshoot by peak speed', () => {

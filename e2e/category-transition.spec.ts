@@ -62,6 +62,12 @@ for (const width of [360, 768, 1440]) {
       expect(belt.dx).toBeLessThan(2)
       expect(Math.abs(belt.dy)).toBeLessThan(1)
       expect(belt.clip).toMatch(/^path\(/)
+      // A clip reaching far off screen makes Chromium build a huge mask every frame.
+      const clipValues = belt.clip.match(/-?[\d.]+/g)!.map(Number)
+      clipValues.forEach((value, index) =>
+        expect(value).toBeLessThanOrEqual(index % 2 ? 960 : width),
+      )
+      expect(Math.min(...clipValues)).toBeGreaterThanOrEqual(0)
       expect(belt.hidden).toBe('hidden')
       expect(belt.category).toBe(category)
       // Programmatic repeated clicks must be guarded as well as native pointer input.

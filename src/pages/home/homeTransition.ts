@@ -85,6 +85,42 @@ export function flight(distance: number, mobile: boolean) {
   }
 }
 
+type Vertex = readonly [number, number]
+
+// Sutherland–Hodgman against the four viewport edges.
+export function clipToViewport(points: readonly Vertex[], width: number, height: number) {
+  const edges = [
+    [0, 0, 1],
+    [0, width, -1],
+    [1, 0, 1],
+    [1, height, -1],
+  ] as const
+  let output = [...points]
+  for (const [axis, limit, side] of edges) {
+    const input = output
+    output = []
+    input.forEach((current, index) => {
+      const previous = input[(index + input.length - 1) % input.length]
+      const inside = (current[axis] - limit) * side >= 0
+      if (inside !== (previous[axis] - limit) * side >= 0) {
+        const t = (limit - previous[axis]) / (current[axis] - previous[axis])
+        output.push([
+          previous[0] + (current[0] - previous[0]) * t,
+          previous[1] + (current[1] - previous[1]) * t,
+        ])
+      }
+      if (inside) output.push(current)
+    })
+  }
+  return output
+}
+
+function polygonPath(points: readonly Vertex[]) {
+  if (points.length < 3) return 'M0 0Z'
+  const round = (value: number) => Math.round(value * 100) / 100
+  return `M${points.map(([x, y]) => `${round(x)} ${round(y)}`).join('L')}Z`
+}
+
 export function coverage(geometry: SelectionGeometry, progress: number) {
   const { width, height, pivot, scene, category, sector, mobile } = geometry
   const p = Math.max(0, Math.min(1, progress))
@@ -113,14 +149,23 @@ export function coverage(geometry: SelectionGeometry, progress: number) {
         ? right + (aboveAfterTurn - right) * p
         : left + (aboveAfterTurn - left) * p
   // The arc stays outside the viewport; only the rotating straight edges are visible.
-  const radius = 2 * Math.hypot(width + Math.abs(pivot.x), height + Math.abs(pivot.y))
-  const ray = (angle: number) =>
-    `${pivot.x + radius * Math.cos(angle)} ${pivot.y + radius * Math.sin(angle)}`
+  // Twice the farthest corner keeps every 30° chord of the sampled arc off screen too.
+  const radius =
+    2 * Math.hypot(Math.max(pivot.x, width - pivot.x), Math.max(pivot.y, height - pivot.y))
+  const point = (angle: number): Vertex => [
+    pivot.x + radius * Math.cos(angle),
+    pivot.y + radius * Math.sin(angle),
+  ]
+  const ray = (angle: number) => point(angle).join(' ')
   const origin = `${pivot.x} ${pivot.y}`
+  const steps = Math.max(1, Math.ceil((end - start) / (Math.PI / 6)))
+  const wedge: Vertex[] = [[pivot.x, pivot.y]]
+  for (let step = 0; step <= steps; step++)
+    wedge.push(point(start + ((end - start) * step) / steps))
+  // Clipping to the viewport keeps the clip-path mask of the coverage belt screen-sized;
+  // an off-screen arc made Chromium raster and composite a mask of tens of megapixels.
   const surface =
-    p === 1
-      ? `M0 0H${width}V${height}H0Z`
-      : `M${origin}L${ray(start)}A${radius} ${radius} 0 ${end - start > Math.PI ? 1 : 0} 1 ${ray(end)}Z`
+    p === 1 ? `M0 0H${width}V${height}H0Z` : polygonPath(clipToViewport(wedge, width, height))
   const border =
     category === 'web'
       ? `M${origin}L${ray(end)}`

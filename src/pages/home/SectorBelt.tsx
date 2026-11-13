@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef } from 'react'
+import { memo, useId, useLayoutEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
 import type { CategoryId } from '../../data/types'
 import { beltMarks } from './beltIcons'
@@ -41,7 +41,7 @@ function Mark({ mark, x, y }: { mark: BeltMark; x: number; y: number }) {
 }
 
 // A repeating pattern fills any sector size; the whole layer slides by one tile per loop.
-export function SectorBelt({
+export const SectorBelt = memo(function SectorBelt({
   category,
   origin = { x: 0, y: 0 },
   startTime = null,
@@ -106,4 +106,4 @@ export function SectorBelt({
       <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   )
-}
+})
