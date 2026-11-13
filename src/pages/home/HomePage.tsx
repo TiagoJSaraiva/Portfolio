@@ -17,7 +17,8 @@ import { transitionConfig } from './homeTransition'
 import { readBelt } from './beltConfig'
 import { useLandingInteraction } from './useLandingInteraction'
 import { landingInteractionConfig } from './landingInteraction'
-import type { Point, SelectionGeometry, TransitionPhase } from './homeTransition'
+import { ReturnTransition } from './ReturnTransition'
+import type { Point, ReturnGeometry, SelectionGeometry, TransitionPhase } from './homeTransition'
 import styles from './HomePage.module.css'
 
 export function HomePage({ category }: { category?: CategoryId }) {
@@ -36,10 +37,15 @@ export function HomePage({ category }: { category?: CategoryId }) {
   const [animationPhase, setAnimationPhase] = useState<TransitionPhase>('idle')
   const [renderedCategory, setRenderedCategory] = useState(category)
   const [ballLayer, setBallLayer] = useState<HTMLDivElement | null>(null)
+  const cornerRef = useRef<HTMLButtonElement>(null)
+  const [returning, setReturning] = useState<ReturnGeometry | null>(null)
+  const [returnCovered, setReturnCovered] = useState(false)
   // Router navigation may commit after the click's local state update.
   if (renderedCategory !== category) {
     setRenderedCategory(category)
     if (geometry && geometry.category !== category) setGeometry(null)
+    // History navigation during the expansion replaces the return effect.
+    if (returning && !returnCovered) setReturning(null)
   }
   if (geometry && reducedMotion) setGeometry(null)
   const active = geometry?.category === category ? geometry : null
@@ -91,6 +97,25 @@ export function HomePage({ category }: { category?: CategoryId }) {
     }
   }, [active, reducedMotion, finish])
 
+  const coverReturn = useCallback(() => {
+    setReturnCovered(true)
+    navigate('/')
+  }, [navigate])
+  const finishReturn = useCallback(() => setReturning(null), [])
+
+  // Resizing or enabling reduced motion completes the return immediately.
+  const isReturning = returning !== null
+  useLayoutEffect(() => {
+    if (!isReturning) return
+    const complete = () => {
+      if (!returnCovered) navigate('/')
+      setReturning(null)
+    }
+    if (reducedMotion) return complete()
+    window.addEventListener('resize', complete)
+    return () => window.removeEventListener('resize', complete)
+  }, [isReturning, returnCovered, reducedMotion, navigate])
+
   const interaction = useLandingInteraction(category, reducedMotion, select)
 
   function select(id: CategoryId, icon: HTMLSpanElement, sector: HTMLButtonElement) {
@@ -119,7 +144,20 @@ export function HomePage({ category }: { category?: CategoryId }) {
   function returnHome() {
     if (returningHome.current) return
     returningHome.current = true
-    navigate('/')
+    const corner = cornerRef.current
+    if (reducedMotion || !corner || !category) {
+      navigate('/')
+      return
+    }
+    const bounds = corner.getBoundingClientRect()
+    setReturning({
+      category,
+      center: { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 },
+      radius: bounds.width / 2,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+    setReturnCovered(false)
   }
 
   return (
@@ -231,10 +269,19 @@ export function HomePage({ category }: { category?: CategoryId }) {
         </main>
       )}
       {active && <CategoryTransition geometry={active} onPhase={onPhase} />}
+      {returning && (
+        <ReturnTransition
+          geometry={returning}
+          covered={returnCovered}
+          onCovered={coverReturn}
+          onDone={finishReturn}
+        />
+      )}
       {category && phase === 'ready' && (
         <button
           type="button"
           className={styles.cornerIcon}
+          ref={cornerRef}
           data-category={category}
           aria-label={t('backHome')}
           onPointerDown={(event) => {

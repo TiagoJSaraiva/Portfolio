@@ -127,6 +127,26 @@
   pointer-events: none;
   overflow: hidden;
 }
+/* Above the header controls: the return cover hides every element before the landing. */
+.returnCover {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: color-mix(in srgb, #101115 95.5%, var(--accent));
+}
+.returnCover[data-return-cover='revealing'] {
+  pointer-events: none;
+}
+.returnFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+}
+.returnIcon {
+  position: absolute;
+  display: grid;
+  color: var(--accent);
+}
 /* Same layer as the surface, painted after it and below the selected sector's text. */
 .coverageBelt {
   position: fixed;

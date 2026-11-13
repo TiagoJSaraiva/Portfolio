@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 for (const width of [360, 768, 1440]) {
   for (const [category, label] of [
@@ -130,10 +131,99 @@ for (const width of [360, 768, 1440]) {
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
         .toBe(true)
       await back.click()
+      await finishReturn(page)
       await expect(page.getByRole('button', { name: label, exact: true })).toBeFocused()
     })
   }
 }
+
+async function finishReturn(page: Page) {
+  for (let frame = 0; frame < 60; frame++) {
+    if ((await page.locator('[data-return-cover]').count()) === 0) break
+    await page.clock.runFor(50)
+  }
+  await expect(page.locator('[data-return-cover]')).toHaveCount(0)
+}
+
+for (const width of [360, 768, 1440]) {
+  test(`return expands the corner circle, then fades into the landing at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 960 })
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+    await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
+    await page.goto('/#/web')
+    const state = page.locator('[data-transition-phase]')
+    await expect(state).toHaveAttribute('data-transition-phase', 'ready')
+    const back = page.getByRole('button', { name: 'Back to home' })
+    const ball = (await back.boundingBox())!
+    await back.click()
+    const cover = page.locator('[data-return-cover]')
+    await expect(cover).toHaveAttribute('data-return-cover', 'covering')
+    await expect(cover).toHaveAttribute('data-category', 'web')
+    // Repeated activation is ignored while the circle grows.
+    await back.evaluate((element) => (element as HTMLButtonElement).click())
+    await expect(cover).toHaveCount(1)
+    const radius = () =>
+      cover.evaluate((element) =>
+        Number(/circle\(([\d.]+)px/.exec(getComputedStyle(element).clipPath)?.[1]),
+      )
+    expect(Math.abs((await radius()) - ball.width / 2)).toBeLessThan(2)
+    await page.clock.runFor(300)
+    const partial = await radius()
+    expect(partial).toBeGreaterThan(ball.width / 2)
+    await expect(page).toHaveURL(/#\/web$/)
+    await page.screenshot({ path: `test-results/screenshots/${width}-return-cover.png` })
+    for (let frame = 0; frame < 20; frame++) {
+      if ((await cover.getAttribute('data-return-cover')) === 'revealing') break
+      await page.clock.runFor(50)
+    }
+    await expect(cover).toHaveAttribute('data-return-cover', 'revealing')
+    // Fully covered, including the header controls, before the landing appears beneath.
+    const cx = ball.x + ball.width / 2
+    const cy = ball.y + ball.height / 2
+    const reach = Math.hypot(Math.max(cx, width - cx), Math.max(cy, 960 - cy))
+    expect(await radius()).toBeGreaterThan(reach)
+    await expect(page).toHaveURL(/#\/$/)
+    await expect(state).toHaveAttribute('data-transition-phase', 'idle')
+    await expect(page.getByRole('heading', { level: 1, name: 'Tiago Saraiva' })).toBeVisible()
+    await page.clock.runFor(200)
+    const fading = Number(await cover.evaluate((element) => getComputedStyle(element).opacity))
+    expect(fading).toBeGreaterThan(0)
+    expect(fading).toBeLessThan(1)
+    await page.screenshot({ path: `test-results/screenshots/${width}-return-fade.png` })
+    await finishReturn(page)
+    await expect(page.getByRole('button', { name: 'Back to home' })).toHaveCount(0)
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
+      .toBe(true)
+  })
+}
+
+test('return is immediate with reduced motion and cancelled by history', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 })
+  await page.clock.install({ time: new Date('2026-10-10T12:00:00Z') })
+  await page.clock.pauseAt(new Date('2026-10-10T12:00:01Z'))
+  await page.goto('/')
+  await page.goto('/#/games')
+  await page.getByRole('button', { name: 'Back to home' }).click()
+  await page.clock.runFor(200)
+  await expect(page.locator('[data-return-cover]')).toHaveAttribute('data-return-cover', 'covering')
+  await page.evaluate(() => history.back())
+  await expect(page).not.toHaveURL(/#\/games$/)
+  await expect(page.locator('[data-transition-phase]')).toHaveAttribute(
+    'data-transition-phase',
+    'idle',
+  )
+  await expect(page.locator('[data-return-cover]')).toHaveCount(0)
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#/misc')
+  await page.getByRole('button', { name: 'Back to home' }).click()
+  await expect(page).toHaveURL(/#\/$/)
+  await expect(page.locator('[data-return-cover]')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Misc', exact: true })).toBeVisible()
+})
 
 test('history cancels transitions and forward navigation does not replay them', async ({
   page,
@@ -197,6 +287,7 @@ test('resize and reduced motion finish an active transition safely', async ({ pa
     'ready',
   )
   await page.getByRole('button', { name: 'Back to home' }).click()
+  await finishReturn(page)
   await page
     .getByRole('button', { name: 'Misc', exact: true })
     .getByText('Misc', { exact: true })

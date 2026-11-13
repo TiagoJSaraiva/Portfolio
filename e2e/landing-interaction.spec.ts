@@ -49,6 +49,15 @@ async function finishTransition(page: Page) {
   await expect(state(page)).toHaveAttribute('data-transition-phase', 'ready')
 }
 
+async function finishReturn(page: Page) {
+  // The corner circle covers the screen before the landing returns, then the cover fades.
+  for (let frame = 0; frame < 60; frame++) {
+    if ((await page.locator('[data-return-cover]').count()) === 0) break
+    await page.clock.runFor(50)
+  }
+  await expect(page.locator('[data-return-cover]')).toHaveCount(0)
+}
+
 for (const width of [360, 768, 1440]) {
   test(`elastic attraction, stationary text and keyboard focus at ${width}px`, async ({ page }) => {
     await setup(page, width)
@@ -107,7 +116,7 @@ for (const width of [360, 768, 1440]) {
     await finishTransition(page)
     await page.mouse.move(width - 10, 930)
     await page.getByRole('button', { name: 'Back to home' }).click()
-    await page.clock.runFor(500)
+    await finishReturn(page)
     await expect(page.getByRole('button', { name: 'Games', exact: true })).toBeFocused()
     await expect(state(page)).toHaveAttribute('data-attraction-enabled', 'true')
     expect(await center(ball(page))).toEqual(original)
@@ -151,6 +160,7 @@ test('circle and ring stay inside every edge; Escape cancels and Enter still sel
   await expect(page).toHaveURL(/#\/games$/)
   await finishTransition(page)
   await page.getByRole('button', { name: 'Back to home' }).click()
+  await finishReturn(page)
   await page.getByRole('button', { name: 'Web Projects', exact: true }).press('Space')
   await expect(page).toHaveURL(/#\/web$/)
 })
@@ -164,6 +174,7 @@ test('click without drag and a flight starting at the corner target select once'
   await expect(page).toHaveURL(/#\/games$/)
   await finishTransition(page)
   await page.getByRole('button', { name: 'Back to home' }).click()
+  await finishReturn(page)
   const contact = await startDrag(page)
   await page.mouse.move(100, 100)
   await page.clock.runFor(20)
@@ -235,6 +246,7 @@ test('language, history and direct routes preserve interaction lifecycle', async
   await expect(state(page)).toHaveAttribute('data-transition-phase', 'ready')
   await expect(page.locator('[data-flying-icon]')).toHaveCount(0)
   await page.getByRole('button', { name: 'Voltar ao início' }).click()
+  await finishReturn(page)
   await expect(state(page)).toHaveAttribute('data-attraction-enabled', 'true')
 })
 

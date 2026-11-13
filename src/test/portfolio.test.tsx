@@ -74,7 +74,14 @@ describe('category navigation', () => {
       fireEvent(window, new Event('resize'))
       expect(screen.getByRole('heading', { level: 1, name: category.label.en })).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: messages.backHome.en }))
+      const cover = document.querySelector('[data-return-cover]')
+      expect(cover).toHaveAttribute('data-return-cover', 'covering')
+      expect(cover).toHaveAttribute('data-category', category.id)
+      expect(window.location.hash).toBe(`#/${category.id}`)
+      // Resizing completes the return immediately, as it does for the selection.
+      fireEvent(window, new Event('resize'))
       expect(window.location.hash).toBe('#/')
+      expect(document.querySelector('[data-return-cover]')).not.toBeInTheDocument()
       expect(screen.getByRole('button', { name: category.label.en })).toHaveFocus()
     }
     expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()

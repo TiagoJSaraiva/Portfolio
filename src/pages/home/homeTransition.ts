@@ -5,6 +5,8 @@ export const transitionConfig = {
   coverage: 0.7,
   fade: 0.22,
   beltFade: 0.4,
+  returnCover: 0.65,
+  returnFade: 0.45,
   settle: 0.25,
   reveal: 0.65,
   acceleration: 4500,
@@ -33,6 +35,24 @@ export interface SelectionGeometry {
   sector: Bounds
   icon: Bounds
   belt: BeltSync
+}
+
+export interface ReturnGeometry {
+  category: CategoryId
+  /** Center and radius of the corner circle when the return starts. */
+  center: Point
+  radius: number
+  width: number
+  height: number
+}
+
+/** Radius past the farthest viewport corner, leaving no antialiased gap at the edge. */
+export function returnRadius({ center, width, height }: ReturnGeometry) {
+  const reach = Math.hypot(
+    Math.max(center.x, width - center.x),
+    Math.max(center.y, height - center.y),
+  )
+  return reach + 2
 }
 
 export function iconTarget(mobile: boolean) {
