@@ -140,7 +140,7 @@
 .returnFill {
   position: absolute;
   inset: 0;
-  background: var(--accent);
+  background: #101115;
 }
 .returnIcon {
   position: absolute;
