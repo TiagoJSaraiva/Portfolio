@@ -1,8 +1,10 @@
 import type { CategoryId } from '../../data/types'
+import type { BeltSync } from './beltConfig'
 
 export const transitionConfig = {
   coverage: 0.7,
   fade: 0.22,
+  beltFade: 0.4,
   settle: 0.25,
   reveal: 0.65,
   acceleration: 4500,
@@ -30,6 +32,7 @@ export interface SelectionGeometry {
   scene: Bounds
   sector: Bounds
   icon: Bounds
+  belt: BeltSync
 }
 
 export function iconTarget(mobile: boolean) {

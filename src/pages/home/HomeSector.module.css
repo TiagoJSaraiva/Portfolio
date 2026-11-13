@@ -23,6 +23,10 @@
 .sector[data-category='misc'] {
   clip-path: polygon(50% 33.333333%, 100% 100%, 0 100%);
 }
+/* Positioned by SectorBelt.module.css; this hook only hides it on selection. */
+.belt {
+  display: block;
+}
 .glow {
   position: absolute;
   pointer-events: none;
@@ -84,7 +88,8 @@
   position: relative;
   margin: 0;
   border-radius: 50%;
-  background: rgba(var(--accent-rgb), 0.045);
+  /* Opaque equivalents of the accent tint, so the belt passes behind the circle. */
+  background: color-mix(in srgb, #101115 95.5%, var(--accent));
   border: 1px solid rgba(var(--accent-rgb), 0.18);
   transition:
     transform 0.35s,
@@ -133,7 +138,7 @@
 }
 .icon[data-highlight] {
   transform: scale(1.16);
-  background: rgba(var(--accent-rgb), 0.1);
+  background: color-mix(in srgb, #101115 90%, var(--accent));
 }
 .sector[data-selected] {
   z-index: 11;
@@ -141,7 +146,8 @@
   border-color: transparent;
   background: transparent;
 }
-.sector[data-selected] .glow {
+.sector[data-selected] .glow,
+.sector[data-selected] .belt {
   visibility: hidden;
 }
 .ballPosition[data-selected] {

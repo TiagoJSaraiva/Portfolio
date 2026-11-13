@@ -1,0 +1,27 @@
+.belt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + var(--belt-tile));
+  height: 100%;
+  color: var(--accent);
+  opacity: 0.08;
+  pointer-events: none;
+  will-change: transform;
+  animation: belt var(--belt-duration) linear infinite;
+}
+@keyframes belt {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--belt-tile) * -1));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* The global rule shortens durations, which would make an infinite loop flicker. */
+  .belt {
+    animation: none;
+    will-change: auto;
+  }
+}

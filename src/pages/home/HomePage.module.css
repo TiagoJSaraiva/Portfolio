@@ -127,6 +127,14 @@
   pointer-events: none;
   overflow: hidden;
 }
+/* Same layer as the surface, painted after it and below the selected sector's text. */
+.coverageBelt {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
 .coverageSurface {
   fill: color-mix(in srgb, #101115 97%, var(--accent));
 }

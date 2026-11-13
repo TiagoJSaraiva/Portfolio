@@ -15,6 +15,13 @@ for (const width of [360, 768, 1440]) {
       await page.evaluate(() => document.fonts.ready)
       await page.clock.runFor(100)
       const state = page.locator('[data-transition-phase]')
+      await expect(page.locator('main [data-sector-belt]')).toHaveCount(3)
+      await expect(
+        page.locator(`main button[data-category="${category}"] [data-sector-belt]`),
+      ).toBeVisible()
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      ).toBe(true)
       const icons = await page.locator('[data-sector-icon]').evaluateAll((elements) =>
         elements.map((element) => {
           const rect = element.getBoundingClientRect()
@@ -33,6 +40,29 @@ for (const width of [360, 768, 1440]) {
         return points.map((point) => path.isPointInFill(new DOMPoint(point.x, point.y)))
       }, icons)
       expect(filled).toEqual(['games', 'web', 'misc'].map((id) => id === category))
+      // The coverage belt takes over the hidden sector belt on the same tile grid and phase.
+      const belt = await page.evaluate(() => {
+        const layer = document.querySelector<HTMLElement>('[data-coverage-belt]')!
+        const overlay = layer.querySelector('[data-sector-belt]')!
+        const selected = document.querySelector('main button[data-selected] [data-sector-belt]')!
+        const pattern = overlay.querySelector('pattern')!
+        const tile = pattern.width.baseVal.value
+        const from = selected.getBoundingClientRect()
+        const to = overlay.getBoundingClientRect()
+        const dx = (((to.left + pattern.x.baseVal.value - from.left) % tile) + tile) % tile
+        return {
+          dx: Math.min(dx, tile - dx),
+          dy: to.top + pattern.y.baseVal.value - from.top,
+          clip: getComputedStyle(layer).clipPath,
+          hidden: getComputedStyle(selected).visibility,
+          category: layer.dataset.category,
+        }
+      })
+      expect(belt.dx).toBeLessThan(2)
+      expect(Math.abs(belt.dy)).toBeLessThan(1)
+      expect(belt.clip).toMatch(/^path\(/)
+      expect(belt.hidden).toBe('hidden')
+      expect(belt.category).toBe(category)
       // Programmatic repeated clicks must be guarded as well as native pointer input.
       await page
         .locator('main button[data-category="web"]')
@@ -44,6 +74,7 @@ for (const width of [360, 768, 1440]) {
       await page.screenshot({ path: `test-results/screenshots/${width}-${category}-coverage.png` })
       await page.clock.runFor(450)
       await expect(state).toHaveAttribute('data-transition-phase', 'flying')
+      await expect(page.locator('main[hidden] [data-sector-belt]')).toHaveCount(3)
       await expect(page.locator('#main-content h1')).toHaveCount(0)
       const inset = width < 900 ? 28 : 48
       let overshot = false
@@ -60,6 +91,14 @@ for (const width of [360, 768, 1440]) {
       }
       expect(overshot).toBe(true)
       await expect(state).toHaveAttribute('data-transition-phase', 'revealing')
+      // The belt fades out once coverage completes, while the circle travels.
+      expect(
+        Number(
+          await page
+            .locator('[data-coverage-belt]')
+            .evaluate((element) => getComputedStyle(element).opacity),
+        ),
+      ).toBeLessThan(0.05)
       const title = page.getByRole('heading', { level: 1, name: label, exact: true })
       await expect(title).toBeVisible()
       await expect(title.locator('[data-locale-letter]')).toHaveCount(
@@ -121,6 +160,23 @@ test('history cancels transitions and forward navigation does not replay them', 
   )
   await page.clock.runFor(3000)
   await expect(page.locator('[data-flying-icon]')).toHaveCount(0)
+})
+
+test('reduced motion keeps the sector belts still', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  const belts = page.locator('main [data-sector-belt]')
+  await expect(belts).toHaveCount(3)
+  expect(
+    await belts.evaluateAll((elements) =>
+      elements.map((element) => getComputedStyle(element).animationName),
+    ),
+  ).toEqual(['none', 'none', 'none'])
+  await page
+    .getByRole('button', { name: 'Games', exact: true })
+    .getByText('Games', { exact: true })
+    .click()
+  await expect(page.locator('[data-coverage-belt]')).toHaveCount(0)
 })
 
 test('resize and reduced motion finish an active transition safely', async ({ page }) => {

@@ -14,6 +14,7 @@ import { ProjectCarousel } from '../../features/journey/ProjectCarousel'
 import { HomeSector } from './HomeSector'
 import { CategoryTransition } from './CategoryTransition'
 import { transitionConfig } from './homeTransition'
+import { readBelt } from './beltConfig'
 import { useLandingInteraction } from './useLandingInteraction'
 import { landingInteractionConfig } from './landingInteraction'
 import type { Point, SelectionGeometry, TransitionPhase } from './homeTransition'
@@ -108,6 +109,7 @@ export function HomePage({ category }: { category?: CategoryId }) {
         scene: { left: scene.left, top: scene.top, width: scene.width, height: scene.height },
         icon: icon.getBoundingClientRect(),
         sector: sector.getBoundingClientRect(),
+        belt: readBelt(sector),
       })
       setAnimationPhase('covering')
     } else selecting.current = false

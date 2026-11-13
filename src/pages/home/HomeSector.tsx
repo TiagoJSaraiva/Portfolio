@@ -6,6 +6,7 @@ import { useLocale } from '../../app/locale'
 import { CategoryIcon } from '../../components/CategoryIcon'
 import { LocalizedText } from '../../components/LocalizedText'
 import type { Category } from '../../data/types'
+import { SectorBelt } from './SectorBelt'
 import type { LandingInteraction } from './useLandingInteraction'
 import styles from './HomeSector.module.css'
 
@@ -62,6 +63,7 @@ export function HomeSector({
         onBlur={() => setFocused(false)}
         aria-label={category.label[locale]}
       >
+        <SectorBelt category={category.id} className={styles.belt} />
         <span className={styles.glow} aria-hidden="true" />
         <span className={styles.content}>
           <span

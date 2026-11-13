@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { CategoryIcon } from '../../components/CategoryIcon'
 import { coverage, flight, iconTarget, transitionConfig } from './homeTransition'
 import type { SelectionGeometry, TransitionPhase } from './homeTransition'
+import { SectorBelt } from './SectorBelt'
 import styles from './HomePage.module.css'
 
 export function CategoryTransition({
@@ -22,6 +23,9 @@ export function CategoryTransition({
   const scale = useMotionValue(icon.width / target.size)
   const surface = useTransform(progress, (value) => coverage(geometry, value).surface)
   const border = useTransform(progress, (value) => coverage(geometry, value).border)
+  // The belt continues the selected sector's one, revealed only where the surface has grown.
+  const beltClip = useTransform(progress, (value) => `path("${coverage(geometry, value).surface}")`)
+  const beltOpacity = useMotionValue(1)
   const x = useTransform(travel, (value) => from.x + (target.x - from.x) * value - target.size / 2)
   const y = useTransform(travel, (value) => from.y + (target.y - from.y) * value - target.size / 2)
 
@@ -34,6 +38,7 @@ export function CategoryTransition({
       controls.push(cover)
       await cover
       if (cancelled) return
+      controls.push(animate(beltOpacity, 0, { duration: transitionConfig.beltFade }))
       onPhase('flying')
       const fly = animate(travel, 1, { duration: trajectory.duration, ease: trajectory.progress })
       controls.push(fly)
@@ -62,6 +67,7 @@ export function CategoryTransition({
     progress,
     travel,
     scale,
+    beltOpacity,
     distance,
     trajectory.duration,
     trajectory.overshoot,
@@ -79,6 +85,19 @@ export function CategoryTransition({
         <motion.path d={surface} className={styles.coverageSurface} data-coverage-surface />
         <motion.path d={border} className={styles.coverageBorder} />
       </svg>
+      <motion.div
+        className={styles.coverageBelt}
+        data-category={category}
+        data-coverage-belt
+        aria-hidden="true"
+        style={{ clipPath: beltClip, opacity: beltOpacity }}
+      >
+        <SectorBelt
+          category={category}
+          origin={geometry.belt.origin}
+          startTime={geometry.belt.startTime}
+        />
+      </motion.div>
       <motion.div
         className={styles.flyingIcon}
         data-category={category}
