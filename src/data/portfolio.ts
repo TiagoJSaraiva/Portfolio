@@ -15,6 +15,8 @@ import trackYourMealsLogo from '../assets/projects/TrackYourMeals/logo.png'
 import pixelNormalizerBackground from '../assets/projects/PixelNormalizer/bg.png'
 import bfRunnerBackground from '../assets/projects/BfRunner/bg.png'
 import reelBlockerBackground from '../assets/projects/ReelBlocker/bg.png'
+import cantinaIfBackground from '../assets/projects/CantinaIF/bg.png'
+import cantinaIfLogo from '../assets/projects/CantinaIF/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -183,32 +185,32 @@ const seeds: Record<
   ],
   web: [
     {
-      id: 'studio',
-      title: 'Studio',
-      pt: 'Studio',
-      skills: ['react', 'css', 'motion'],
-      demo: true,
-    },
-    {
-      id: 'atlas',
-      title: 'Atlas',
-      pt: 'Atlas',
-      skills: ['react', 'typescript', 'ui'],
-      demo: true,
-    },
-    {
-      id: 'pulse',
-      title: 'Pulse',
-      pt: 'Pulse',
-      skills: ['react', 'typescript', 'css'],
-      demo: true,
-    },
-    {
-      id: 'folio',
-      title: 'Folio',
-      pt: 'Folio',
+      id: 'central-do-alfabeto',
+      title: 'Central do Alfabeto',
+      pt: 'Central do Alfabeto',
       skills: ['css', 'motion', 'ui'],
       demo: true,
+      github: 'https://github.com/Central-do-alfabeto/Central-do-Alfabeto-FrontEnd',
+      access: 'https://central-do-alfabeto.github.io/Central-do-Alfabeto-FrontEnd/'
+    },
+    {
+      id: 'project-flow',
+      title: 'Project Flow',
+      pt: 'Project Flow',
+      skills: ['css', 'motion', 'ui'],
+      demo: true,
+      github: 'https://github.com/TiagoJSaraiva/ProjectFlow-webapp',
+      access: 'https://tiagojsaraiva.github.io/ProjectFlow-webapp/'
+    },
+    {
+      id: 'cantinaif',
+      title: 'Cantina IF',
+      pt: 'Cantina IF',
+      skills: ['css', 'motion', 'ui'],
+      demo: true,
+      github: 'https://github.com/TiagoJSaraiva/CantinaIF',
+      access: 'https://cantinaif-ubt0.onrender.com',
+      image: {background: cantinaIfBackground, logo: cantinaIfLogo}
     },
   ],
   misc: [
