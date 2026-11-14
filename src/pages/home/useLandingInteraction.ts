@@ -2,6 +2,7 @@ import { animate } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
+import { prefersReducedMotion } from '../../app/useReducedMotionPreference'
 import type { CategoryId } from '../../data/types'
 import type { Bounds, Point } from './homeTransition'
 import {
@@ -31,6 +32,7 @@ interface Gesture {
   start: Point
   position: Point
   viewport: Point
+  reducedMotion: boolean
   dragged: boolean
 }
 
@@ -208,6 +210,7 @@ export function useLandingInteraction(
         start: { x: event.clientX, y: event.clientY },
         position: { x: ball.x.get(), y: ball.y.get() },
         viewport: { x: window.innerWidth, y: window.innerHeight },
+        reducedMotion: prefersReducedMotion(),
         dragged: false,
       }
       ball.handle.setPointerCapture(event.pointerId)
@@ -285,8 +288,12 @@ export function useLandingInteraction(
     const up = (event: PointerEvent) => {
       const current = gesture.current
       if (!current || current.pointerId !== event.pointerId) return
-      // Resize events can be delivered after pointerup in the same browser frame.
-      if (current.viewport.x !== window.innerWidth || current.viewport.y !== window.innerHeight) {
+      // Resize and reduced-motion changes can be delivered after pointerup in the same frame.
+      if (
+        current.viewport.x !== window.innerWidth ||
+        current.viewport.y !== window.innerHeight ||
+        current.reducedMotion !== prefersReducedMotion()
+      ) {
         cancel()
         measure()
         return
