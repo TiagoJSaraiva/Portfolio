@@ -437,12 +437,25 @@ test('trail keeps scrolling on hover and pauses for focus, explicit control and 
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expect(page.getByRole('button', { name: 'Pause automatic scrolling' })).toHaveCount(0)
   await page.clock.runFor(600)
+  // Changing the preference re-initializes Embla, which may snap the track once a little later;
+  // wait for that discrete jump, then require the track to stay still.
+  await expect
+    .poll(async () => {
+      const start = await position()
+      await page.clock.runFor(100)
+      return Math.abs((await position()) - start)
+    })
+    .toBeLessThan(0.1)
   const reduced = await position()
   await page.clock.runFor(300)
   expect(Math.abs((await position()) - reduced)).toBeLessThan(0.1)
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await page.clock.runFor(300)
-  expect(await position()).not.toBe(reduced)
+  await expect
+    .poll(async () => {
+      await page.clock.runFor(100)
+      return position()
+    })
+    .not.toBe(reduced)
   await page.setViewportSize({ width: 768, height: 960 })
   await page.clock.runFor(300)
   const resized = await position()
