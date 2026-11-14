@@ -7,7 +7,9 @@ export default function App() {
   return (
     <LocaleProvider>
       <MotionConfig reducedMotion="user">
-        <HashRouter>
+        {/* Commit every navigation in order: the landing and category screens track each category
+            change, and transitions could merge a selection with an immediate history.back(). */}
+        <HashRouter useTransitions={false}>
           <AppRoutes />
         </HashRouter>
       </MotionConfig>
