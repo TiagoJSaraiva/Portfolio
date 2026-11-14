@@ -11,6 +11,7 @@ import { messages } from '../../data/messages'
 import { categories, getCategory, getProjects, profile } from '../../data/portfolio'
 import type { CategoryId } from '../../data/types'
 import { ProjectCarousel } from '../../features/journey/ProjectCarousel'
+import { preloadProjectImages } from '../../features/projects/preloadProjectImages'
 import { HomeSector } from './HomeSector'
 import { CategoryTransition } from './CategoryTransition'
 import { transitionConfig } from './homeTransition'
@@ -121,6 +122,7 @@ export function HomePage({ category }: { category?: CategoryId }) {
   function select(id: CategoryId, icon: HTMLSpanElement, sector: HTMLButtonElement) {
     if (selecting.current || category) return
     selecting.current = true
+    preloadProjectImages(getProjects(id))
     finishLocaleTransition()
     lastSelection.current = { category: id, scroll: window.scrollY }
     if (!reducedMotion && sceneRef.current) {

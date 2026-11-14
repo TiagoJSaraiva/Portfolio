@@ -71,14 +71,14 @@ scripts/       gerador das artes provisórias
 - Textos traduzidos exigem `en` e `pt`.
 - Os IDs de categoria são `games`, `web` e `misc`. IDs de projeto devem ser únicos e estáveis, pois fazem parte dos links compartilháveis.
 - Referencie habilidades por ID e acrescente novas habilidades ao catálogo antes de usá-las.
-- As artes ficam em `src/assets/projects/<Projeto>/`, como `bg.png` e um `logo.png` opcional, importados pelo Vite. Imagens ausentes ou quebradas exibem o card traduzido "Prévia em breve".
+- As artes ficam em `src/assets/projects/<Projeto>/`, como `bg.png` e um `logo.png` opcional, importados pelo Vite. Mantenha os PNGs em tamanho original: o build de produção os redimensiona (fundos com 800 px de largura, logos com 128 px de altura) e converte para WebP com `vite-imagetools`, enquanto desenvolvimento e testes usam os originais. Imagens ausentes ou quebradas exibem o card traduzido "Prévia em breve".
 - Os links `github` e `access` são opcionais e independentes. Um link sem URL é omitido por completo.
 
 ## Publicação
 
 Todo push na `main` executa o [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), que roda lint, verificação de formatação, testes unitários, build de produção e a suíte do Playwright. O site só é publicado no GitHub Pages se tudo passar. Pull requests executam as mesmas verificações, sem publicar.
 
-O build usa base relativa (`base: './'`) e rotas com hash, então funciona no subcaminho `/Portfolio/` sem reescrita no servidor.
+O build usa base relativa (`base: './'`) e rotas com hash, então funciona no subcaminho `/Portfolio/` sem reescrita no servidor. Ao selecionar uma categoria, as artes dela começam a ser baixadas durante a transição, e os cards costumam estar prontos quando a esteira aparece.
 
 ## Licença
 

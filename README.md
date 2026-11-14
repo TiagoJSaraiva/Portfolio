@@ -71,14 +71,14 @@ scripts/       placeholder artwork generator
 - Translated text requires both `en` and `pt`.
 - Category IDs are `games`, `web` and `misc`. Project IDs must be unique and stable, because they are part of shareable links.
 - Reference skills by ID, and add new skills to the catalog first.
-- Project artwork lives in `src/assets/projects/<Project>/` as `bg.png` and an optional `logo.png`. Import both through Vite. Missing or broken images fall back to a translated "Preview coming soon" card.
+- Project artwork lives in `src/assets/projects/<Project>/` as `bg.png` and an optional `logo.png`. Import both through Vite. Keep the full-size PNGs: production builds resize them (backgrounds to 800 px wide, logos to 128 px tall) and convert them to WebP with `vite-imagetools`, while development and tests use the originals. Missing or broken images fall back to a translated "Preview coming soon" card.
 - `github` and `access` links are optional and independent. A link without a URL is omitted entirely.
 
 ## Deployment
 
 Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). It runs lint, format check, unit tests, the production build and the Playwright suite. The site is published to GitHub Pages only if all of them pass. Pull requests run the same checks without deploying.
 
-The build uses a relative base (`base: './'`) and hash routing, so it works under the `/Portfolio/` subpath without server rewrites.
+The build uses a relative base (`base: './'`) and hash routing, so it works under the `/Portfolio/` subpath without server rewrites. Selecting a category starts downloading its artwork during the transition, so the cards are usually ready when the belt appears.
 
 ## License
 
