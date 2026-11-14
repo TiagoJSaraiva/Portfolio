@@ -20,7 +20,7 @@ import cantinaIfLogo from '../assets/projects/CantinaIF/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
-const profileGithubUrl = 'https://github.com/TiagoJSaraiva/Portfolio'
+const profileGithubUrl = 'https://github.com/TiagoJSaraiva'
 export const copyrightYear = new Date().getFullYear()
 
 export const profile: Profile = {
@@ -154,7 +154,7 @@ const seeds: Record<
       image: { background: terrarianBasicNeedsBackground, logo: terrarianBasicNeedsLogo },
       skills: ['luau', 'typescript', 'gamedesign'],
       github: 'https://github.com/TiagoJSaraiva/Terrarian-Basic-Needs',
-      access: 'https://steamcommunity.com/sharedfiles/filedetails/?id=3555532206'
+      access: 'https://steamcommunity.com/sharedfiles/filedetails/?id=3555532206',
     },
     {
       id: 'kill-em-clankers',
@@ -167,8 +167,8 @@ const seeds: Record<
     },
     {
       id: 'endless-rooms',
-      title: "Endless Rooms",
-      pt: "Endless Rooms",
+      title: 'Endless Rooms',
+      pt: 'Endless Rooms',
       skills: ['luau', 'roblox', 'gamedesign'],
       image: { background: endlessRoomsBackground, logo: endlessRoomsLogo },
       github: 'https://github.com/TiagoJSaraiva/raylib-CJOPOO',
@@ -181,7 +181,6 @@ const seeds: Record<
       image: { background: inkmancerBackground, logo: inkmancerLogo },
       github: 'https://github.com/TiagoJSaraiva/Inkmancer',
     },
-
   ],
   web: [
     {
@@ -191,7 +190,7 @@ const seeds: Record<
       skills: ['css', 'motion', 'ui'],
       demo: true,
       github: 'https://github.com/Central-do-alfabeto/Central-do-Alfabeto-FrontEnd',
-      access: 'https://central-do-alfabeto.github.io/Central-do-Alfabeto-FrontEnd/'
+      access: 'https://central-do-alfabeto.github.io/Central-do-Alfabeto-FrontEnd/',
     },
     {
       id: 'project-flow',
@@ -200,7 +199,7 @@ const seeds: Record<
       skills: ['css', 'motion', 'ui'],
       demo: true,
       github: 'https://github.com/TiagoJSaraiva/ProjectFlow-webapp',
-      access: 'https://tiagojsaraiva.github.io/ProjectFlow-webapp/'
+      access: 'https://tiagojsaraiva.github.io/ProjectFlow-webapp/',
     },
     {
       id: 'cantinaif',
@@ -210,7 +209,7 @@ const seeds: Record<
       demo: true,
       github: 'https://github.com/TiagoJSaraiva/CantinaIF',
       access: 'https://cantinaif-ubt0.onrender.com',
-      image: {background: cantinaIfBackground, logo: cantinaIfLogo}
+      image: { background: cantinaIfBackground, logo: cantinaIfLogo },
     },
   ],
   misc: [
@@ -221,14 +220,14 @@ const seeds: Record<
       skills: ['csharp'],
       github: 'https://github.com/TiagoJSaraiva/Track-your-meals',
       access: 'https://github.com/TiagoJSaraiva/Track-your-meals/releases/latest',
-      image: {background: trackYourMealsBackground, logo: trackYourMealsLogo},
+      image: { background: trackYourMealsBackground, logo: trackYourMealsLogo },
     },
     {
       id: 'simple-keeper',
       title: 'Simple Keeper',
       pt: 'Simple Keeper',
       skills: ['cpp', 'qt'],
-      image: {background: simpleKeeperBackground, logo: simpleKeeperLogo},
+      image: { background: simpleKeeperBackground, logo: simpleKeeperLogo },
       github: 'https://github.com/TiagoJSaraiva/Simple-Keeper',
       access: 'https://github.com/TiagoJSaraiva/Simple-Keeper/releases/latest',
     },
@@ -238,7 +237,7 @@ const seeds: Record<
       pt: 'BF Runner CLI',
       skills: ['javascript'],
       github: 'https://github.com/TiagoJSaraiva/BF-Interpreter-CLI',
-      image: {background: bfRunnerBackground},
+      image: { background: bfRunnerBackground },
     },
     {
       id: 'pixel-normalizer',
@@ -246,7 +245,7 @@ const seeds: Record<
       pt: 'Pixel Normalizer',
       skills: ['typescript'],
       github: 'https://github.com/TiagoJSaraiva/Pixel-normalizer',
-      image: {background: pixelNormalizerBackground},
+      image: { background: pixelNormalizerBackground },
     },
     {
       id: 'reel-blocker',
@@ -254,7 +253,7 @@ const seeds: Record<
       pt: 'Reel Blocker',
       skills: ['javascript', 'css'],
       github: 'https://github.com/TiagoJSaraiva/reel-blocker',
-      image: {background: reelBlockerBackground},
+      image: { background: reelBlockerBackground },
     },
   ],
 }
