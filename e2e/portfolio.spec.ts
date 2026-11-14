@@ -1,4 +1,10 @@
 import { expect, test } from '@playwright/test'
+import type { Page } from '@playwright/test'
+
+const uniqueProjectCount = (page: Page) =>
+  page
+    .locator('[data-project-id]')
+    .evaluateAll((cards) => new Set(cards.map((card) => card.getAttribute('data-project-id'))).size)
 
 for (const width of [360, 768, 1440]) {
   test(`landing, categories and direct navigation at ${width}px`, async ({ page }) => {
@@ -33,7 +39,9 @@ for (const width of [360, 768, 1440]) {
         'ready',
       )
       await expect(page.getByRole('heading', { level: 1, name: label })).toBeAttached()
-      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
+      const projectCount = await uniqueProjectCount(page)
+      expect(projectCount).toBeGreaterThan(0)
+      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(projectCount)
       await expect(page.getByRole('button', { name: 'Pause automatic scrolling' })).toHaveCount(0)
       if (id === 'games') {
         const card = page.locator('[data-project-id="multiverse-heroes"]').first()
@@ -78,16 +86,19 @@ for (const width of [360, 768, 1440]) {
           }
         })
         expect(contentLayout.contentClear).toBe(true)
-        await expect(
-          page.locator('[data-project-id="neon-rush"]').first().locator('[role="img"]'),
-        ).toHaveAttribute('aria-label', 'Preview coming soon')
-        await expect(
-          page.locator('[data-project-id="neon-rush"]').first().locator('[role="img"]'),
-        ).toHaveCSS('display', 'flex')
-      } else {
-        await expect(page.getByRole('img', { name: 'Preview coming soon' })).toHaveCount(4)
-        await expect(page.locator('article[data-project-id] a')).toHaveCount(0)
       }
+      const fallbacks = await page.locator('article[data-project-id]').evaluateAll((cards) =>
+        cards
+          .filter((card) => !card.querySelector('img'))
+          .map((card) => {
+            const fallback = card.querySelector('[role="img"]')
+            return (
+              fallback?.getAttribute('aria-label') === 'Preview coming soon' &&
+              getComputedStyle(fallback).display === 'flex'
+            )
+          }),
+      )
+      expect(fallbacks.every(Boolean)).toBe(true)
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
         .toBe(true)
@@ -99,7 +110,7 @@ for (const width of [360, 768, 1440]) {
         'data-transition-phase',
         'ready',
       )
-      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
+      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(projectCount)
       await page.reload()
       await expect(page.locator('[data-flying-icon]')).toHaveCount(0)
       await page.getByRole('button', { name: 'Back to home' }).click()
@@ -133,12 +144,20 @@ for (const width of [360, 768, 1440]) {
     expect((await titleBox('simple-keeper')).width).toBeLessThanOrEqual(1)
 
     const withoutLogo = page.locator('[data-project-id="bf-runner"]').first()
-    await expect(withoutLogo.locator('img')).toHaveCount(0)
+    await expect(withoutLogo.locator('img[data-project-logo]')).toHaveCount(0)
     const centered = await titleBox('bf-runner')
     expect(centered.width).toBeGreaterThan(1)
     expect(centered.dx).toBeLessThan(1)
     expect(centered.dy).toBeLessThan(1)
-    const overlap = await withoutLogo.evaluate((card) => {
+
+    await page.goto('/#/web')
+    const withoutImage = page.locator('[data-project-id="project-flow"]').first()
+    await expect(withoutImage.locator('img')).toHaveCount(0)
+    const fallbackCentered = await titleBox('project-flow')
+    expect(fallbackCentered.width).toBeGreaterThan(1)
+    expect(fallbackCentered.dx).toBeLessThan(1)
+    expect(fallbackCentered.dy).toBeLessThan(1)
+    const overlap = await withoutImage.evaluate((card) => {
       const title = card.querySelector('h2')!.getBoundingClientRect()
       const message = card.querySelector('[role="img"] > span')!.getBoundingClientRect()
       const action = card.querySelector('a')!.getBoundingClientRect()

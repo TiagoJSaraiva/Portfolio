@@ -132,7 +132,9 @@ for (const width of [360, 768, 1440]) {
       ).toBeLessThan(1)
       expect(titleBox!.x + titleBox!.width).toBeLessThan(width)
       await expect(title.locator('[data-locale-letter]')).toHaveCount(0)
-      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(4)
+      const projectCount = await uniqueProjectCount(page)
+      expect(projectCount).toBeGreaterThan(0)
+      await expect(page.getByRole('heading', { level: 2 })).toHaveCount(projectCount)
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
         .toBe(true)
@@ -141,6 +143,12 @@ for (const width of [360, 768, 1440]) {
       await expect(page.getByRole('button', { name: label, exact: true })).toBeFocused()
     })
   }
+}
+
+function uniqueProjectCount(page: Page) {
+  return page
+    .locator('[data-project-id]')
+    .evaluateAll((cards) => new Set(cards.map((card) => card.getAttribute('data-project-id'))).size)
 }
 
 async function finishReturn(page: Page) {

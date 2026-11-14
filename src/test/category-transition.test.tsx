@@ -5,7 +5,13 @@ import { LocaleProvider } from '../app/LocaleContext'
 import { messages } from '../data/messages'
 import { projects } from '../data/portfolio'
 import { ProjectCarousel } from '../features/journey/ProjectCarousel'
-import { clipToViewport, coverage, flight, iconTarget } from '../pages/home/homeTransition'
+import {
+  clipToViewport,
+  coverage,
+  flight,
+  iconTarget,
+  transitionConfig,
+} from '../pages/home/homeTransition'
 import type { SelectionGeometry } from '../pages/home/homeTransition'
 import type { CategoryId } from '../data/types'
 
@@ -106,10 +112,10 @@ describe('distance-based flight', () => {
   it('accelerates, reaches its speed cap, and scales overshoot by peak speed', () => {
     const short = flight(40, false)
     const medium = flight(250, false)
-    const long = flight(1500, false)
+    const long = flight(10000, false)
     expect(short.peakSpeed).toBeLessThan(medium.peakSpeed)
     expect(short.overshoot).toBeLessThan(medium.overshoot)
-    expect(long.peakSpeed).toBe(1800)
+    expect(long.peakSpeed).toBe(transitionConfig.maxSpeed)
     expect(long.duration).toBeGreaterThan(medium.duration)
     expect(medium.progress(0.5)).toBeLessThan(0.5)
     expect(long.progress(0)).toBe(0)
@@ -146,8 +152,11 @@ describe('project trail', () => {
   it('renders optional external links without internal project navigation or accessible duplicates', () => {
     const group = projects.filter((project) => project.category === 'games')
     renderTrail(group)
-    expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(4)
-    expect(screen.getAllByRole('link')).toHaveLength(2)
+    expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(group.length)
+    expect(screen.getAllByRole('link')).toHaveLength(
+      group.filter((project) => project.github).length +
+        group.filter((project) => project.access).length,
+    )
     group.forEach((project) => {
       const visit = screen.queryByRole('link', {
         name: `${messages.visit.en} — ${project.title.en}`,

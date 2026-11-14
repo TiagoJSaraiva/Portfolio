@@ -29,9 +29,9 @@ function Probe() {
 }
 
 describe('content contract', () => {
-  it('has twelve unique projects with translated content and valid skills', () => {
-    expect(projects).toHaveLength(12)
-    expect(new Set(projects.map((project) => project.id)).size).toBe(12)
+  it('has unique projects with translated content and valid skills', () => {
+    expect(projects.length).toBeGreaterThan(0)
+    expect(new Set(projects.map((project) => project.id)).size).toBe(projects.length)
     for (const project of projects) {
       expect(project.title.en).toBeTruthy()
       expect(project.title.pt).toBeTruthy()
@@ -46,11 +46,11 @@ describe('content contract', () => {
     expect(multiverse.access).toBe(
       'https://www.roblox.com/pt/games/82513593943496/Multiverse-Heroes',
     )
-    expect(
-      projects
-        .filter((project) => project.id !== 'multiverse-heroes')
-        .every((project) => !project.image && !project.github && !project.access),
-    ).toBe(true)
+    for (const project of projects) {
+      if (project.image) expect(project.image.background).toBeTruthy()
+      for (const url of [project.github, project.access])
+        if (url !== undefined) expect(url).toMatch(/^https:\/\//)
+    }
     expect(messages.footer).toEqual({ en: '', pt: '' })
     for (const [key, message] of Object.entries(messages)) {
       if (key === 'footer') continue
