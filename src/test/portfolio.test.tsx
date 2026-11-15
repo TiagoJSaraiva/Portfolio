@@ -87,14 +87,10 @@ describe('category navigation', () => {
     expect(screen.getByRole('heading', { level: 1, name: profile.name })).toBeInTheDocument()
   })
 
-  it.each([
-    ['/web', true],
-    ['/games', false],
-    ['/misc', false],
-  ])('shows the demo note on %s only when it has demo projects: %s', async (route, visible) => {
+  it.each(['/web', '/games', '/misc'])('does not show the demo note on %s', async (route) => {
     renderApp(route)
     await screen.findAllByRole('article')
-    expect(!!screen.queryByText(messages.demoNote.en)).toBe(visible)
+    expect(screen.queryByText(messages.demoNote.en)).not.toBeInTheDocument()
   })
 
   it.each(['/other', '/games/unknown', '/web/orbit', '/games/orbit/extra'])(
