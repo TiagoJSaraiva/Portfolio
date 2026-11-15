@@ -22,6 +22,7 @@ export function CategoryTransition({
   const travel = useMotionValue(0)
   const scale = useMotionValue(icon.width / target.size)
   const surface = useTransform(progress, (value) => coverage(geometry, value).surface)
+  const border = useTransform(progress, (value) => coverage(geometry, value).border)
   // The belt continues the selected sector's one, revealed only where the surface has grown.
   const beltClip = useTransform(progress, (value) => `path("${coverage(geometry, value).surface}")`)
   const beltOpacity = useMotionValue(1)
@@ -82,6 +83,7 @@ export function CategoryTransition({
         data-category={category}
       >
         <motion.path d={surface} className={styles.coverageSurface} data-coverage-surface />
+        <motion.path d={border} className={styles.coverageBorder} />
       </svg>
       <motion.div
         className={styles.coverageBelt}
@@ -103,6 +105,7 @@ export function CategoryTransition({
         aria-hidden="true"
         style={{ x, y, scale, width: target.size, height: target.size }}
       >
+        <span className={styles.iconRing} />
         <CategoryIcon category={category} size={mobile ? 32 : 42} />
       </motion.div>
     </>
