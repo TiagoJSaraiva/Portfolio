@@ -112,7 +112,6 @@ export function HomeSector({
               data-highlight={sectorHovered || ballHovered || focused || undefined}
               data-focused={focused || undefined}
             >
-              <span className={styles.ring} />
               <CategoryIcon category={category.id} size={42} />
             </span>
           </span>,

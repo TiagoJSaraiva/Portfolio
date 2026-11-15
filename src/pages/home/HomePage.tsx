@@ -179,19 +179,6 @@ export function HomePage({ category }: { category?: CategoryId }) {
         aria-hidden={category ? true : undefined}
       >
         <div className={styles.grid} aria-hidden="true" />
-        <svg
-          className={styles.boundaries}
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M50 0V33.333333L0 100M50 33.333333 100 100"
-            fill="none"
-            stroke="#ffffff0c"
-            strokeWidth=".07"
-          />
-        </svg>
         <div className={styles.sectors}>
           {categories.map((category, index) => (
             <HomeSector
@@ -318,7 +305,6 @@ export function HomePage({ category }: { category?: CategoryId }) {
             if (event.detail === 0 || !backTouch.current?.moved) returnHome()
           }}
         >
-          <span className={styles.iconRing} aria-hidden="true" />
           <CategoryIcon category={category} size={42} />
         </button>
       )}
