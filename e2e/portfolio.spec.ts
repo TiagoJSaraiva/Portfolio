@@ -151,9 +151,9 @@ for (const width of [360, 768, 1440]) {
     expect(centered.dy).toBeLessThan(1)
 
     await page.goto('/#/web')
-    const withoutImage = page.locator('[data-project-id="project-flow"]').first()
+    const withoutImage = page.locator('[data-project-id="central-do-alfabeto"]').first()
     await expect(withoutImage.locator('img')).toHaveCount(0)
-    const fallbackCentered = await titleBox('project-flow')
+    const fallbackCentered = await titleBox('central-do-alfabeto')
     expect(fallbackCentered.width).toBeGreaterThan(1)
     expect(fallbackCentered.dx).toBeLessThan(1)
     expect(fallbackCentered.dy).toBeLessThan(1)
