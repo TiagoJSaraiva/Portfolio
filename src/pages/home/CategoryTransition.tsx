@@ -105,7 +105,6 @@ export function CategoryTransition({
         aria-hidden="true"
         style={{ x, y, scale, width: target.size, height: target.size }}
       >
-        <span className={styles.iconRing} />
         <CategoryIcon category={category} size={mobile ? 32 : 42} />
       </motion.div>
     </>

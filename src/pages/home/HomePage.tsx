@@ -318,7 +318,6 @@ export function HomePage({ category }: { category?: CategoryId }) {
             if (event.detail === 0 || !backTouch.current?.moved) returnHome()
           }}
         >
-          <span className={styles.iconRing} aria-hidden="true" />
           <CategoryIcon category={category} size={42} />
         </button>
       )}

@@ -141,11 +141,12 @@ test('circle and ring stay inside every edge; Escape cancels and Enter still sel
   ]) {
     await page.mouse.move(point.x, point.y)
     await page.clock.runFor(20)
-    const ring = await ball(page).locator('[data-sector-icon] > span').boundingBox()
-    expect(ring!.x).toBeGreaterThanOrEqual(-0.1)
-    expect(ring!.y).toBeGreaterThanOrEqual(-0.1)
-    expect(ring!.x + ring!.width).toBeLessThanOrEqual(1440.1)
-    expect(ring!.y + ring!.height).toBeLessThanOrEqual(960.1)
+    // The ring is no longer drawn, but the circle keeps its 12px clearance from every edge.
+    const icon = await ball(page).locator('[data-sector-icon]').boundingBox()
+    expect(icon!.x).toBeGreaterThanOrEqual(11.9)
+    expect(icon!.y).toBeGreaterThanOrEqual(11.9)
+    expect(icon!.x + icon!.width).toBeLessThanOrEqual(1440.1 - 11.9)
+    expect(icon!.y + icon!.height).toBeLessThanOrEqual(960.1 - 11.9)
   }
   await page.keyboard.press('Escape')
   await page.mouse.up()
