@@ -17,6 +17,8 @@ import bfRunnerBackground from '../assets/projects/BfRunner/bg.png'
 import reelBlockerBackground from '../assets/projects/ReelBlocker/bg.png'
 import cantinaIfBackground from '../assets/projects/CantinaIF/bg.png'
 import cantinaIfLogo from '../assets/projects/CantinaIF/logo.png'
+import projectFlowBackground from '../assets/projects/ProjectFlow/bg.png'
+import projectFlowLogo from '../assets/projects/ProjectFlow/logo.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -180,6 +182,7 @@ const seeds: Record<
       skills: ['luau', 'typescript', 'gamedesign'],
       image: { background: inkmancerBackground, logo: inkmancerLogo },
       github: 'https://github.com/TiagoJSaraiva/Inkmancer',
+      access: 'https://tiagojsaraiva.github.io/Inkmancer/'
     },
   ],
   web: [
@@ -191,6 +194,7 @@ const seeds: Record<
       demo: true,
       github: 'https://github.com/Central-do-alfabeto/Central-do-Alfabeto-FrontEnd',
       access: 'https://central-do-alfabeto.github.io/Central-do-Alfabeto-FrontEnd/',
+      // image: { background: centralDoAlfabetoBackground, logo: centralDoAlfabetoLogo },
     },
     {
       id: 'project-flow',
@@ -200,6 +204,7 @@ const seeds: Record<
       demo: true,
       github: 'https://github.com/TiagoJSaraiva/ProjectFlow-webapp',
       access: 'https://tiagojsaraiva.github.io/ProjectFlow-webapp/',
+      image: { background: projectFlowBackground, logo: projectFlowLogo },
     },
     {
       id: 'cantinaif',
