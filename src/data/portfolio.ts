@@ -19,6 +19,10 @@ import cantinaIfBackground from '../assets/projects/CantinaIF/bg.png'
 import cantinaIfLogo from '../assets/projects/CantinaIF/logo.png'
 import projectFlowBackground from '../assets/projects/ProjectFlow/bg.png'
 import projectFlowLogo from '../assets/projects/ProjectFlow/logo.png'
+import aprendaXadrezLogo from '../assets/projects/AprendaXadrez/logo.png'
+import aprendaXadrezBackground from '../assets/projects/AprendaXadrez/bg.png'
+import litaldibetLogo from '../assets/projects/Litaldibet/logo.png'
+import litaldibetBackground from '../assets/projects/Litaldibet/bg.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -186,6 +190,25 @@ const seeds: Record<
     },
   ],
   web: [
+    {
+      id: 'litaldibet',
+      title: 'Litaldibet',
+      pt: 'Litaldibet',
+      skills: ['typescript', 'react', 'css', 'motion', 'ui'],
+      demo: true,
+      access: 'https://www.litaldibet.com.br/sobre',
+      image: { background: litaldibetBackground, logo: litaldibetLogo }, 
+    },
+    {
+      id: 'aprenda-xadrez',
+      title: 'Aprenda Xadrez',
+      pt: 'Aprenda Xadrez',
+      skills: ['typescript', 'react', 'css', 'motion', 'ui'],
+      demo: true,
+      github: 'https://github.com/TiagoJSaraiva/Aprenda-Xadrez',
+      access: 'https://tiagojsaraiva.github.io/Aprenda-Xadrez/',
+      image: { background: aprendaXadrezBackground, logo: aprendaXadrezLogo },
+    },
     {
       id: 'central-do-alfabeto',
       title: 'Central do Alfabeto',
