@@ -178,6 +178,7 @@ const seeds: Record<
       skills: ['luau', 'roblox', 'gamedesign'],
       image: { background: endlessRoomsBackground, logo: endlessRoomsLogo },
       github: 'https://github.com/TiagoJSaraiva/raylib-CJOPOO',
+      access: 'https://tiagojsaraiva.github.io/Endless-Rooms/',
     },
     {
       id: 'inkmancer',
@@ -186,7 +187,6 @@ const seeds: Record<
       skills: ['luau', 'typescript', 'gamedesign'],
       image: { background: inkmancerBackground, logo: inkmancerLogo },
       github: 'https://github.com/TiagoJSaraiva/Inkmancer',
-      access: 'https://tiagojsaraiva.github.io/Inkmancer/',
     },
   ],
   web: [

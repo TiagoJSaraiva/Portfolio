@@ -17,6 +17,7 @@
     "artwork": "node scripts/generate-demo-artwork.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/mona-sans": "^5.3.0",
     "@fontsource/manrope": "^5.3.0",
     "@fontsource/space-grotesk": "^5.3.0",
     "embla-carousel-auto-scroll": "8.6.0",

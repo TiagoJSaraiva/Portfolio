@@ -1,11 +1,7 @@
-@import '@fontsource/space-grotesk/latin-500.css';
-@import '@fontsource/space-grotesk/latin-600.css';
-@import '@fontsource/manrope/latin-400.css';
-@import '@fontsource/manrope/latin-500.css';
-@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource-variable/mona-sans/wght.css';
 
 :root {
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Mona Sans Variable', sans-serif;
   color: #e9e9ed;
   background: #101115;
   font-synthesis: none;
@@ -14,7 +10,7 @@
   --surface: #191a20;
   --muted: #9a9aa8;
   --border: #ffffff12;
-  --heading: 'Space Grotesk', sans-serif;
+  --heading: 'Mona Sans Variable', sans-serif;
   --accent: #b79aff;
   --accent-rgb: 183, 154, 255;
   --radius: 20px;
