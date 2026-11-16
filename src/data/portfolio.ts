@@ -197,7 +197,7 @@ const seeds: Record<
       skills: ['typescript', 'react', 'css', 'motion', 'ui'],
       demo: true,
       access: 'https://www.litaldibet.com.br/sobre',
-      image: { background: litaldibetBackground, logo: litaldibetLogo }, 
+      image: { background: litaldibetBackground, logo: litaldibetLogo },
     },
     {
       id: 'aprenda-xadrez',
