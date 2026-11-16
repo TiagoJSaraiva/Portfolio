@@ -21,8 +21,8 @@ import projectFlowBackground from '../assets/projects/ProjectFlow/bg.png'
 import projectFlowLogo from '../assets/projects/ProjectFlow/logo.png'
 import aprendaXadrezLogo from '../assets/projects/AprendaXadrez/logo.png'
 import aprendaXadrezBackground from '../assets/projects/AprendaXadrez/bg.png'
-import litaldibetLogo from '../assets/projects/Litaldibet/logo.png'
-import litaldibetBackground from '../assets/projects/Litaldibet/bg.png'
+import litaldibetLogo from '../assets/projects/LitaldiBet/logo.png'
+import litaldibetBackground from '../assets/projects/LitaldiBet/bg.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
