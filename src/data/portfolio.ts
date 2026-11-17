@@ -216,7 +216,6 @@ const seeds: Record<
       skills: ['css', 'motion', 'ui'],
       demo: true,
       github: 'https://github.com/Central-do-alfabeto/Central-do-Alfabeto-FrontEnd',
-      access: 'https://central-do-alfabeto.github.io/Central-do-Alfabeto-FrontEnd/',
       // image: { background: centralDoAlfabetoBackground, logo: centralDoAlfabetoLogo },
     },
     {
