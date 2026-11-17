@@ -123,6 +123,8 @@ for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.route('**/MultiverseHeroes/logo*.png', (route) => route.abort())
+    // Every project has artwork now; a failed load renders the same fallback as a missing image.
+    await page.route('**/CentralDoAlfabeto/bg*.png', (route) => route.abort())
     await page.goto('/#/misc')
     const titleBox = (id: string) =>
       page
