@@ -23,6 +23,7 @@ import aprendaXadrezLogo from '../assets/projects/AprendaXadrez/logo.png'
 import aprendaXadrezBackground from '../assets/projects/AprendaXadrez/bg.png'
 import litaldibetLogo from '../assets/projects/LitaldiBet/logo.png'
 import litaldibetBackground from '../assets/projects/LitaldiBet/bg.png'
+import centralDoAlfabetoBackground from '../assets/projects/CentralDoAlfabeto/bg.png'
 
 import type { Category, CategoryId, Profile, Project, ProjectArtwork, Skill } from './types'
 
@@ -215,6 +216,7 @@ const seeds: Record<
       pt: 'Central do Alfabeto',
       skills: ['css', 'motion', 'ui'],
       demo: true,
+      image: { background: centralDoAlfabetoBackground },
       github: 'https://github.com/Central-do-alfabeto/Central-do-Alfabeto-FrontEnd',
       // image: { background: centralDoAlfabetoBackground, logo: centralDoAlfabetoLogo },
     },
