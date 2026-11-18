@@ -71,13 +71,8 @@
   color: #b6b4c0;
   margin-top: 14px;
 }
-.divider {
-  width: 24px;
-  height: 1px;
-  background: #ffffff20;
-  margin: 23px 0 17px;
-}
 .invitation {
+  margin-top: 24px;
   font-size: 11px;
   line-height: 1.8;
   max-width: 180px;
@@ -249,10 +244,8 @@
   .hub h1 span + span::before {
     content: ' ';
   }
-  .divider {
-    margin: 20px 0 14px;
-  }
   .invitation {
+    margin-top: 20px;
     max-width: none;
   }
   .sectors {

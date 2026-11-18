@@ -66,11 +66,6 @@
   align-items: center;
   gap: 14px;
 }
-.line {
-  width: 30px;
-  height: 1px;
-  background: #ffffff24;
-}
 .controls > div {
   display: flex;
   gap: 7px;

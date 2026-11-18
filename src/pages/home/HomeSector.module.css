@@ -113,10 +113,6 @@
   font-weight: 500;
   font-size: 21px;
 }
-.label > svg {
-  opacity: 0.5;
-  transition: transform 0.3s;
-}
 .tagline {
   display: block;
   font-size: 10px;
@@ -161,9 +157,6 @@
 .sector:hover .glow,
 .sector:focus-visible .glow {
   opacity: 1;
-}
-.sector:hover .label > svg {
-  transform: translate(2px, -2px);
 }
 @media (max-width: 899px) {
   .sector {

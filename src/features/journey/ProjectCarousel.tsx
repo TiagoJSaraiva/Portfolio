@@ -269,10 +269,7 @@ export function ProjectCarousel({
         </div>
       </div>
       <div className={styles.controls}>
-        <span>
-          <LocalizedText value={messages.drag} />
-          <span className={styles.line} />
-        </span>
+        <LocalizedText value={messages.drag} />
         <div>
           <button
             type="button"

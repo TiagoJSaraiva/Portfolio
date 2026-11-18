@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react'
 import { useMotionValue } from 'motion/react'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -77,7 +76,6 @@ export function HomeSector({
             <span className={styles.title}>
               <LocalizedText value={category.label} />
             </span>
-            <ArrowUpRight size={16} />
           </span>
           <span className={styles.tagline}>
             <LocalizedText value={category.tagline} variant="body" />

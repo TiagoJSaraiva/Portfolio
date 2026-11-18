@@ -219,7 +219,6 @@ export function HomePage({ category }: { category?: CategoryId }) {
           <p className={styles.role}>
             <LocalizedText value={profile.role} variant="body" />
           </p>
-          <span className={styles.divider} />
           <p className={styles.invitation}>
             <LocalizedText value={profile.invitation} variant="body" />
           </p>
