@@ -32,7 +32,7 @@ export const messages = {
   next: { en: 'Next projects', pt: 'Próximos projetos' },
   pause: { en: 'Pause automatic scrolling', pt: 'Pausar rolagem automática' },
   play: { en: 'Resume automatic scrolling', pt: 'Retomar rolagem automática' },
-  drag: { en: 'Press and drag', pt: 'Segure e arraste' },
+  drag: { en: 'Press and drag', pt: 'Arraste para os lados' },
   skip: { en: 'Skip to content', pt: 'Pular para o conteúdo' },
   footer: { en: '', pt: '' },
   categoryNav: { en: 'Explore other categories', pt: 'Explorar outras categorias' },
