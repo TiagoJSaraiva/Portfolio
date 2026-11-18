@@ -14,8 +14,9 @@ export function AppRoutes() {
     finishLocaleTransition()
   }, [location.pathname, finishLocaleTransition])
   useEffect(() => {
-    document.title = `${category?.label[locale] ?? profile.role[locale]} — ${profile.name}`
-  }, [category, locale])
+    document.title =
+      locale === 'pt' ? `Portfólio de ${profile.name}` : `${profile.name}'s Portfolio`
+  }, [locale])
   return (
     <>
       <a

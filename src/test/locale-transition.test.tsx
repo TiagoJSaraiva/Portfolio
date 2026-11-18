@@ -310,7 +310,7 @@ describe('coordinated locale transition', () => {
     render(<App />)
     toggle()
     advance(localeExitMs)
-    expect(document.title).toBe(`${profile.role.pt} — ${profile.name}`)
+    expect(document.title).toBe(`Portfólio de ${profile.name}`)
     expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName(profile.name)
   })
 })
